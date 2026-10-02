@@ -98,6 +98,21 @@ public class ProductionService implements Serializable {
         refreshPriorityQueue();
     }
 
+    public synchronized void clearAllScenes() {
+        for (Scene s : new ArrayList<>(sceneRepository.findAll())) {
+            sceneRepository.deleteById(s.getId());
+        }
+        shootingPriorityQueue.clear();
+    }
+
+    public synchronized boolean removeScene(String sceneId) {
+        boolean removed = sceneRepository.deleteById(sceneId);
+        if (removed) {
+            refreshPriorityQueue();
+        }
+        return removed;
+    }
+
     // Method Overloading Demonstration: scheduleScene variants
     public void scheduleScene(String sceneId, LocalDate date, String timeSlot)
             throws ResourceNotFoundException, ScheduleConflictException, ValidationException {

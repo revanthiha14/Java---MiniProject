@@ -81,6 +81,14 @@ public class BudgetService implements Serializable {
         }
     }
 
+    public synchronized void clear() {
+        for (Department dept : Department.values()) {
+            allocatedBudgets.put(dept, 0.0);
+            spentBudgets.put(dept, 0.0);
+        }
+        expenseHistory.clear();
+    }
+
     // Method Overloading Demonstration 1: allocateBudget
     public void allocateBudget(Department dept, double amount) throws ValidationException {
         allocateBudget(dept, amount, "Standard Production Allocation");
