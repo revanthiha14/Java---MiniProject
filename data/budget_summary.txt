@@ -1,0 +1,25 @@
+=========================================================================================
+                      CINEFLOW: COMPREHENSIVE PRODUCTION BUDGET REPORT                   
+=========================================================================================
+Report Generated: 2026-10-02 18:51:32
+TOTAL ALLOCATED : $2,500,000.00
+TOTAL EXPENDED  : $88,000.00
+OVERALL VARIANCE: $2,412,000.00 (UNDER BUDGET)
+-----------------------------------------------------------------------------------------
+DEPARTMENT                     | ALLOCATED       | SPENT           | REMAINING       | UTIL %  
+-----------------------------------------------------------------------------------------
+Directing & Creative           | $   350,000.00 | $         0.00 | $   350,000.00 |    0.0%
+Camera & Cinematography        | $   320,000.00 | $    28,000.00 | $   292,000.00 |    8.8%
+Grip & Electrical / Lighting   | $   180,000.00 | $         0.00 | $   180,000.00 |    0.0%
+Sound Recording & Mixing       | $   140,000.00 | $         0.00 | $   140,000.00 |    0.0%
+Art Department & Props         | $   400,000.00 | $    45,000.00 | $   355,000.00 |   11.3%
+Wardrobe & Makeup              | $   220,000.00 | $    15,000.00 | $   205,000.00 |    6.8%
+Visual Effects & Post-Production | $   600,000.00 | $         0.00 | $   600,000.00 |    0.0%
+Stunts & Special Actions       | $   150,000.00 | $         0.00 | $   150,000.00 |    0.0%
+Production Logistics & Catering | $   140,000.00 | $         0.00 | $   140,000.00 |    0.0%
+=========================================================================================
+RECENT TRANSACTION AUDIT LOG:
+  • [TX-1001] ART_AND_PROPS | $ 45,000.00 | Cockpit flight console fabrication | Appr: Art Director
+  • [TX-1002] CAMERA | $ 28,000.00 | High-speed camera sensor rental deposit | Appr: DP Elena Vance
+  • [TX-1003] COSTUME_AND_MAKEUP | $ 15,000.00 | Commander hero spacesuit fitting | Appr: Wardrobe Lead
+=========================================================================================
