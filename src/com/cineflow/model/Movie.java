@@ -38,6 +38,7 @@ public class Movie implements Identifiable<String>, Reportable, CostTrackable, S
     private Set<String> assignedCrewIds;
     private Set<String> bookedEquipmentIds;
     private Set<String> bookedLocationIds;
+    private List<Review> reviews;
 
     /**
      * Default constructor with safe defaults.
@@ -78,6 +79,7 @@ public class Movie implements Identifiable<String>, Reportable, CostTrackable, S
         this.assignedCrewIds = new HashSet<>();
         this.bookedEquipmentIds = new HashSet<>();
         this.bookedLocationIds = new HashSet<>();
+        this.reviews = new ArrayList<>();
     }
 
     // Method Overloading Demonstration: addScene variants
@@ -212,6 +214,7 @@ public class Movie implements Identifiable<String>, Reportable, CostTrackable, S
         sb.append(String.format("Progress       : %d / %d Scenes Filmed (%.1f%%)\n",
                 getCompletedScenesCount(), scenes.size(), getProductionProgressPercentage()));
         sb.append(String.format("Budget Status  : %s\n", getCostBreakdown()));
+        sb.append(String.format("Audience Rating: %s\n", getRatingSummary()));
         sb.append(String.format("Roster Summary : %d Actors Assigned | %d Crew Members Assigned\n",
                 assignedActorIds.size(), assignedCrewIds.size()));
         sb.append(String.format("Assets Booked  : %d Equipment Items | %d Locations\n",
@@ -354,6 +357,46 @@ public class Movie implements Identifiable<String>, Reportable, CostTrackable, S
         return Collections.unmodifiableSet(bookedLocationIds);
     }
 
+    // Method Overloading Demonstration: addReview variants
+    public void addReview(Review review) {
+        if (review != null) {
+            if (review.getMovieId() == null || review.getMovieId().trim().isEmpty()) {
+                review.setMovieId(this.id);
+            }
+            this.reviews.add(review);
+        }
+    }
+
+    public void addReview(String reviewerName, int rating, String comment) {
+        addReview(new Review(this.id, reviewerName, rating, comment));
+    }
+
+    public List<Review> getReviews() {
+        return Collections.unmodifiableList(reviews);
+    }
+
+    public int getReviewCount() {
+        return reviews.size();
+    }
+
+    public double getAverageRating() {
+        if (reviews == null || reviews.isEmpty()) {
+            return 0.0;
+        }
+        return reviews.stream().mapToInt(Review::getRating).average().orElse(0.0);
+    }
+
+    public String getRatingSummary() {
+        if (reviews == null || reviews.isEmpty()) {
+            return "No reviews yet";
+        }
+        double avg = getAverageRating();
+        int roundedStars = (int) Math.round(avg);
+        String stars = "★".repeat(Math.max(1, Math.min(5, roundedStars))) + "☆".repeat(Math.max(0, 5 - roundedStars));
+        return String.format("%s %.1f / 5.0 (%d %s)",
+                stars, avg, reviews.size(), reviews.size() == 1 ? "review" : "reviews");
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -368,7 +411,7 @@ public class Movie implements Identifiable<String>, Reportable, CostTrackable, S
 
     @Override
     public String toString() {
-        return String.format("[%s] %s (%s, %d) - Stage: %s",
-                id, title, genre, estimatedReleaseYear, productionPhase.name());
+        return String.format("[%s] %s (%s, %d) - Stage: %s | Rating: %s",
+                id, title, genre, estimatedReleaseYear, productionPhase.name(), getRatingSummary());
     }
 }

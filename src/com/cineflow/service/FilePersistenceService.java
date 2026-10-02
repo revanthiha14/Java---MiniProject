@@ -7,6 +7,7 @@ import com.cineflow.model.Department;
 import com.cineflow.model.Movie;
 import com.cineflow.model.ProductionHouse;
 import com.cineflow.model.ProductionPhase;
+import com.cineflow.model.Review;
 import com.cineflow.model.Scene;
 import com.cineflow.model.SceneStatus;
 import java.io.BufferedReader;
@@ -55,7 +56,7 @@ public class FilePersistenceService implements Serializable {
     }
 
     /**
-     * Saves all production houses, movies, scenes, scripts, and budgets to human-readable text files.
+     * Saves all production houses, movies, scenes, scripts, budgets, and reviews to human-readable text files.
      */
     public synchronized void saveAllData(StudioService studioService, ProductionService productionService)
             throws IOException {
@@ -66,11 +67,12 @@ public class FilePersistenceService implements Serializable {
         saveMovies(studioService);
         saveScenesAndScripts(productionService);
         saveBudgets(studioService);
+        saveReviews(studioService);
         exportAllMovieScreenplays(studioService, productionService);
     }
 
     /**
-     * Loads all production houses, movies, scenes, scripts, and budgets from text files into memory.
+     * Loads all production houses, movies, scenes, scripts, budgets, and reviews from text files into memory.
      */
     public synchronized void loadAllData(StudioService studioService, ProductionService productionService)
             throws IOException {
@@ -85,6 +87,16 @@ public class FilePersistenceService implements Serializable {
         loadMovies(studioService);
         loadScenesAndScripts(studioService, productionService);
         loadBudgets(studioService);
+        loadReviews(studioService);
+
+        // If no reviews exist on disk yet, seed initial reviews and persist
+        File reviewFile = new File(dataDirectory, "reviews.txt");
+        if (!reviewFile.exists() || reviewFile.length() == 0) {
+            com.cineflow.util.DataGenerator.seedReviews(studioService);
+            try {
+                saveReviews(studioService);
+            } catch (IOException ignored) {}
+        }
 
         ProductionHouse active = studioService.getActiveStudio();
         if (active != null) {
@@ -439,7 +451,66 @@ public class FilePersistenceService implements Serializable {
     }
 
     // =========================================================================
-    // 5. SCREENPLAY EXPORT (data/scripts/<Movie>_Screenplay.txt)
+    // 5. REVIEWS PERSISTENCE (reviews.txt)
+    // =========================================================================
+    public synchronized void saveReviews(StudioService studioService) throws IOException {
+        File file = new File(dataDirectory, "reviews.txt");
+        try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8)))) {
+            pw.println("# ReviewID|MovieID|ReviewerName|Rating|ReviewDate|Comment");
+            for (ProductionHouse ph : studioService.getAllStudios()) {
+                for (Movie m : ph.getAllMovies()) {
+                    for (Review r : m.getReviews()) {
+                        String safeComment = r.getComment().replace("\r\n", " ").replace("\n", " ").replace("|", "-");
+                        String safeReviewer = r.getReviewerName().replace("|", "-");
+                        pw.printf("%s|%s|%s|%d|%s|%s\n",
+                                r.getId(),
+                                m.getId(),
+                                safeReviewer,
+                                r.getRating(),
+                                r.getReviewDate().toString(),
+                                safeComment);
+                    }
+                }
+            }
+            pw.flush();
+        }
+    }
+
+    public synchronized void loadReviews(StudioService studioService) throws IOException {
+        File file = new File(dataDirectory, "reviews.txt");
+        if (!file.exists()) return;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty() || line.startsWith("#")) continue;
+
+                String[] parts = line.split("\\|", 6);
+                if (parts.length >= 5) {
+                    String id = parts[0].trim();
+                    String movieId = parts[1].trim();
+                    String reviewerName = parts[2].trim();
+                    int rating = 5;
+                    try {
+                        rating = Integer.parseInt(parts[3].trim());
+                    } catch (NumberFormatException ignored) {}
+                    LocalDate date = LocalDate.now();
+                    try {
+                        date = LocalDate.parse(parts[4].trim());
+                    } catch (Exception ignored) {}
+                    String comment = parts.length >= 6 ? parts[5].trim() : "";
+
+                    Review review = new Review(id, movieId, reviewerName, rating, comment, date);
+                    Optional<Movie> movieOpt = studioService.findMovieById(movieId);
+                    movieOpt.ifPresent(m -> m.addReview(review));
+                }
+            }
+        }
+    }
+
+    // =========================================================================
+    // 6. SCREENPLAY EXPORT (data/scripts/<Movie>_Screenplay.txt)
     // =========================================================================
     private void exportAllMovieScreenplays(StudioService studioService, ProductionService productionService)
             throws IOException {

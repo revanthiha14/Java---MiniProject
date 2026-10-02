@@ -90,6 +90,23 @@ public class StudioService implements Serializable {
         return studios.values().stream().mapToInt(ProductionHouse::getMovieCount).sum();
     }
 
+    public List<Movie> getAllMoviesAcrossStudios() {
+        List<Movie> all = new ArrayList<>();
+        for (ProductionHouse ph : studios.values()) {
+            all.addAll(ph.getAllMovies());
+        }
+        return all;
+    }
+
+    public Optional<Movie> findMovieById(String movieId) {
+        if (movieId == null) return Optional.empty();
+        for (ProductionHouse ph : studios.values()) {
+            Optional<Movie> m = ph.getMovie(movieId);
+            if (m.isPresent()) return m;
+        }
+        return Optional.empty();
+    }
+
     public void clear() {
         studios.clear();
         activeStudioId = null;

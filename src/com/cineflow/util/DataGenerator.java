@@ -8,6 +8,7 @@ import com.cineflow.model.Department;
 import com.cineflow.model.Movie;
 import com.cineflow.model.ProductionHouse;
 import com.cineflow.model.ProductionPhase;
+import com.cineflow.model.Review;
 import com.cineflow.model.Scene;
 import com.cineflow.model.SceneStatus;
 import com.cineflow.model.asset.Equipment;
@@ -624,8 +625,58 @@ public final class DataGenerator {
             studioService.setActiveStudio("PH-101");
             productionService.setActiveMovieId("MOV-01");
 
+            // Seed initial realistic reviews across movie catalog
+            seedReviews(studioService);
+
         } catch (ValidationException | BudgetExceededException e) {
             System.err.println("Warning while seeding studio data: " + e.getMessage());
         }
+    }
+
+    public static void seedReviews(StudioService studioService) {
+        if (studioService == null) return;
+
+        // Seed realistic reviews across various movies
+        studioService.findMovieById("MOV-01").ifPresent(m -> {
+            m.addReview(new Review("REV-101", "MOV-01", "Marcus Vance (Film Critic)", 5,
+                    "A visionary sci-fi epic! The deep space cinematography and practical sets on Station 9 are mesmerizing.",
+                    LocalDate.now().minusDays(5)));
+            m.addReview(new Review("REV-102", "MOV-01", "Dr. Elena Rostova", 4,
+                    "Brilliant performances by Aiden Cross and Lyra Thorne. The zero-g physics and tension feel authentic.",
+                    LocalDate.now().minusDays(2)));
+        });
+
+        studioService.findMovieById("MOV-02").ifPresent(m -> {
+            m.addReview(new Review("REV-103", "MOV-02", "Sarah Jenkins", 5,
+                    "Evelyn Blackwood delivers pure neo-noir brilliance. Atmospheric lighting and incredible sound design.",
+                    LocalDate.now().minusDays(8)));
+        });
+
+        studioService.findMovieById("MOV-04").ifPresent(m -> {
+            m.addReview(new Review("REV-104", "MOV-04", "Christopher Bale", 5,
+                    "Nolan's trademark tension and non-linear pacing at its finest. Gritty practical pyrotechnics!",
+                    LocalDate.now().minusDays(10)));
+        });
+
+        studioService.findMovieById("MOV-05").ifPresent(m -> {
+            m.addReview(new Review("REV-105", "MOV-05", "Arun Mehta", 5,
+                    "An absolute triumph in visual storytelling and desert world-building. Sound design shakes the theater!",
+                    LocalDate.now().minusDays(4)));
+            m.addReview(new Review("REV-106", "MOV-05", "Maya Lin", 4,
+                    "Incredible scale and costume detail. Pacing is deliberate but deeply rewarding in the third act.",
+                    LocalDate.now().minusDays(1)));
+        });
+
+        studioService.findMovieById("MOV-10").ifPresent(m -> {
+            m.addReview(new Review("REV-107", "MOV-10", "Rahul Verma", 5,
+                    "Sukumar's direction is explosive! The rustic visual style and high-energy scenes blew the audience away.",
+                    LocalDate.now().minusDays(3)));
+        });
+
+        studioService.findMovieById("MOV-11").ifPresent(m -> {
+            m.addReview(new Review("REV-108", "MOV-11", "Ananya Reddy", 4,
+                    "Epic coastal action choreography and gripping background score. High replay value!",
+                    LocalDate.now().minusDays(6)));
+        });
     }
 }

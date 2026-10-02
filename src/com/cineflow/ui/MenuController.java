@@ -11,6 +11,7 @@ import com.cineflow.model.Department;
 import com.cineflow.model.Movie;
 import com.cineflow.model.ProductionHouse;
 import com.cineflow.model.ProductionPhase;
+import com.cineflow.model.Review;
 import com.cineflow.model.Scene;
 import com.cineflow.model.SceneStatus;
 import com.cineflow.model.asset.Equipment;
@@ -128,7 +129,7 @@ public class MenuController {
 
             System.out.println("Active Studio : " + ConsoleUI.BOLD + ConsoleUI.CYAN + studioDisplay + ConsoleUI.RESET);
             System.out.println("Active Movie  : " + ConsoleUI.BOLD + ConsoleUI.GREEN + movieDisplay + ConsoleUI.RESET);
-            System.out.println("Text Storage  : data/studios.txt, movies.txt, scenes_script.txt, budgets.txt");
+            System.out.println("Text Storage  : data/studios.txt, movies.txt, scenes_script.txt, budgets.txt, reviews.txt");
             System.out.println("------------------------------------------------------------------------");
             System.out.println(" [1]  \uD83C\uDFE2 Switch / Select Active Production House");
             System.out.println(" [2]  \uD83C\uDFDB\uFE0F View All Production Houses & Catalog");
@@ -143,12 +144,13 @@ public class MenuController {
             System.out.println(" [11] \uD83D\uDCC5 Shooting Schedule & Priority Queue");
             System.out.println(" [12] \uD83D\uDCB0 Movie Budget & Department Expenses");
             System.out.println(" [13] \uD83D\uDCDD Daily Shooting Plan (Call Sheet)");
-            System.out.println(" [14] \uD83D\uDCBE File Storage, Live Reload & Script Export");
-            System.out.println(" [15] \uD83E\uDDEA Automated Test Suite Demo (Faculty Evaluation)");
+            System.out.println(" [14] \u2B50 Movie Ratings & Audience Reviews");
+            System.out.println(" [15] \uD83D\uDCBE File Storage, Live Reload & Script Export");
+            System.out.println(" [16] \uD83E\uDDEA Automated Test Suite Demo (Faculty Evaluation)");
             System.out.println(" [0]  \uD83D\uDEAA Exit Application");
             System.out.println();
 
-            int choice = ConsoleUI.promptInt("Select an option", 0, 15);
+            int choice = ConsoleUI.promptInt("Select an option", 0, 16);
             switch (choice) {
                 case 1 -> switchActiveStudio();
                 case 2 -> viewAllStudios();
@@ -163,8 +165,9 @@ public class MenuController {
                 case 11 -> manageSchedule();
                 case 12 -> manageBudgets();
                 case 13 -> manageCallSheets();
-                case 14 -> managePersistence();
-                case 15 -> runTestSuiteDemo();
+                case 14 -> manageReviews();
+                case 15 -> managePersistence();
+                case 16 -> runTestSuiteDemo();
                 case 0 -> {
                     if (ConsoleUI.promptConfirmation("Are you sure you want to exit the application?")) {
                         try {
@@ -459,6 +462,18 @@ public class MenuController {
                     nextScene.getSceneNumber(), nextScene.getTitle(), nextScene.getPriority(), nextScene.getDaylightRequirement().getDescription());
         } else {
             System.out.println("Next Priority Scene to Shoot  : None pending in queue.");
+        }
+
+        System.out.println("\n--- Audience Reviews & Ratings ---");
+        System.out.printf("Audience Rating : %s\n", active.getRatingSummary());
+        if (active.getReviewCount() > 0) {
+            System.out.println("Latest Reviews:");
+            List<Review> revs = active.getReviews();
+            int count = Math.min(2, revs.size());
+            for (int i = 0; i < count; i++) {
+                Review r = revs.get(revs.size() - 1 - i);
+                System.out.printf("  • %s by %s: \"%s\"\n", r.getStarDisplay(), r.getReviewerName(), truncate(r.getComment(), 60));
+            }
         }
         ConsoleUI.pauseForUser();
     }
@@ -1376,17 +1391,19 @@ public class MenuController {
         System.out.println(" [2] data/movies.txt (Movie Catalog)");
         System.out.println(" [3] data/scenes_script.txt (Scenes & Screenplay Dialogues)");
         System.out.println(" [4] data/budgets.txt (Department Budgets & Expenses)");
-        System.out.println(" [5] Active Movie Screenplay (data/scripts/)");
-        System.out.println(" [6] Custom File Path");
+        System.out.println(" [5] data/reviews.txt (Movie Reviews & Audience Ratings)");
+        System.out.println(" [6] Active Movie Screenplay (data/scripts/)");
+        System.out.println(" [7] Custom File Path");
         System.out.println(" [0] Cancel\n");
 
-        int choice = ConsoleUI.promptInt("Choice", 0, 6);
+        int choice = ConsoleUI.promptInt("Choice", 0, 7);
         String path = switch (choice) {
             case 1 -> "data/studios.txt";
             case 2 -> "data/movies.txt";
             case 3 -> "data/scenes_script.txt";
             case 4 -> "data/budgets.txt";
-            case 5 -> {
+            case 5 -> "data/reviews.txt";
+            case 6 -> {
                 Movie m = getActiveMovie();
                 if (m != null) {
                     String safe = m.getTitle().replaceAll("[^a-zA-Z0-9_-]", "_");
@@ -1394,7 +1411,7 @@ public class MenuController {
                 }
                 yield "data/studios.txt";
             }
-            case 6 -> ConsoleUI.promptNonEmptyString("Enter path to file (e.g., data/studios.txt)");
+            case 7 -> ConsoleUI.promptNonEmptyString("Enter path to file (e.g., data/studios.txt)");
             default -> null;
         };
 
@@ -1442,17 +1459,252 @@ public class MenuController {
     }
 
     // =========================================================================
-    // 15. AUTOMATED TEST SUITE / EVALUATION VERIFICATION DEMO
+    // 14. MOVIE RATINGS & AUDIENCE REVIEWS
+    // =========================================================================
+    private void manageReviews() {
+        boolean inSubMenu = true;
+        while (inSubMenu) {
+            ConsoleUI.printSectionHeader("Movie Ratings & Audience Reviews");
+            System.out.println(" [1] \u270D\uFE0F Write a Review & Give Rating to a Movie");
+            System.out.println(" [2] \uD83D\uDCD6 View Reviews & Rating Breakdown for a Movie");
+            System.out.println(" [3] \uD83C\uDF1F View Top-Rated Movies Leaderboard");
+            System.out.println(" [4] \uD83D\uDCCB View All Reviews Across Catalog");
+            System.out.println(" [0] Back to Main Menu\n");
+
+            int choice = ConsoleUI.promptInt("Select an option", 0, 4);
+            switch (choice) {
+                case 1 -> writeMovieReview();
+                case 2 -> viewMovieReviews();
+                case 3 -> viewTopRatedMovies();
+                case 4 -> viewAllReviews();
+                case 0 -> inSubMenu = false;
+            }
+        }
+    }
+
+    private Movie selectMoviePrompt(String promptTitle) {
+        ConsoleUI.printSectionHeader(promptTitle);
+        List<Movie> allMovies = studioService.getAllMoviesAcrossStudios();
+        if (allMovies.isEmpty()) {
+            ConsoleUI.printWarning("No movies found in the studio catalog.");
+            ConsoleUI.pauseForUser();
+            return null;
+        }
+
+        Movie activeMovie = getActiveMovie();
+        System.out.println("Available Feature Films:");
+        for (int i = 0; i < allMovies.size(); i++) {
+            Movie m = allMovies.get(i);
+            boolean isActive = activeMovie != null && m.getId().equals(activeMovie.getId());
+            String activeTag = isActive ? ConsoleUI.GREEN + " [ACTIVE]" + ConsoleUI.RESET : "";
+            System.out.printf("  [%2d] [%s] %-26s | %-16s | %s%s\n",
+                    i + 1, m.getId(), truncate(m.getTitle(), 26), m.getProductionPhase().name(), m.getRatingSummary(), activeTag);
+        }
+        System.out.println("  [ 0] Cancel / Go Back\n");
+
+        int choice = ConsoleUI.promptInt("Select movie number", 0, allMovies.size());
+        if (choice == 0) {
+            return null;
+        }
+        return allMovies.get(choice - 1);
+    }
+
+    private void writeMovieReview() {
+        Movie movie = selectMoviePrompt("Write a Movie Review - Select Film");
+        if (movie == null) {
+            return;
+        }
+        writeReviewForSpecificMovie(movie);
+    }
+
+    private void writeReviewForSpecificMovie(Movie movie) {
+        ConsoleUI.printSectionHeader("Write Review for: " + movie.getTitle());
+        System.out.printf("Movie ID       : %s\n", movie.getId());
+        System.out.printf("Director       : %s\n", movie.getDirectorName());
+        System.out.printf("Current Rating : %s\n", movie.getRatingSummary());
+        System.out.println("------------------------------------------------------------------------");
+
+        try {
+            String reviewerName = ConsoleUI.promptNonEmptyString("Enter Your Name or Critic Handle");
+
+            System.out.println("\nSelect Star Rating (1 to 5):");
+            System.out.println("  [5] \u2605\u2605\u2605\u2605\u2605 (5/5 Stars - Masterpiece / Highly Recommended)");
+            System.out.println("  [4] \u2605\u2605\u2605\u2605\u2606 (4/5 Stars - Great / Very Good)");
+            System.out.println("  [3] \u2605\u2605\u2605\u2606\u2606 (3/5 Stars - Good / Average)");
+            System.out.println("  [2] \u2605\u2605\u2606\u2606\u2606 (2/5 Stars - Mediocre / Below Average)");
+            System.out.println("  [1] \u2605\u2606\u2606\u2606\u2606 (1/5 Stars - Poor / Needs Work)");
+            int rating = ConsoleUI.promptInt("Enter Star Rating", 1, 5);
+
+            String comment = ConsoleUI.promptNonEmptyString("Enter Your Review / Feedback");
+
+            String revId = "REV-" + (100 + (movie.getReviewCount() + 1) * 10 + (int)(Math.random() * 9));
+            Review review = new Review(revId, movie.getId(), reviewerName, rating, comment);
+            movie.addReview(review);
+
+            // Auto-persist review to disk
+            try {
+                filePersistenceService.saveAllData(studioService, productionService);
+                ConsoleUI.printSuccess("Review recorded and saved to text storage (data/reviews.txt)!");
+            } catch (IOException e) {
+                ConsoleUI.printSuccess("Review recorded in memory (Auto-save notice: " + e.getMessage() + ")");
+            }
+
+            System.out.println("\n" + ConsoleUI.CYAN + "------------------------------------------------------------------------" + ConsoleUI.RESET);
+            System.out.printf("Reviewer       : %s\n", reviewerName);
+            System.out.printf("Rating Given   : %s (%d/5 Stars)\n", review.getStarDisplay(), rating);
+            System.out.printf("Review Text    : \"%s\"\n", comment);
+            System.out.printf("Updated Average: %s\n", movie.getRatingSummary());
+            System.out.println(ConsoleUI.CYAN + "------------------------------------------------------------------------" + ConsoleUI.RESET);
+        } catch (Exception e) {
+            ConsoleUI.printError("Failed to submit review: " + e.getMessage());
+        }
+        ConsoleUI.pauseForUser();
+    }
+
+    private void viewMovieReviews() {
+        Movie movie = selectMoviePrompt("View Reviews - Select Film");
+        if (movie == null) {
+            return;
+        }
+
+        ConsoleUI.printSectionHeader("Audience Reviews & Ratings: " + movie.getTitle().toUpperCase());
+        System.out.printf("Movie ID         : %s\n", movie.getId());
+        System.out.printf("Director         : %s | Genre: %s\n", movie.getDirectorName(), movie.getGenre());
+        System.out.printf("Production Phase : %s | Release Year: %d\n", movie.getProductionPhase().name(), movie.getEstimatedReleaseYear());
+        System.out.printf("Overall Rating   : %s\n", movie.getRatingSummary());
+        System.out.println("------------------------------------------------------------------------");
+
+        List<Review> reviews = movie.getReviews();
+        if (reviews.isEmpty()) {
+            ConsoleUI.printWarning("No reviews submitted for \"" + movie.getTitle() + "\" yet.");
+            if (ConsoleUI.promptConfirmation("Would you like to write the first review now?")) {
+                writeReviewForSpecificMovie(movie);
+                return;
+            }
+        } else {
+            // Rating Histogram / Breakdown
+            int[] starCounts = new int[6];
+            for (Review r : reviews) {
+                int s = Math.max(1, Math.min(5, r.getRating()));
+                starCounts[s]++;
+            }
+
+            System.out.println("Star Rating Distribution:");
+            for (int s = 5; s >= 1; s--) {
+                String stars = "★".repeat(s) + "☆".repeat(5 - s);
+                int count = starCounts[s];
+                int barLen = (int) Math.round(((double) count / reviews.size()) * 20);
+                String bar = "█".repeat(barLen) + "░".repeat(Math.max(0, 20 - barLen));
+                System.out.printf("  %s (%d) | %s | %d %s\n",
+                        stars, s, bar, count, count == 1 ? "review" : "reviews");
+            }
+            System.out.println("------------------------------------------------------------------------");
+            System.out.println(ConsoleUI.BOLD + "All User & Critic Reviews (" + reviews.size() + "):" + ConsoleUI.RESET);
+            System.out.println();
+
+            for (int i = 0; i < reviews.size(); i++) {
+                Review r = reviews.get(i);
+                System.out.printf("  [%d] Review #%s by %s%s%s (Date: %s)\n",
+                        i + 1, r.getId(), ConsoleUI.BOLD, r.getReviewerName(), ConsoleUI.RESET, r.getReviewDate());
+                System.out.printf("      Rating: %s%s (%d/5 Stars)%s\n",
+                        ConsoleUI.YELLOW, r.getStarDisplay(), r.getRating(), ConsoleUI.RESET);
+                System.out.printf("      \"%s\"\n\n", r.getComment());
+            }
+
+            if (ConsoleUI.promptConfirmation("Would you like to add another review for this movie?")) {
+                writeReviewForSpecificMovie(movie);
+                return;
+            }
+        }
+        ConsoleUI.pauseForUser();
+    }
+
+    private void viewTopRatedMovies() {
+        ConsoleUI.printSectionHeader("Top Rated Movies Leaderboard");
+        List<Movie> allMovies = studioService.getAllMoviesAcrossStudios();
+        if (allMovies.isEmpty()) {
+            ConsoleUI.printWarning("No movies found.");
+            ConsoleUI.pauseForUser();
+            return;
+        }
+
+        // Sort by average rating descending, then review count descending
+        List<Movie> sorted = allMovies.stream()
+                .sorted((m1, m2) -> {
+                    int cmp = Double.compare(m2.getAverageRating(), m1.getAverageRating());
+                    if (cmp != 0) return cmp;
+                    return Integer.compare(m2.getReviewCount(), m1.getReviewCount());
+                })
+                .collect(Collectors.toList());
+
+        System.out.printf("%-5s | %-8s | %-24s | %-16s | %-14s | %-10s | %s\n",
+                "RANK", "ID", "TITLE", "DIRECTOR", "AVG RATING", "REVIEWS", "STAR RATING");
+        System.out.println("-".repeat(105));
+
+        int rank = 1;
+        for (Movie m : sorted) {
+            String starStr = m.getReviewCount() > 0
+                    ? "★".repeat((int) Math.round(m.getAverageRating())) + "☆".repeat(5 - (int) Math.round(m.getAverageRating()))
+                    : "No reviews";
+            String ratingNum = m.getReviewCount() > 0 ? String.format("%.1f / 5.0", m.getAverageRating()) : "   -   ";
+            System.out.printf("#%-4d | %-8s | %-24s | %-16s | %-14s | %-10d | %s\n",
+                    rank++,
+                    m.getId(),
+                    truncate(m.getTitle(), 24),
+                    truncate(m.getDirectorName(), 16),
+                    ratingNum,
+                    m.getReviewCount(),
+                    starStr);
+        }
+        System.out.println("-".repeat(105));
+        ConsoleUI.pauseForUser();
+    }
+
+    private void viewAllReviews() {
+        ConsoleUI.printSectionHeader("All Reviews Across Movie Catalog");
+        List<Movie> allMovies = studioService.getAllMoviesAcrossStudios();
+        List<Review> allReviews = allMovies.stream()
+                .flatMap(m -> m.getReviews().stream())
+                .sorted()
+                .collect(Collectors.toList());
+
+        if (allReviews.isEmpty()) {
+            ConsoleUI.printWarning("No reviews found across the entire catalog.");
+            ConsoleUI.pauseForUser();
+            return;
+        }
+
+        System.out.printf("Total Reviews in System: %d across %d feature films\n\n",
+                allReviews.size(), allMovies.size());
+
+        for (int i = 0; i < allReviews.size(); i++) {
+            Review r = allReviews.get(i);
+            String movieTitle = studioService.findMovieById(r.getMovieId())
+                    .map(Movie::getTitle)
+                    .orElse("Unknown Movie");
+
+            System.out.printf("[%d] Movie: %s%s%s (ID: %s)\n",
+                    i + 1, ConsoleUI.BOLD, movieTitle, ConsoleUI.RESET, r.getMovieId());
+            System.out.printf("    Reviewer: %-20s | Date: %s | Rating: %s (%d/5)\n",
+                    r.getReviewerName(), r.getReviewDate(), r.getStarDisplay(), r.getRating());
+            System.out.printf("    \"%s\"\n\n", r.getComment());
+        }
+        System.out.println("-".repeat(80));
+        ConsoleUI.pauseForUser();
+    }
+
+    // =========================================================================
+    // 16. AUTOMATED TEST SUITE / EVALUATION VERIFICATION DEMO
     // =========================================================================
     private void runTestSuiteDemo() {
         ConsoleUI.printSectionHeader("Automated Object-Oriented Concept Test Suite");
         System.out.println("Executing automated test verification for academic evaluation rubric...\n");
 
         int passed = 0;
-        int total = 8;
+        int total = 9;
 
         // Test 1: Inheritance, Polymorphism & Remuneration Dispatch
-        System.out.println(ConsoleUI.BOLD + "[Test 1/8] Inheritance & Dynamic Polymorphism Dispatch" + ConsoleUI.RESET);
+        System.out.println(ConsoleUI.BOLD + "[Test 1/9] Inheritance & Dynamic Polymorphism Dispatch" + ConsoleUI.RESET);
         Person actor = new Actor("T-ACT", "Test Actor", 1000.0, "Hero", 1);
         ((Actor) actor).setStuntQualified(true);
         double actorPay = actor.calculateRemuneration(10); // 10000 + 20% stunt + 10% agency = 13000
@@ -1470,7 +1722,7 @@ public class MenuController {
         }
 
         // Test 2: Method Overloading
-        System.out.println("\n" + ConsoleUI.BOLD + "[Test 2/8] Method Overloading" + ConsoleUI.RESET);
+        System.out.println("\n" + ConsoleUI.BOLD + "[Test 2/9] Method Overloading" + ConsoleUI.RESET);
         Actor testActor = new Actor();
         testActor.assignRole("Character Alpha");
         testActor.assignRole("Character Beta", 2);
@@ -1483,7 +1735,7 @@ public class MenuController {
         }
 
         // Test 3: Collections Framework - PriorityQueue ordering
-        System.out.println("\n" + ConsoleUI.BOLD + "[Test 3/8] Collections - PriorityQueue Shooting Urgency" + ConsoleUI.RESET);
+        System.out.println("\n" + ConsoleUI.BOLD + "[Test 3/9] Collections - PriorityQueue Shooting Urgency" + ConsoleUI.RESET);
         Scene normalScene = new Scene("TEST-S1", 1, "Interior Scene", "Notes", 2.0,
                 DaylightRequirement.INTERIOR_STUDIO, 3, 4.0);
         Scene urgentDaylight = new Scene("TEST-S2", 2, "Golden Hour Shoot", "Notes", 1.0,
@@ -1500,7 +1752,7 @@ public class MenuController {
         }
 
         // Test 4: Custom Exceptions - BudgetExceededException
-        System.out.println("\n" + ConsoleUI.BOLD + "[Test 4/8] Custom Exception: BudgetExceededException" + ConsoleUI.RESET);
+        System.out.println("\n" + ConsoleUI.BOLD + "[Test 4/9] Custom Exception: BudgetExceededException" + ConsoleUI.RESET);
         try {
             BudgetService bs = new BudgetService();
             bs.allocateBudget(Department.STUNTS, 5000.0);
@@ -1514,7 +1766,7 @@ public class MenuController {
         }
 
         // Test 5: Custom Exceptions - ScheduleConflictException
-        System.out.println("\n" + ConsoleUI.BOLD + "[Test 5/8] Custom Exception: ScheduleConflictException" + ConsoleUI.RESET);
+        System.out.println("\n" + ConsoleUI.BOLD + "[Test 5/9] Custom Exception: ScheduleConflictException" + ConsoleUI.RESET);
         try {
             LocalDate shootDay = LocalDate.now().plusDays(40);
             Scene testSc1 = new Scene("T-SCN-01", "MOV-01", 991, "Test Shoot A", "Synopsis", 2.0, DaylightRequirement.INTERIOR_STUDIO, 1, 4.0);
@@ -1535,7 +1787,7 @@ public class MenuController {
         }
 
         // Test 6: Generic Repository & CRUD
-        System.out.println("\n" + ConsoleUI.BOLD + "[Test 6/8] Generic Types: Repository<T, ID>" + ConsoleUI.RESET);
+        System.out.println("\n" + ConsoleUI.BOLD + "[Test 6/9] Generic Types: Repository<T, ID>" + ConsoleUI.RESET);
         com.cineflow.repository.Repository<Scene, String> testRepo = new com.cineflow.repository.FileRepository<>();
         Scene dummy = new Scene("DUMMY-1", 99, "Dummy Scene", "Dummy", 1.0, DaylightRequirement.INTERIOR_STUDIO, 5, 1.0);
         testRepo.save(dummy);
@@ -1550,7 +1802,7 @@ public class MenuController {
         }
 
         // Test 7: Functional Interfaces & Lambdas (CostEstimator)
-        System.out.println("\n" + ConsoleUI.BOLD + "[Test 7/8] Functional Interfaces & Lambda Expressions" + ConsoleUI.RESET);
+        System.out.println("\n" + ConsoleUI.BOLD + "[Test 7/9] Functional Interfaces & Lambda Expressions" + ConsoleUI.RESET);
         com.cineflow.service.CostEstimator testEstimator = (scene, days) ->
                 (scene.getScriptPages() * 500.0) + (days * 1200.0);
         Scene estScene = new Scene("EST-1", 10, "VFX Shoot", "CGI", 4.0, DaylightRequirement.INTERIOR_STUDIO, 2, 8.0);
@@ -1563,7 +1815,7 @@ public class MenuController {
         }
 
         // Test 8: IO Streams (File Writing & Reading)
-        System.out.println("\n" + ConsoleUI.BOLD + "[Test 8/8] Java IO Streams: File Export & Verification" + ConsoleUI.RESET);
+        System.out.println("\n" + ConsoleUI.BOLD + "[Test 8/9] Java IO Streams: File Export & Verification" + ConsoleUI.RESET);
         try {
             new File("data").mkdirs();
             String testFilePath = "data/test_io_stream.txt";
@@ -1579,6 +1831,29 @@ public class MenuController {
             }
         } catch (IOException e) {
             ConsoleUI.printError("IO Streams test failed: " + e.getMessage());
+        }
+
+        // Test 9: Movie Review & Rating Engine
+        System.out.println("\n" + ConsoleUI.BOLD + "[Test 9/9] Movie Review System & Stream Aggregation" + ConsoleUI.RESET);
+        Movie revMovie = new Movie("T-REV-MOV", "Test Studio", "Rating Test Film", "Drama", "Tester", ProductionPhase.RELEASED, 2026);
+        revMovie.addReview("Critic A", 5, "Brilliant masterpiece!");
+        revMovie.addReview("Critic B", 4, "Enjoyable performances!");
+        double avgRating = revMovie.getAverageRating();
+        boolean has2Revs = revMovie.getReviewCount() == 2;
+        boolean starCheck = revMovie.getReviews().get(0).getStarDisplay().equals("★★★★★");
+        boolean exceptionCaught = false;
+        try {
+            new Review("T-REV-ERR", "T-REV-MOV", "Invalid", 6, "Invalid rating");
+        } catch (IllegalArgumentException e) {
+            exceptionCaught = true;
+        }
+
+        if (avgRating == 4.5 && has2Revs && starCheck && exceptionCaught) {
+            ConsoleUI.printSuccess(String.format("Review Engine Passed: Avg Rating=%.1f/5.0, Reviews=%d, Rating Validation verified.",
+                    avgRating, revMovie.getReviewCount()));
+            passed++;
+        } else {
+            ConsoleUI.printError("Review engine test failed!");
         }
 
         System.out.println("\n" + "=".repeat(60));

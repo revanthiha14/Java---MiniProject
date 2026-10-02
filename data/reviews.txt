@@ -1,0 +1,11 @@
+# ReviewID|MovieID|ReviewerName|Rating|ReviewDate|Comment
+REV-101|MOV-01|Marcus Vance (Film Critic)|5|2026-09-27|A visionary sci-fi epic! The deep space cinematography and practical sets on Station 9 are mesmerizing.
+REV-102|MOV-01|Dr. Elena Rostova|4|2026-09-30|Brilliant performances by Aiden Cross and Lyra Thorne. The zero-g physics and tension feel authentic.
+REV-137|MOV-01|Shruthi Reviewer|5|2026-10-02|Masterpiece of modern cinema!
+REV-140|MOV-01|Shruthi Reviewer|5|2026-10-02|Masterpiece of modern cinema!
+REV-103|MOV-02|Sarah Jenkins|5|2026-09-24|Evelyn Blackwood delivers pure neo-noir brilliance. Atmospheric lighting and incredible sound design.
+REV-104|MOV-04|Christopher Bale|5|2026-09-22|Nolan's trademark tension and non-linear pacing at its finest. Gritty practical pyrotechnics!
+REV-105|MOV-05|Arun Mehta|5|2026-09-28|An absolute triumph in visual storytelling and desert world-building. Sound design shakes the theater!
+REV-106|MOV-05|Maya Lin|4|2026-10-01|Incredible scale and costume detail. Pacing is deliberate but deeply rewarding in the third act.
+REV-107|MOV-10|Rahul Verma|5|2026-09-29|Sukumar's direction is explosive! The rustic visual style and high-energy scenes blew the audience away.
+REV-108|MOV-11|Ananya Reddy|4|2026-09-26|Epic coastal action choreography and gripping background score. High replay value!
