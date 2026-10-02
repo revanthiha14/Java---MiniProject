@@ -1,5 +1,5 @@
-# CineFlow 2.0: UML Class Diagram & Multi-Movie Architecture
-**Project**: CineFlow 2.0 - Multi-Movie Production House System (Horizon Studios)  
+# CineFlow 2.0: UML Class Diagram & Multi-Studio Architecture
+**Project**: CineFlow 2.0 - Cinema Production Management & Studio Ecosystem  
 **Affiliation**: Sri Sivasubramaniya Nadar College of Engineering (SSN) - Dept of Computer Science & Engineering  
 
 ---
@@ -61,6 +61,21 @@ classDiagram
     %% -------------------------------------------------------------
     %% STUDIO & MULTI-MOVIE ENTITIES
     %% -------------------------------------------------------------
+    class StudioService {
+        -Map~String, ProductionHouse~ studios
+        -String activeStudioId
+        +StudioService()
+        +registerStudio(ProductionHouse studio) void
+        +getStudio(String studioId) Optional~ProductionHouse~
+        +getAllStudios() List~ProductionHouse~
+        +getActiveStudio() ProductionHouse
+        +setActiveStudio(String studioId) boolean
+        +getActiveMovie() Movie
+        +getStudioCount() int
+        +getTotalMovieCount() int
+        +clear() void
+    }
+
     class ProductionHouse {
         -String id
         -String name
@@ -75,29 +90,31 @@ classDiagram
         +getAllMovies() List~Movie~
         +getActiveMovie() Movie
         +setActiveMovie(Movie movie) boolean
-        +setActiveMovie(String movieId) boolean
+        +setActiveMovieId(String movieId) boolean
+        +removeMovie(String movieId) boolean
         +getMovieCount() int
         +generateDetailedReport() String
     }
 
     class Movie {
         -String id
+        -String studioId
         -String title
         -String genre
         -String directorName
         -ProductionPhase productionPhase
         -int estimatedReleaseYear
-        -BudgetService budgetService
+        -BudgetService budgetManager
         -List~Scene~ scenes
         -PriorityQueue~Scene~ shootingQueue
         -List~CallSheet~ callSheets
-        -Set~String~ actorIds
-        -Set~String~ crewIds
-        -Set~String~ equipmentIds
-        -Set~String~ locationIds
+        -Set~String~ assignedActorIds
+        -Set~String~ assignedCrewIds
+        -Set~String~ bookedEquipmentIds
+        -Set~String~ bookedLocationIds
         +Movie()
         +Movie(String id, String title, String genre, String directorName)
-        +Movie(String id, String title, String genre, String directorName, ProductionPhase phase, int releaseYear)
+        +Movie(String id, String studioId, String title, String genre, String directorName, ProductionPhase phase, int releaseYear)
         +addScene(Scene scene) void
         +addScenes(Scene... scenes) void
         +refreshShootingQueue() void
@@ -125,6 +142,7 @@ classDiagram
         +Person(String id, String name, double dailyRate)
         +Person(String id, String name, String email, String phone, double dailyRate)
         +calculateRemuneration(int days)* double
+        +calculateRemuneration() double
         +getRoleTitle()* String
         +recordDaysWorked(int days) void
         +getId() String
@@ -152,12 +170,14 @@ classDiagram
     class CrewMember {
         -Department department
         -String designation
-        -boolean unionAffiliated
+        -boolean unionMember
         -String[] certifications
         +CrewMember()
         +CrewMember(String id, String name, double dailyRate, Department department, String designation)
+        +CrewMember(String id, String name, double dailyRate, Department department, String designation, boolean unionMember)
         +addCertification(String cert) void
         +calculateRemuneration(int days) double
+        +getJobTitle() String
         +generateDetailedReport() String
     }
 
@@ -185,9 +205,11 @@ classDiagram
         +ProductionAsset(String id, String name, double dailyRentalCost)
         +bookDays(int days) void
         +getAssetCategory()* String
+        +computeTotalCost() double
+        +calculateTotalCost() double
+        +getDailyCost() double
         +getId() String
         +getName() String
-        +getDailyRentalCost() double
     }
 
     class Equipment {
@@ -217,7 +239,7 @@ classDiagram
     }
 
     %% -------------------------------------------------------------
-    %% PRODUCTION ENTITIES
+    %% PRODUCTION DOMAIN ENTITIES
     %% -------------------------------------------------------------
     class Scene {
         -String id
@@ -225,6 +247,7 @@ classDiagram
         -int sceneNumber
         -String title
         -String synopsis
+        -String scriptContent
         -double scriptPages
         -DaylightRequirement daylightRequirement
         -SceneStatus status
@@ -235,13 +258,10 @@ classDiagram
         -Set~String~ requiredActorIds
         -Set~String~ requiredEquipmentIds
         -double estimatedShootHours
-        -String[] productionChecklist
         +Scene()
-        +Scene(String id, String movieId, int sceneNumber, String title, String synopsis, double scriptPages, DaylightRequirement daylightRequirement, int priority, double estimatedShootHours)
+        +Scene(String id, String movieId, int sceneNumber, String title, String synopsis, String scriptContent, double scriptPages, DaylightRequirement daylight, int priority, double estimatedShootHours)
         +assignActor(String actorId) void
-        +assignActors(String... actorIds) void
         +assignEquipment(String equipmentId) void
-        +assignEquipment(String... equipmentIds) void
         +compareTo(Scene other) int
         +hasScheduleConflict(LocalDate date, String timeSlot) boolean
         +generateDetailedReport() String
@@ -262,22 +282,28 @@ classDiagram
         +CallSheet()
         +CallSheet(String id, String movieId, int shootDayNumber, LocalDate shootDate, String generalCrewCallTime, String shootingLocationName, String weatherAdvisory, String nearestHospitalInfo)
         +addScene(Scene scene) void
-        +setCastCallTime(String actorName, String callTime) void
         +setDepartmentCallTime(Department dept, String callTime) void
         +generateDetailedReport() String
     }
 
     %% -------------------------------------------------------------
-    %% SERVICES & REPOSITORIES
+    %% SERVICES, STORAGE & REPOSITORIES
     %% -------------------------------------------------------------
+    class FilePersistenceService {
+        -String dataDirectory
+        +isDataPersisted() boolean
+        +saveAllData(StudioService studioService, ProductionService productionService) void
+        +loadAllData(StudioService studioService, ProductionService productionService) void
+        +exportMovieScreenplayToFile(Movie movie, String studioName, List~Scene~ scenes, String filePath) void
+        +readTextFile(String filePath) String
+    }
+
     class FileRepository~T, ID~ {
         -Map~ID, T~ storageMap
         +save(T entity) void
         +findById(ID id) Optional~T~
         +findAll() List~T~
         +deleteById(ID id) boolean
-        +persistToStorage(String filePath) void
-        +loadFromStorage(String filePath) void
     }
 
     class ProductionService {
@@ -291,6 +317,7 @@ classDiagram
         +scheduleScene(String sceneId, LocalDate date, String timeSlot, String locationId) void
         +filterScenes(SceneStatus status) List~Scene~
         +pollNextPriorityScene() Scene
+        +peekNextPriorityScene() Scene
         +exportCallSheetToFile(CallSheet callSheet, String filePath) void
         +readExportedFile(String filePath) String
     }
@@ -298,39 +325,37 @@ classDiagram
     class PersonnelService {
         -Repository~Person, String~ personRepository
         +registerPerson(Person person) void
-        +registerActor(...) Actor
-        +registerCrew(...) CrewMember
-        +findPersonnel(Predicate~Person~ filter) List~Person~
-        +computeTotalPayroll(int standardProductionDays) double
+        +getPersonById(String id) Person
+        +getAllPersonnel() List~Person~
     }
 
     class AssetService {
         -Repository~ProductionAsset, String~ assetRepository
         +registerAsset(ProductionAsset asset) void
-        +registerEquipment(...) Equipment
-        +registerLocation(...) Location
-        +computeTotalAssetExpenditure() double
+        +getAssetById(String id) ProductionAsset
+        +getAllAssets() List~ProductionAsset~
     }
 
     class BudgetService {
         -Map~Department, Double~ allocatedBudgets
         -Map~Department, Double~ spentBudgets
         -List~ExpenseRecord~ expenseHistory
-        +allocateBudget(Department dept, double amount) void
         +allocateBudget(Department dept, double amount, String justification) void
-        +logExpense(Department dept, double amount, String description) ExpenseRecord
         +logExpense(Department dept, double amount, String description, String approvedBy) ExpenseRecord
-        +getTotalAllocatedBudget() double
-        +getTotalSpentBudget() double
+        +getTotalAllocated() double
+        +getTotalSpent() double
+        +getRemainingContingency() double
         +exportBudgetReportToFile(String filePath) void
+        +generateDetailedReport() String
     }
 
     %% -------------------------------------------------------------
     %% RELATIONSHIPS
     %% -------------------------------------------------------------
+    StudioService "1" *-- "*" ProductionHouse : maintains studio registry (LinkedHashMap)
     ProductionHouse ..|> Identifiable~String~
     ProductionHouse ..|> Reportable
-    ProductionHouse "1" *-- "*" Movie : maintains movie catalog (Map)
+    ProductionHouse "1" *-- "*" Movie : maintains movie slate (LinkedHashMap)
 
     Movie ..|> Identifiable~String~
     Movie ..|> Reportable
@@ -343,7 +368,7 @@ classDiagram
     Person ..|> Reportable
     Actor --|> Person
     CrewMember --|> Person
-    Director --|> CrewMember
+    Director --|> Person
 
     ProductionAsset ..|> Identifiable~String~
     ProductionAsset ..|> CostTrackable
@@ -358,13 +383,15 @@ classDiagram
     CallSheet ..|> Reportable
 
     CallSheet o-- Scene : aggregates daily scenes
-
     FileRepository ..|> Repository
 
     ProductionService --> Repository : uses
     ProductionService o-- Scene : manages via PriorityQueue
     PersonnelService --> Repository : uses
     AssetService --> Repository : uses
+
+    FilePersistenceService ..> StudioService : reads/writes data/studios.txt, movies.txt, budgets.txt
+    FilePersistenceService ..> ProductionService : reads/writes data/scenes_script.txt, scripts/*.txt
 ```
 
 ---
@@ -373,79 +400,80 @@ classDiagram
 
 | Relationship Type | Source Class / Interface | Target Class / Interface | Semantic Meaning |
 | :--- | :--- | :--- | :--- |
-| **Aggregation (`*--`)** | `ProductionHouse` | `Movie` | Studio manages multiple movies via `LinkedHashMap<String, Movie>`. |
-| **Composition (`*--`)** | `Movie` | `BudgetService` | Each movie maintains a dedicated, isolated departmental budget ledger. |
-| **Composition (`*--`)** | `Movie` | `Scene`, `CallSheet` | Each movie contains its dedicated list of script scenes and call sheets. |
-| **Realization (`..|>`)** | `Movie` | `Identifiable<String>`, `Reportable`, `CostTrackable` | Movie guarantees identity, formatted profile report, and financial cost tracking. |
+| **Registry Aggregation (`*--`)** | `StudioService` | `ProductionHouse` | Central multi-studio manager coordinating studios (Horizon Studios, Warner Bros, Paramount, A24, Mythri Movie Makers). |
+| **Catalog Aggregation (`*--`)** | `ProductionHouse` | `Movie` | Each studio manages multiple feature films via `LinkedHashMap<String, Movie>`. |
+| **Composition (`*--`)** | `Movie` | `BudgetService` | Each movie maintains a dedicated, isolated departmental financial ledger. |
+| **Composition (`*--`)** | `Movie` | `Scene`, `CallSheet` | Each movie contains its dedicated list of script scenes and daily call sheets. |
+| **Realization (`..|>`)** | `Movie` | `Identifiable<String>`, `Reportable`, `CostTrackable` | Movie guarantees identity, formatted profile report, and financial tracking. |
 | **Realization (`..|>`)** | `Person` | `Identifiable<String>`, `Reportable` | Person guarantees identity and detailed report formatting. |
 | **Generalization (`--|>`)** | `Actor` | `Person` | Actor inherits common personnel traits (name, rate, email) and adds character/billing. |
 | **Generalization (`--|>`)** | `CrewMember` | `Person` | CrewMember adds Department, Union flag, and certifications array. |
-| **Multilevel Inheritance** | `Director` | `CrewMember` $\rightarrow$ `Person` | Director inherits CrewMember and adds royalties and directorial flat fee. |
-| **Realization (`..|>`)** | `ProductionAsset` | `Identifiable<String>`, `CostTrackable`, `Reportable` | Asset guarantees tracking of daily costs and reporting. |
+| **Generalization (`--|>`)** | `Director` | `Person` | Director inherits Person and adds royalties, vision statement, and directorial fee. |
+| **Realization (`..|>`)** | `ProductionAsset` | `Identifiable<String>`, `CostTrackable`, `Reportable` | Physical asset guarantees tracking of daily rental costs and reporting. |
 | **Generalization (`--|>`)** | `Equipment` | `ProductionAsset` | Equipment adds serial number, equipment categories, insurance calculations. |
-| **Generalization (`--|>`)** | `Location` | `ProductionAsset` | Location adds permits, capacity, municipal fees. |
-| **Realization (`..|>`)** | `Scene` | `Identifiable<String>`, `Comparable<Scene>`, `Schedulable`, `Reportable` | Enables priority queue ordering based on daylight urgency and weather windows. |
+| **Generalization (`--|>`)** | `Location` | `ProductionAsset` | Location adds municipal permits, capacity, site fees. |
+| **Realization (`..|>`)** | `Scene` | `Identifiable<String>`, `Comparable<Scene>`, `Schedulable`, `Reportable` | Enables priority queue ordering based on daylight urgency, weather windows, and screenplay text. |
 | **Aggregation (`o--`)** | `CallSheet` | `Scene` | Daily Call Sheet aggregates scheduled scenes for that shooting day. |
 | **Aggregation (`o--`)** | `ProductionService` | `PriorityQueue<Scene>` | Service maintains priority queue of scenes ordered by urgency. |
-| **Realization (`..|>`)** | `FileRepository<T, ID>` | `Repository<T, ID>` | Generic persistence implementation using Object IO Streams. |
-| **Dependency (`-->`)** | `ProductionService` | `CostEstimator`, `ConflictValidator` | Functional interfaces passed as lambda expressions. |
+| **Realization (`..|>`)** | `FileRepository<T, ID>` | `Repository<T, ID>` | Generic persistence implementation. |
+| **Text Persistence (`..>`)** | `FilePersistenceService` | `StudioService`, `ProductionService` | Serializes and parses human-readable text databases (`studios.txt`, `movies.txt`, `scenes_script.txt`, `budgets.txt`, `data/scripts/*.txt`). |
 
 ---
 
-## 3. Multi-Movie Studio Architecture Diagram
+## 3. Multi-Studio & Text-File Database Architecture Diagram
 
 ```text
-+----------------------------------------------------------------------------------------------------+
-|                                         PRESENTATION LAYER                                         |
-|   +-----------------------+     +-------------------------------+     +------------------------+   |
-|   | com.cineflow.Main     | --> | MenuController (12 Options)   | --> | ConsoleUI (Box Header) |   |
-|   +-----------------------+     +-------------------------------+     +------------------------+   |
-+----------------------------------------------------------------------------------------------------+
-                                                  |
-                                                  v
-+----------------------------------------------------------------------------------------------------+
-|                                      STUDIO & MULTI-MOVIE LAYER                                    |
-|   +--------------------------------------------------------------------------------------------+   |
-|   |                       ProductionHouse ("Horizon Studios", PH-101)                          |   |
-|   |                       Map<String, Movie> movies | String activeMovieId                     |   |
-|   +--------------------------------------------------------------------------------------------+   |
-|            |                                    |                                    |             |
-|            v                                    v                                    v             |
-|   +-----------------------+            +-----------------------+            +------------------+   |
-|   | Movie: MOV-01         |            | Movie: MOV-02         |            | Movie: MOV-03    |   |
-|   | "Interstellar Journey"|            | "Shadows of the Past" |            |"The Royal Herit."|   |
-|   | Stage: PRODUCTION     |            | Stage: PRE_PRODUCTION |            |Stage: POST_PROD  |   |
-|   | Dedicated Budget: $2.5M            | Dedicated Budget: $1.0M            |Dedicated: $3.6M  |   |
-|   | Dedicated Scenes (1-6)|            | Dedicated Scenes (1-4)|            |Scenes (1-4, 100%)|   |
-|   +-----------------------+            +-----------------------+            +------------------+   |
-+----------------------------------------------------------------------------------------------------+
-                                                  |
-                                                  v
-+----------------------------------------------------------------------------------------------------+
-|                                           SERVICE LAYER                                            |
-|   +-----------------------+     +-----------------------+     +-------------------+  +-----------+ |
-|   | ProductionService     |     | PersonnelService      |     | AssetService      |  |BudgetServ.| |
-|   | (PriorityQueue/Movie) |     | (Polymorph Payroll)   |     | (Central Inventory|  |(Active Tx)| |
-|   +-----------------------+     +-----------------------+     +-------------------+  +-----------+ |
-+----------------------------------------------------------------------------------------------------+
-              |                              |                            |                  |
-              v                              v                            v                  v
-+----------------------------------------------------------------------------------------------------+
-|                                         DATA / MODEL LAYER                                         |
-|    [Personnel Hierarchy]                 [Asset Hierarchy]                   [Production Domain]   |
-|     Person (Abstract)                     ProductionAsset (Abstract)          Scene (Comparable)   |
-|       ^         ^                            ^             ^                  CallSheet            |
-|       |         |                            |             |                  ProductionPhase      |
-|     Actor     CrewMember                  Equipment     Location              Department           |
-|                 ^                                                             DaylightRequirement  |
-|                 |                                                                                  |
-|               Director                                                                             |
-+----------------------------------------------------------------------------------------------------+
-                                                  |
-                                                  v
-+----------------------------------------------------------------------------------------------------+
-|                                         PERSISTENCE LAYER                                          |
-|    Repository<T, ID> (Generic Interface) <--- FileRepository<T, ID> (Object Streams)               |
-|    Storage: data/budget_summary.txt, data/callsheet_export.txt, data/callsheet_dayX.txt            |
-+----------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------------+
+|                                              PRESENTATION LAYER                                                |
+|   +-----------------------+     +-------------------------------+     +------------------------------------+   |
+|   | com.cineflow.Main     | --> | MenuController (15 Options)   | --> | ConsoleUI (Box Header & Multiline) |   |
+|   +-----------------------+     +-------------------------------+     +------------------------------------+   |
++----------------------------------------------------------------------------------------------------------------+
+                                                        |
+                                                        v
++----------------------------------------------------------------------------------------------------------------+
+|                                         STUDIO REGISTRY LAYER (StudioService)                                  |
+|   +--------------------------------------------------------------------------------------------------------+   |
+|   | Map<String, ProductionHouse> studios  |  String activeStudioId                                          |   |
+|   +--------------------------------------------------------------------------------------------------------+   |
+|         |                     |                     |                     |                     |              |
+|         v                     v                     v                     v                     v              |
+|   [PH-101] Horizon      [PH-102] Warner       [PH-103] Paramount    [PH-104] A24          [PH-105] Mythri      |
+|   Studios (LA/Mumbai)   Bros. (Burbank)       Pictures (Hollywood)  Studios (New York)    Movie Makers (Hyd)   |
+|   (3 Movies)            (2 Movies)            (2 Movies)            (2 Movies)            (2 Movies)           |
++----------------------------------------------------------------------------------------------------------------+
+                                                        |
+                                                        v
++----------------------------------------------------------------------------------------------------------------+
+|                                           ACTIVE MOVIE PROJECT LAYER                                           |
+|   +--------------------------------------------------------------------------------------------------------+   |
+|   | Movie: [MOV-01] "Interstellar Journey" (PRODUCTION | Release: 2026)                                     |   |
+|   |  - Dedicated BudgetService: $2,950,000 Allocated | $88,000 Expended | 9 Departments                        |   |
+|   |  - Dedicated Scenes (SCN-01 to SCN-06) with Full Screenplay Dialogue & Script Text                     |   |
+|   |  - PriorityQueue<Scene>: Weather & Daylight Urgency Ordering                                           |   |
+|   |  - CallSheets: Daily Shooting Plans with Call Times, Stage Notes & Weather Advisories                  |   |
+|   +--------------------------------------------------------------------------------------------------------+   |
++----------------------------------------------------------------------------------------------------------------+
+                                                        |
+                                                        v
++----------------------------------------------------------------------------------------------------------------+
+|                                                SERVICE LAYER                                                   |
+|   +-----------------------+     +-----------------------+     +-------------------+  +-----------------------+ |
+|   | ProductionService     |     | PersonnelService      |     | AssetService      |  | BudgetService         | |
+|   | (Queue / Schedule)    |     | (Polymorphic Payroll) |     | (Assets Pool)     |  | (Active Ledgers)      | |
+|   +-----------------------+     +-----------------------+     +-------------------+  +-----------------------+ |
++----------------------------------------------------------------------------------------------------------------+
+                                                        |
+                                                        v
++----------------------------------------------------------------------------------------------------------------+
+|                                   HUMAN-READABLE TEXT PERSISTENCE LAYER                                        |
+|   +--------------------------------------------------------------------------------------------------------+   |
+|   | FilePersistenceService: Native Java IO Streams (BufferedReader, BufferedWriter, PrintWriter)           |   |
+|   +--------------------------------------------------------------------------------------------------------+   |
+|      ├── data/studios.txt       --> ID|Name|Headquarters|EstablishedYear|ActiveMovieId                         |
+|      ├── data/movies.txt        --> MovieID|StudioID|Title|Genre|Director|Phase|ReleaseYear                    |
+|      ├── data/scenes_script.txt --> ###SCENE_START### (Scene Metadata + Screenplay Dialogues) ###SCENE_END###  |
+|      ├── data/budgets.txt       --> ###BUDGET_START### (Department Allocations & Expense Records)               |
+|      └── data/scripts/          --> Formatted Human-Readable Screenplay Breakdown Documents (*_Screenplay.txt) |
++----------------------------------------------------------------------------------------------------------------+
 ```

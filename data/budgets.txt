@@ -1,0 +1,98 @@
+###BUDGET_START###
+movieId=MOV-01
+alloc:DIRECTING=350000.0
+alloc:CAMERA=320000.0
+alloc:LIGHTING=180000.0
+alloc:SOUND=140000.0
+alloc:ART_AND_PROPS=400000.0
+alloc:COSTUME_AND_MAKEUP=220000.0
+alloc:VFX_AND_POST=600000.0
+alloc:STUNTS=150000.0
+alloc:LOGISTICS_AND_CATERING=140000.0
+expense:TX-1001|ART_AND_PROPS|45000.00|Cockpit flight console fabrication|Art Director
+expense:TX-1002|CAMERA|28000.00|High-speed camera sensor rental deposit|DP Elena Vance
+expense:TX-1003|COSTUME_AND_MAKEUP|15000.00|Commander hero spacesuit fitting|Wardrobe Lead
+###BUDGET_END###
+
+###BUDGET_START###
+movieId=MOV-02
+alloc:DIRECTING=180000.0
+alloc:CAMERA=160000.0
+alloc:SOUND=90000.0
+alloc:ART_AND_PROPS=210000.0
+alloc:COSTUME_AND_MAKEUP=110000.0
+alloc:VFX_AND_POST=160000.0
+alloc:LOGISTICS_AND_CATERING=90000.0
+expense:TX-1001|DIRECTING|12000.00|Screenplay adaptation rights|Producer
+expense:TX-1002|ART_AND_PROPS|8500.00|Noir detective office set design blueprint|Production Designer
+###BUDGET_END###
+
+###BUDGET_START###
+movieId=MOV-03
+alloc:DIRECTING=450000.0
+alloc:CAMERA=400000.0
+alloc:LIGHTING=220000.0
+alloc:SOUND=200000.0
+alloc:ART_AND_PROPS=650000.0
+alloc:COSTUME_AND_MAKEUP=580000.0
+alloc:VFX_AND_POST=900000.0
+alloc:LOGISTICS_AND_CATERING=200000.0
+expense:TX-1001|COSTUME_AND_MAKEUP|480000.00|18th century handwoven royal attire|Lead Costumer
+expense:TX-1002|CAMERA|350000.00|65mm large format camera rentals|DP Elena Vance
+expense:TX-1003|VFX_AND_POST|720000.00|Orchestral foley & color grading suite|Chloe Bennett
+###BUDGET_END###
+
+###BUDGET_START###
+movieId=MOV-04
+alloc:DIRECTING=600000.0
+alloc:CAMERA=800000.0
+alloc:STUNTS=900000.0
+expense:TX-1001|DIRECTING|50000.00|Concept storyboards & consulting|Line Producer
+###BUDGET_END###
+
+###BUDGET_START###
+movieId=MOV-05
+alloc:CAMERA=950000.0
+alloc:VFX_AND_POST=1500000.0
+expense:TX-1001|CAMERA|120000.00|Desert dust hermetic seal rig|DP Elena Vance
+###BUDGET_END###
+
+###BUDGET_START###
+movieId=MOV-06
+alloc:CAMERA=700000.0
+alloc:STUNTS=1200000.0
+expense:TX-1001|STUNTS|180000.00|Helicopter acrobatics safety rig|Stunt Lead
+###BUDGET_END###
+
+###BUDGET_START###
+movieId=MOV-07
+alloc:VFX_AND_POST=1200000.0
+expense:TX-1001|VFX_AND_POST|600000.00|Historical foley and orchestral mix|Mixer
+###BUDGET_END###
+
+###BUDGET_START###
+movieId=MOV-08
+alloc:DIRECTING=200000.0
+alloc:SOUND=150000.0
+expense:TX-1001|DIRECTING|180000.00|Festival distribution deliverables|Producer
+###BUDGET_END###
+
+###BUDGET_START###
+movieId=MOV-09
+alloc:CAMERA=300000.0
+expense:TX-1001|CAMERA|45000.00|Rare vintage Baltar lenses|DP
+###BUDGET_END###
+
+###BUDGET_START###
+movieId=MOV-10
+alloc:ART_AND_PROPS=1200000.0
+alloc:STUNTS=1500000.0
+expense:TX-1001|STUNTS|250000.00|Forest ravine wire rigging and stunt convoy|Stunt Master
+###BUDGET_END###
+
+###BUDGET_START###
+movieId=MOV-11
+alloc:VFX_AND_POST=1800000.0
+expense:TX-1001|VFX_AND_POST|750000.00|Anirudh score master suite recording|Sound Lead
+###BUDGET_END###
+

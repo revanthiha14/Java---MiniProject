@@ -1,0 +1,12 @@
+# MovieID|StudioID|Title|Genre|Director|Phase|ReleaseYear
+MOV-01|PH-101|Interstellar Journey|Sci-Fi|Marcus Sterling|PRODUCTION|2026
+MOV-02|PH-101|Shadows of the Past|Psychological Thriller|Evelyn Blackwood|PRE_PRODUCTION|2027
+MOV-03|PH-101|The Royal Heritage|Historical Drama|Arthur Pendelton|POST_PRODUCTION|2026
+MOV-04|PH-102|The Dark Horizon|Action / Neo-Noir|Christopher Nolan|PRE_PRODUCTION|2027
+MOV-05|PH-102|Dune Odyssey|Sci-Fi Epic|Denis Villeneuve|PRODUCTION|2026
+MOV-06|PH-103|Mission: Retribution|Action / Thriller|Christopher McQuarrie|PRODUCTION|2026
+MOV-07|PH-103|Gladiator Chronicles|Historical Action|Ridley Scott|POST_PRODUCTION|2026
+MOV-08|PH-104|Past Echoes|Indie Drama|Celine Song|RELEASED|2025
+MOV-09|PH-104|The Lighthouse Secret|Psychological Horror|Robert Eggers|PRODUCTION|2026
+MOV-10|PH-105|Pushpa: The Rule|Action / Drama|Sukumar|PRODUCTION|2026
+MOV-11|PH-105|Devara: Part 1|Action Epic|Koratala Siva|POST_PRODUCTION|2026

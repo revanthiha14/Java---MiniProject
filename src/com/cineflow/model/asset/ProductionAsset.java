@@ -50,6 +50,14 @@ public abstract class ProductionAsset implements Identifiable<String>, CostTrack
         return dailyRentalCost * daysBooked;
     }
 
+    public double calculateTotalCost() {
+        return computeTotalCost();
+    }
+
+    public double getDailyCost() {
+        return dailyRentalCost;
+    }
+
     @Override
     public String getId() {
         return id;

@@ -26,7 +26,7 @@ public final class ConsoleUI {
 
     public static void printBanner() {
         System.out.println("========================================================================");
-        System.out.println("           HORIZON STUDIOS - MOVIE PRODUCTION MANAGEMENT SYSTEM         ");
+        System.out.println("           CINEMA PRODUCTION MANAGEMENT & STUDIO ECOSYSTEM              ");
         System.out.println("========================================================================");
     }
 
@@ -135,6 +135,22 @@ public final class ConsoleUI {
                 printWarning("Invalid date format! Example: 2026-11-15");
             }
         }
+    }
+
+    /**
+     * Reads multiple lines of text until the specified sentinel marker is entered on its own line.
+     */
+    public static String promptMultilineString(String prompt, String endMarker) {
+        System.out.println(YELLOW + prompt + " (Type '" + endMarker + "' on a new line when finished):" + RESET);
+        StringBuilder sb = new StringBuilder();
+        while (true) {
+            String line = scanner.nextLine();
+            if (line.trim().equalsIgnoreCase(endMarker)) {
+                break;
+            }
+            sb.append(line).append("\n");
+        }
+        return sb.toString().trim();
     }
 
     /**

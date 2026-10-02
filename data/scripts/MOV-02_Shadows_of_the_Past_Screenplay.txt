@@ -1,0 +1,85 @@
+========================================================================
+                    FEATURE FILM SCREENPLAY & SCRIPT                     
+                    TITLE: SHADOWS OF THE PAST
+========================================================================
+Studio / Production House : Horizon Studios
+Movie ID                  : MOV-02
+Genre                     : Psychological Thriller
+Director                  : Evelyn Blackwood
+Production Phase          : Pre-Production (Script, Casting, Location Scouting)
+Estimated Release Year    : 2027
+Total Script Breakdown    : 4 Scenes Registered
+========================================================================
+
+------------------------------------------------------------------------
+SCENE #01 - RAINY HARBOR DETECTIVE MEET
+LIGHTING / ENVIRONMENT: Night Exterior (Requires Night Setup) | PRIORITY: Level 2
+PAGES: 3.5 Pages | ESTIMATED SHOOT TIME: 5.0 Hours | STATUS: DRAFT
+SCHEDULED: TBD (TBD) | LOCATION ASSET: LOC-503
+CAST REQUIRED: ACT-202
+EQUIPMENT REQUIRED: EQ-401, EQ-403
+
+SYNOPSIS:
+Detective Vance meets an anonymous whistleblower at dock pier 14 under rain.
+
+SCREENPLAY ACTION & DIALOGUE:
+[EXT. HARBOR PIER 14 - NIGHT]
+Rain hammers against the rusted steel dock pilings. Detective Vance lights a cigarette.
+
+WHISTLEBLOWER
+"You shouldn't have dug into the mayoral ledger, Vance."
+
+VANCE
+"Someone has to count the bodies."
+
+------------------------------------------------------------------------
+SCENE #02 - INTERROGATION ROOM SILENCE
+LIGHTING / ENVIRONMENT: Interior Studio (Controlled Stage Lighting) | PRIORITY: Level 1
+PAGES: 4.0 Pages | ESTIMATED SHOOT TIME: 6.0 Hours | STATUS: SCHEDULED
+SCHEDULED: 2026-10-12 (09:00 - 16:00) | LOCATION ASSET: LOC-501
+CAST REQUIRED: ACT-203, ACT-202
+EQUIPMENT REQUIRED: EQ-401
+
+SYNOPSIS:
+An intense psychological duel between the chief investigator and prime suspect.
+
+SCREENPLAY ACTION & DIALOGUE:
+[INT. PRECINCT INTERROGATION ROOM - DAY]
+The harsh fluorescent bulb buzzes. A heavy metal tape recorder clicks on.
+
+SUSPECT
+"You think silence is an admission? Silence is the only truth left."
+
+------------------------------------------------------------------------
+SCENE #03 - LAKE HOUSE FLASHBACK
+LIGHTING / ENVIRONMENT: Golden Hour / Twilight (Strict 45-min Window) | PRIORITY: Level 1
+PAGES: 2.5 Pages | ESTIMATED SHOOT TIME: 3.0 Hours | STATUS: DRAFT
+SCHEDULED: TBD (TBD) | LOCATION ASSET: LOC-502
+CAST REQUIRED: ACT-202
+EQUIPMENT REQUIRED: None
+
+SYNOPSIS:
+Memory sequence revealing the crucial betrayal that sparked the conspiracy.
+
+SCREENPLAY ACTION & DIALOGUE:
+[EXT. LAKE HOUSE BOAT DOCK - GOLDEN HOUR]
+Water ripples softly in the dying orange light. A sealed envelope changes hands.
+
+------------------------------------------------------------------------
+SCENE #04 - SUBWAY PLATFORM CHASE
+LIGHTING / ENVIRONMENT: Interior Studio (Controlled Stage Lighting) | PRIORITY: Level 3
+PAGES: 5.0 Pages | ESTIMATED SHOOT TIME: 7.0 Hours | STATUS: DRAFT
+SCHEDULED: TBD (TBD) | LOCATION ASSET: LOC-501
+CAST REQUIRED: ACT-203
+EQUIPMENT REQUIRED: EQ-401, EQ-403
+
+SYNOPSIS:
+Paced foot pursuit through steam-filled underground commuter platform.
+
+SCREENPLAY ACTION & DIALOGUE:
+[INT. CENTRAL METRO STATION - NIGHT]
+Footsteps echo through tiled tunnels. An express train screams past, shaking the floor.
+
+========================================================================
+                         END OF SCRIPT BREAKDOWN                        
+========================================================================

@@ -1,0 +1,31 @@
+========================================================================
+                    FEATURE FILM SCREENPLAY & SCRIPT                     
+                    TITLE: THE DARK HORIZON
+========================================================================
+Studio / Production House : Warner Bros. Pictures
+Movie ID                  : MOV-04
+Genre                     : Action / Neo-Noir
+Director                  : Christopher Nolan
+Production Phase          : Pre-Production (Script, Casting, Location Scouting)
+Estimated Release Year    : 2027
+Total Script Breakdown    : 1 Scenes Registered
+========================================================================
+
+------------------------------------------------------------------------
+SCENE #01 - SKYSCRAPER HEIST INFILTRATION
+LIGHTING / ENVIRONMENT: Night Exterior (Requires Night Setup) | PRIORITY: Level 1
+PAGES: 5.0 Pages | ESTIMATED SHOOT TIME: 8.0 Hours | STATUS: DRAFT
+SCHEDULED: TBD (TBD) | LOCATION ASSET: Unassigned
+CAST REQUIRED: None
+EQUIPMENT REQUIRED: None
+
+SYNOPSIS:
+Operatives BASE-jump through midnight fog into financial headquarters penthouse.
+
+SCREENPLAY ACTION & DIALOGUE:
+[EXT. PENTHOUSE BALCONY - NIGHT]
+Rain slices horizontally across the glass. The glass-cutter emits an infrared hum.
+
+========================================================================
+                         END OF SCRIPT BREAKDOWN                        
+========================================================================

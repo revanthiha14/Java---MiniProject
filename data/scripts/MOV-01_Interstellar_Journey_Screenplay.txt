@@ -1,0 +1,164 @@
+========================================================================
+                    FEATURE FILM SCREENPLAY & SCRIPT                     
+                    TITLE: INTERSTELLAR JOURNEY
+========================================================================
+Studio / Production House : Horizon Studios
+Movie ID                  : MOV-01
+Genre                     : Sci-Fi
+Director                  : Marcus Sterling
+Production Phase          : In-Production / Shooting (Principal Photography)
+Estimated Release Year    : 2026
+Total Script Breakdown    : 8 Scenes Registered
+========================================================================
+
+------------------------------------------------------------------------
+SCENE #01 - THE DISCOVERY AT STATION 9
+LIGHTING / ENVIRONMENT: Interior Studio (Controlled Stage Lighting) | PRIORITY: Level 2
+PAGES: 4.5 Pages | ESTIMATED SHOOT TIME: 7.0 Hours | STATUS: SCHEDULED
+SCHEDULED: 2026-10-03 (07:00 - 14:00) | LOCATION ASSET: LOC-501
+CAST REQUIRED: ACT-201, ACT-202
+EQUIPMENT REQUIRED: EQ-402, EQ-401, EQ-403
+
+SYNOPSIS:
+Commander Jax and Dr. Thorne inspect the anomalous crystalline signal in deep orbit.
+
+SCREENPLAY ACTION & DIALOGUE:
+[INT. APEX STATION 9 - OBSERVATION DOME - NIGHT]
+The observation dome vibrates with deep harmonic hums from the crystalline core.
+Commander Jax monitors the energy flux.
+
+JAX
+"The resonance is accelerating, Lyra. It's not a stellar echo."
+
+DR. THORNE
+(checking the spectrometer)
+"Look at the broadcast wavelength, Jax. It's scanning our ship."
+
+------------------------------------------------------------------------
+SCENE #02 - DESERT ROVER AMBUSH
+LIGHTING / ENVIRONMENT: Day Exterior (Sunlight Dependent) | PRIORITY: Level 1
+PAGES: 6.0 Pages | ESTIMATED SHOOT TIME: 9.5 Hours | STATUS: SCHEDULED
+SCHEDULED: 2026-10-05 (08:00 - 17:30) | LOCATION ASSET: LOC-502
+CAST REQUIRED: ACT-203, ACT-204, ACT-201
+EQUIPMENT REQUIRED: EQ-401, EQ-404
+
+SYNOPSIS:
+Malakor's scavengers intercept the transport crawler during high noon desert crossing.
+
+SCREENPLAY ACTION & DIALOGUE:
+[EXT. BLACK ROCK DUNE RIDGE - DAY]
+Twin suns beat down relentlessly. Two armed sand-skiffs breach the perimeter.
+
+GOVERNOR MALAKOR
+(through loudspeaker)
+"Halt the crawler and surrender the crystalline core, Commander!"
+
+JAX
+"Brace for impact! Gunner, return fire on their treads!"
+
+------------------------------------------------------------------------
+SCENE #03 - TWILIGHT ROOFTOP CONFRONTATION
+LIGHTING / ENVIRONMENT: Golden Hour / Twilight (Strict 45-min Window) | PRIORITY: Level 1
+PAGES: 3.0 Pages | ESTIMATED SHOOT TIME: 3.5 Hours | STATUS: SCHEDULED
+SCHEDULED: 2026-10-07 (17:00 - 20:00) | LOCATION ASSET: LOC-503
+CAST REQUIRED: ACT-203, ACT-201
+EQUIPMENT REQUIRED: EQ-402, EQ-401
+
+SYNOPSIS:
+Jax faces Governor Malakor atop the Citadel spires as the twin suns set.
+
+SCREENPLAY ACTION & DIALOGUE:
+[EXT. CITADEL APEX ROOFTOP - GOLDEN HOUR]
+The sky burns in vivid amber and violet. The wind whips Jax's tactical duster.
+
+MALAKOR
+"You crossed three galaxies to die on an abandoned roof?"
+
+JAX
+"I came to make sure you never leave it."
+
+------------------------------------------------------------------------
+SCENE #04 - COCKPIT ZERO-G EMERGENCY DESCENT
+LIGHTING / ENVIRONMENT: Interior Studio (Controlled Stage Lighting) | PRIORITY: Level 3
+PAGES: 5.0 Pages | ESTIMATED SHOOT TIME: 6.0 Hours | STATUS: DRAFT
+SCHEDULED: TBD (TBD) | LOCATION ASSET: LOC-501
+CAST REQUIRED: ACT-204, ACT-201
+EQUIPMENT REQUIRED: EQ-401, EQ-403
+
+SYNOPSIS:
+Pilot Kira maneuvers the battered vessel through planetary atmospheric turbulence.
+
+SCREENPLAY ACTION & DIALOGUE:
+[INT. VESSEL COCKPIT - NIGHT]
+Red alarms strobe violently as g-forces pin Kira against the flight harness.
+
+KIRA
+"Atmospheric thrusters failing! Hold on to something!"
+
+------------------------------------------------------------------------
+SCENE #05 - NIGHT PERIMETER INFILTRATION
+LIGHTING / ENVIRONMENT: Night Exterior (Requires Night Setup) | PRIORITY: Level 2
+PAGES: 4.0 Pages | ESTIMATED SHOOT TIME: 6.5 Hours | STATUS: DRAFT
+SCHEDULED: TBD (TBD) | LOCATION ASSET: LOC-503
+CAST REQUIRED: ACT-202
+EQUIPMENT REQUIRED: EQ-401, EQ-404
+
+SYNOPSIS:
+Dr. Thorne hacks the subterranean power array under cover of nocturnal blizzard.
+
+SCREENPLAY ACTION & DIALOGUE:
+[EXT. SUBTERRANEAN GENERATOR VAULT - NIGHT]
+Snow howls across the access hatch. Thorne splices the optical circuit bypass.
+
+DR. THORNE
+"Security override locked in. Opening blast doors now."
+
+------------------------------------------------------------------------
+SCENE #06 - PROLOGUE: GALACTIC COUNCIL BRIEFING
+LIGHTING / ENVIRONMENT: Interior Studio (Controlled Stage Lighting) | PRIORITY: Level 4
+PAGES: 2.0 Pages | ESTIMATED SHOOT TIME: 3.0 Hours | STATUS: COMPLETED
+SCHEDULED: TBD (TBD) | LOCATION ASSET: LOC-501
+CAST REQUIRED: ACT-203
+EQUIPMENT REQUIRED: None
+
+SYNOPSIS:
+Archival transmission initiating the Aether expedition.
+
+SCREENPLAY ACTION & DIALOGUE:
+[INT. COUNCIL CHAMBER ARCHIVES - DAY]
+Holographic star maps revolve in gentle loops around the council podium.
+
+COUNCIL ENVOY
+"This mission remains off the official records. Godspeed, Commander."
+
+------------------------------------------------------------------------
+SCENE #991 - TEST SHOOT A
+LIGHTING / ENVIRONMENT: Interior Studio (Controlled Stage Lighting) | PRIORITY: Level 1
+PAGES: 2.0 Pages | ESTIMATED SHOOT TIME: 4.0 Hours | STATUS: SCHEDULED
+SCHEDULED: 2026-11-11 (08:00 - 12:00) | LOCATION ASSET: LOC-501
+CAST REQUIRED: None
+EQUIPMENT REQUIRED: None
+
+SYNOPSIS:
+Synopsis
+
+SCREENPLAY ACTION & DIALOGUE:
+  (Dialogue and action description pending rehearsal breakdown)
+
+------------------------------------------------------------------------
+SCENE #992 - TEST SHOOT B
+LIGHTING / ENVIRONMENT: Interior Studio (Controlled Stage Lighting) | PRIORITY: Level 1
+PAGES: 2.0 Pages | ESTIMATED SHOOT TIME: 4.0 Hours | STATUS: DRAFT
+SCHEDULED: TBD (TBD) | LOCATION ASSET: LOC-501
+CAST REQUIRED: None
+EQUIPMENT REQUIRED: None
+
+SYNOPSIS:
+Synopsis
+
+SCREENPLAY ACTION & DIALOGUE:
+  (Dialogue and action description pending rehearsal breakdown)
+
+========================================================================
+                         END OF SCRIPT BREAKDOWN                        
+========================================================================

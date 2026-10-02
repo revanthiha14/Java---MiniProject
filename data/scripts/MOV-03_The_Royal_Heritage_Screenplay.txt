@@ -1,0 +1,76 @@
+========================================================================
+                    FEATURE FILM SCREENPLAY & SCRIPT                     
+                    TITLE: THE ROYAL HERITAGE
+========================================================================
+Studio / Production House : Horizon Studios
+Movie ID                  : MOV-03
+Genre                     : Historical Drama
+Director                  : Arthur Pendelton
+Production Phase          : Post-Production (Editing, Sound, VFX, Color Grading)
+Estimated Release Year    : 2026
+Total Script Breakdown    : 4 Scenes Registered
+========================================================================
+
+------------------------------------------------------------------------
+SCENE #01 - CORONATION BANQUET
+LIGHTING / ENVIRONMENT: Interior Studio (Controlled Stage Lighting) | PRIORITY: Level 2
+PAGES: 6.0 Pages | ESTIMATED SHOOT TIME: 8.0 Hours | STATUS: COMPLETED
+SCHEDULED: TBD (TBD) | LOCATION ASSET: Unassigned
+CAST REQUIRED: None
+EQUIPMENT REQUIRED: None
+
+SYNOPSIS:
+The grand crowning ceremony inside the cathedral with royal nobility.
+
+SCREENPLAY ACTION & DIALOGUE:
+[INT. ROYAL CATHEDRAL NAVE - DAY]
+A hundred tallow candles flicker. The Archbishop raises the gilded crown.
+
+------------------------------------------------------------------------
+SCENE #02 - BATTLE OF ASHFORD FIELDS
+LIGHTING / ENVIRONMENT: Day Exterior (Sunlight Dependent) | PRIORITY: Level 1
+PAGES: 8.5 Pages | ESTIMATED SHOOT TIME: 12.0 Hours | STATUS: COMPLETED
+SCHEDULED: TBD (TBD) | LOCATION ASSET: Unassigned
+CAST REQUIRED: None
+EQUIPMENT REQUIRED: None
+
+SYNOPSIS:
+Decisive medieval clash between the royal guard and rebel battalions.
+
+SCREENPLAY ACTION & DIALOGUE:
+[EXT. ASHFORD MIST VALLEY - DAY]
+Royal banners whip in the gale. Cavalry shields slam together with thunderous force.
+
+------------------------------------------------------------------------
+SCENE #03 - COUNCIL CHAMBER TREASON
+LIGHTING / ENVIRONMENT: Interior Studio (Controlled Stage Lighting) | PRIORITY: Level 3
+PAGES: 4.0 Pages | ESTIMATED SHOOT TIME: 6.0 Hours | STATUS: COMPLETED
+SCHEDULED: TBD (TBD) | LOCATION ASSET: Unassigned
+CAST REQUIRED: None
+EQUIPMENT REQUIRED: None
+
+SYNOPSIS:
+Secret betrayal unveiled during late evening royal cabinet deliberations.
+
+SCREENPLAY ACTION & DIALOGUE:
+[INT. KING'S PRIVY CHAMBER - NIGHT]
+The Chancellor burns a ciphered letter in the fireplace as guards assemble outside.
+
+------------------------------------------------------------------------
+SCENE #04 - FINAL FAREWELL AT SEA PORT
+LIGHTING / ENVIRONMENT: Golden Hour / Twilight (Strict 45-min Window) | PRIORITY: Level 1
+PAGES: 3.0 Pages | ESTIMATED SHOOT TIME: 4.0 Hours | STATUS: COMPLETED
+SCHEDULED: TBD (TBD) | LOCATION ASSET: Unassigned
+CAST REQUIRED: None
+EQUIPMENT REQUIRED: None
+
+SYNOPSIS:
+The exiled prince boards the royal frigate at sunset as the crowd watches.
+
+SCREENPLAY ACTION & DIALOGUE:
+[EXT. ANCHORAGE PIER - GOLDEN HOUR]
+The frigate's sails catch the wind. A final handkerchief waves from the shoreline.
+
+========================================================================
+                         END OF SCRIPT BREAKDOWN                        
+========================================================================

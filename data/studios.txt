@@ -1,0 +1,6 @@
+# ID|Name|Headquarters|EstablishedYear|ActiveMovieId
+PH-101|Horizon Studios|Los Angeles & Mumbai|2005|MOV-01
+PH-102|Warner Bros. Pictures|Burbank, California|1923|MOV-04
+PH-103|Paramount Pictures|Hollywood, California|1912|MOV-06
+PH-104|A24 Studios|New York City|2012|MOV-08
+PH-105|Mythri Movie Makers|Hyderabad, India|2015|MOV-10

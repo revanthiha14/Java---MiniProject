@@ -28,6 +28,12 @@ public class CrewMember extends Person {
     }
 
     public CrewMember(String id, String name, double dailyRate, Department department,
+                      String designation, boolean unionMember) {
+        this(id, name, name.toLowerCase().replace(" ", ".") + "@crew.cineflow.studio", "555-CREW",
+                dailyRate, department, designation, unionMember, new String[]{"Basic Set Safety"});
+    }
+
+    public CrewMember(String id, String name, double dailyRate, Department department,
                       String designation, boolean unionMember, String[] certifications) {
         this(id, name, name.toLowerCase().replace(" ", ".") + "@crew.cineflow.studio", "555-CREW",
                 dailyRate, department, designation, unionMember, certifications);
@@ -78,6 +84,10 @@ public class CrewMember extends Person {
     @Override
     public String getRoleTitle() {
         return designation + " (" + department.getDisplayName() + ")";
+    }
+
+    public String getJobTitle() {
+        return designation;
     }
 
     @Override

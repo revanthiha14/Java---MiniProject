@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 > nul
-title Horizon Studios - Movie Production Management System
+title CineFlow 2.0 - Cinema Production Management & Studio Ecosystem
 if not exist "bin" mkdir bin
 if not exist "data" mkdir data
 

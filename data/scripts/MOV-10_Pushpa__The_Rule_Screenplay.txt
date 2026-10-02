@@ -1,0 +1,34 @@
+========================================================================
+                    FEATURE FILM SCREENPLAY & SCRIPT                     
+                    TITLE: PUSHPA: THE RULE
+========================================================================
+Studio / Production House : Mythri Movie Makers
+Movie ID                  : MOV-10
+Genre                     : Action / Drama
+Director                  : Sukumar
+Production Phase          : In-Production / Shooting (Principal Photography)
+Estimated Release Year    : 2026
+Total Script Breakdown    : 1 Scenes Registered
+========================================================================
+
+------------------------------------------------------------------------
+SCENE #01 - RED SANDERS FOREST AMBUSH
+LIGHTING / ENVIRONMENT: Day Exterior (Sunlight Dependent) | PRIORITY: Level 1
+PAGES: 6.5 Pages | ESTIMATED SHOOT TIME: 9.0 Hours | STATUS: SCHEDULED
+SCHEDULED: 2026-10-04 (07:00 - 17:00) | LOCATION ASSET: LOC-502
+CAST REQUIRED: ACT-205
+EQUIPMENT REQUIRED: None
+
+SYNOPSIS:
+Pushpa confronts special police task force at the rocky forest river bend.
+
+SCREENPLAY ACTION & DIALOGUE:
+[EXT. SESHACHALAM MISTY FOREST - DAYLIGHT EXTERIOR]
+Diesel smoke billows through teak trees. Pushpa steps out of the truck cab with quiet authority.
+
+PUSHPA
+"Pushpa ante flower anukuntiva? Fire-u!"
+
+========================================================================
+                         END OF SCRIPT BREAKDOWN                        
+========================================================================

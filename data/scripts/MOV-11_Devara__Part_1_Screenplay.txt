@@ -1,0 +1,31 @@
+========================================================================
+                    FEATURE FILM SCREENPLAY & SCRIPT                     
+                    TITLE: DEVARA: PART 1
+========================================================================
+Studio / Production House : Mythri Movie Makers
+Movie ID                  : MOV-11
+Genre                     : Action Epic
+Director                  : Koratala Siva
+Production Phase          : Post-Production (Editing, Sound, VFX, Color Grading)
+Estimated Release Year    : 2026
+Total Script Breakdown    : 1 Scenes Registered
+========================================================================
+
+------------------------------------------------------------------------
+SCENE #01 - MIDNIGHT COASTAL ARMADA ATTACK
+LIGHTING / ENVIRONMENT: Night Exterior (Requires Night Setup) | PRIORITY: Level 1
+PAGES: 5.5 Pages | ESTIMATED SHOOT TIME: 8.0 Hours | STATUS: COMPLETED
+SCHEDULED: TBD (TBD) | LOCATION ASSET: Unassigned
+CAST REQUIRED: None
+EQUIPMENT REQUIRED: None
+
+SYNOPSIS:
+Warriors plunge from stormy cliffs onto intercepted smuggling vessels.
+
+SCREENPLAY ACTION & DIALOGUE:
+[EXT. STORMY OCEAN CLIFFS - NIGHT EXTERIOR]
+Lightning reveals thirty boats riding twenty-foot black swells.
+
+========================================================================
+                         END OF SCRIPT BREAKDOWN                        
+========================================================================

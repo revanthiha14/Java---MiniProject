@@ -59,6 +59,14 @@ public abstract class Person implements Identifiable<String>, Reportable {
     public abstract double calculateRemuneration(int days);
 
     /**
+     * Overloaded method calculating remuneration using accumulated daysWorked.
+     * Demonstrates method overloading in abstract class.
+     */
+    public double calculateRemuneration() {
+        return calculateRemuneration(this.daysWorked);
+    }
+
+    /**
      * Summary role description of the individual.
      * @return Role title
      */

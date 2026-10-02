@@ -50,18 +50,17 @@ public final class DataGenerator {
         seedAllProductionHouses(studioService, productionService, personnelService, assetService, budgetService);
     }
 
-    public static void seedAllProductionHouses(StudioService studioService,
-                                             ProductionService productionService,
-                                             PersonnelService personnelService,
-                                             AssetService assetService,
-                                             BudgetService defaultBudgetService) {
-        try {
-            LocalDate today = LocalDate.now();
+    public static void seedCentralPersonnelAndAssets(PersonnelService personnelService,
+                                                    AssetService assetService) {
+        if (!personnelService.getAllPersonnel().isEmpty() && !assetService.getAllAssets().isEmpty()) {
+            return;
+        }
 
+        try {
             // =================================================================
             // 1. CENTRAL PERSONNEL POOL (Directors, Actors, Technical Crew)
             // =================================================================
-            Director dir1 = new Director("DIR-101", "Marcus Sterling", 4200.0,
+        Director dir1 = new Director("DIR-101", "Marcus Sterling", 4200.0,
                     "Grounded science fiction with tactile realism and deep emotional stakes", 3.0, 75000.0);
             dir1.recordDaysWorked(12);
             personnelService.registerPerson(dir1);
@@ -184,6 +183,21 @@ public final class DataGenerator {
                     "88 Harbor Promenade", "Seattle", LocationType.URBAN_STREET, true, 90, 3000.0);
             citadel.bookDays(3);
             assetService.registerAsset(citadel);
+        } catch (ValidationException e) {
+            System.err.println("Notice seeding personnel/assets: " + e.getMessage());
+        }
+    }
+
+    public static void seedAllProductionHouses(StudioService studioService,
+                                             ProductionService productionService,
+                                             PersonnelService personnelService,
+                                             AssetService assetService,
+                                             BudgetService defaultBudgetService) {
+        try {
+            LocalDate today = LocalDate.now();
+
+            // Seed central personnel pool and equipment/locations
+            seedCentralPersonnelAndAssets(personnelService, assetService);
 
             // =================================================================
             // 3. STUDIO 1: HORIZON STUDIOS (PH-101)

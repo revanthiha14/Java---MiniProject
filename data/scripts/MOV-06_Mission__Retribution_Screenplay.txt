@@ -1,0 +1,31 @@
+========================================================================
+                    FEATURE FILM SCREENPLAY & SCRIPT                     
+                    TITLE: MISSION: RETRIBUTION
+========================================================================
+Studio / Production House : Paramount Pictures
+Movie ID                  : MOV-06
+Genre                     : Action / Thriller
+Director                  : Christopher McQuarrie
+Production Phase          : In-Production / Shooting (Principal Photography)
+Estimated Release Year    : 2026
+Total Script Breakdown    : 1 Scenes Registered
+========================================================================
+
+------------------------------------------------------------------------
+SCENE #01 - CARGO PLANE JUMP OVER ALPS
+LIGHTING / ENVIRONMENT: Night Exterior (Requires Night Setup) | PRIORITY: Level 1
+PAGES: 4.0 Pages | ESTIMATED SHOOT TIME: 7.0 Hours | STATUS: SCHEDULED
+SCHEDULED: 2026-10-08 (20:00 - 02:00) | LOCATION ASSET: Unassigned
+CAST REQUIRED: None
+EQUIPMENT REQUIRED: None
+
+SYNOPSIS:
+Ethan parachutes at night into frozen alpine canyon amidst pursuit.
+
+SCREENPLAY ACTION & DIALOGUE:
+[EXT. HIGH ALPS AIRSPACE - NIGHT]
+The cargo ramp drops into freezing darkness. Wind screams at 300 knots.
+
+========================================================================
+                         END OF SCRIPT BREAKDOWN                        
+========================================================================

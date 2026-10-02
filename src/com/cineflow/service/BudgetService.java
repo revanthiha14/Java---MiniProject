@@ -172,6 +172,45 @@ public class BudgetService implements Serializable {
         return Collections.unmodifiableList(expenseHistory);
     }
 
+    public double getTotalAllocated() {
+        return getTotalAllocatedBudget();
+    }
+
+    public double getTotalSpent() {
+        return getTotalSpentBudget();
+    }
+
+    public double getRemainingContingency() {
+        return getRemainingBudget();
+    }
+
+    public double getBudgetUtilizationPercentage() {
+        double alloc = getTotalAllocatedBudget();
+        return alloc > 0 ? (getTotalSpentBudget() / alloc) * 100.0 : 0.0;
+    }
+
+    public String generateDetailedReport() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("TOTAL ALLOCATED : $%,.2f\n", getTotalAllocatedBudget()));
+        sb.append(String.format("TOTAL EXPENDED  : $%,.2f\n", getTotalSpentBudget()));
+        sb.append(String.format("OVERALL VARIANCE: $%,.2f (%s)\n", getRemainingBudget(),
+                getRemainingBudget() >= 0 ? "UNDER BUDGET" : "OVER BUDGET"));
+        sb.append("-----------------------------------------------------------------------------------------\n");
+        sb.append(String.format("%-30s | %-15s | %-15s | %-15s | %-8s\n",
+                "DEPARTMENT", "ALLOCATED", "SPENT", "REMAINING", "UTIL %"));
+        sb.append("-----------------------------------------------------------------------------------------\n");
+        for (Map.Entry<Department, Double> entry : allocatedBudgets.entrySet()) {
+            Department dept = entry.getKey();
+            double allocated = entry.getValue();
+            double spent = spentBudgets.getOrDefault(dept, 0.0);
+            double rem = allocated - spent;
+            double util = allocated > 0 ? (spent / allocated) * 100.0 : 0.0;
+            sb.append(String.format("%-30s | $%,13.2f | $%,13.2f | $%,13.2f | %6.1f%%\n",
+                    dept.getDisplayName(), allocated, spent, rem, util));
+        }
+        return sb.toString();
+    }
+
     /**
      * Exports the detailed financial ledger to a persistent text file using IO Streams.
      */

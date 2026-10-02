@@ -1,0 +1,31 @@
+========================================================================
+                    FEATURE FILM SCREENPLAY & SCRIPT                     
+                    TITLE: DUNE ODYSSEY
+========================================================================
+Studio / Production House : Warner Bros. Pictures
+Movie ID                  : MOV-05
+Genre                     : Sci-Fi Epic
+Director                  : Denis Villeneuve
+Production Phase          : In-Production / Shooting (Principal Photography)
+Estimated Release Year    : 2026
+Total Script Breakdown    : 1 Scenes Registered
+========================================================================
+
+------------------------------------------------------------------------
+SCENE #01 - SANDWORM SIGHTING AT DUNE CREST
+LIGHTING / ENVIRONMENT: Day Exterior (Sunlight Dependent) | PRIORITY: Level 1
+PAGES: 7.0 Pages | ESTIMATED SHOOT TIME: 10.0 Hours | STATUS: SCHEDULED
+SCHEDULED: 2026-10-06 (06:00 - 16:00) | LOCATION ASSET: Unassigned
+CAST REQUIRED: None
+EQUIPMENT REQUIRED: None
+
+SYNOPSIS:
+Tremors ripple beneath the desert harvester as a colossal shadow rises.
+
+SCREENPLAY ACTION & DIALOGUE:
+[EXT. ARRAKIS SHIFTING DUNES - DAYLIGHT EXTERIOR]
+The sand thrums with sub-bass acoustic shockwaves. The horizon bends.
+
+========================================================================
+                         END OF SCRIPT BREAKDOWN                        
+========================================================================

@@ -1,0 +1,542 @@
+###SCENE_START###
+id=SCN-01
+movieId=MOV-01
+sceneNumber=1
+title=The Discovery at Station 9
+scriptPages=4.5
+daylight=INTERIOR_STUDIO
+priority=2
+status=SCHEDULED
+estimatedHours=7.0
+locationId=LOC-501
+scheduledDate=2026-10-03
+timeSlot=07:00 - 14:00
+actors=ACT-201,ACT-202
+equipment=EQ-402,EQ-401,EQ-403
+synopsis=Commander Jax and Dr. Thorne inspect the anomalous crystalline signal in deep orbit.
+scriptContent=
+[INT. APEX STATION 9 - OBSERVATION DOME - NIGHT]
+The observation dome vibrates with deep harmonic hums from the crystalline core.
+Commander Jax monitors the energy flux.
+
+JAX
+"The resonance is accelerating, Lyra. It's not a stellar echo."
+
+DR. THORNE
+(checking the spectrometer)
+"Look at the broadcast wavelength, Jax. It's scanning our ship."
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-201
+movieId=MOV-02
+sceneNumber=1
+title=Rainy Harbor Detective Meet
+scriptPages=3.5
+daylight=NIGHT_EXTERIOR
+priority=2
+status=DRAFT
+estimatedHours=5.0
+locationId=LOC-503
+scheduledDate=
+timeSlot=
+actors=ACT-202
+equipment=EQ-401,EQ-403
+synopsis=Detective Vance meets an anonymous whistleblower at dock pier 14 under rain.
+scriptContent=
+[EXT. HARBOR PIER 14 - NIGHT]
+Rain hammers against the rusted steel dock pilings. Detective Vance lights a cigarette.
+
+WHISTLEBLOWER
+"You shouldn't have dug into the mayoral ledger, Vance."
+
+VANCE
+"Someone has to count the bodies."
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-301
+movieId=MOV-03
+sceneNumber=1
+title=Coronation Banquet
+scriptPages=6.0
+daylight=INTERIOR_STUDIO
+priority=2
+status=COMPLETED
+estimatedHours=8.0
+locationId=
+scheduledDate=
+timeSlot=
+actors=
+equipment=
+synopsis=The grand crowning ceremony inside the cathedral with royal nobility.
+scriptContent=
+[INT. ROYAL CATHEDRAL NAVE - DAY]
+A hundred tallow candles flicker. The Archbishop raises the gilded crown.
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-401
+movieId=MOV-04
+sceneNumber=1
+title=Skyscraper Heist Infiltration
+scriptPages=5.0
+daylight=NIGHT_EXTERIOR
+priority=1
+status=DRAFT
+estimatedHours=8.0
+locationId=
+scheduledDate=
+timeSlot=
+actors=
+equipment=
+synopsis=Operatives BASE-jump through midnight fog into financial headquarters penthouse.
+scriptContent=
+[EXT. PENTHOUSE BALCONY - NIGHT]
+Rain slices horizontally across the glass. The glass-cutter emits an infrared hum.
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-501
+movieId=MOV-05
+sceneNumber=1
+title=Sandworm Sighting at Dune Crest
+scriptPages=7.0
+daylight=DAY_EXTERIOR
+priority=1
+status=SCHEDULED
+estimatedHours=10.0
+locationId=
+scheduledDate=2026-10-06
+timeSlot=06:00 - 16:00
+actors=
+equipment=
+synopsis=Tremors ripple beneath the desert harvester as a colossal shadow rises.
+scriptContent=
+[EXT. ARRAKIS SHIFTING DUNES - DAYLIGHT EXTERIOR]
+The sand thrums with sub-bass acoustic shockwaves. The horizon bends.
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-601
+movieId=MOV-06
+sceneNumber=1
+title=Cargo Plane Jump Over Alps
+scriptPages=4.0
+daylight=NIGHT_EXTERIOR
+priority=1
+status=SCHEDULED
+estimatedHours=7.0
+locationId=
+scheduledDate=2026-10-08
+timeSlot=20:00 - 02:00
+actors=
+equipment=
+synopsis=Ethan parachutes at night into frozen alpine canyon amidst pursuit.
+scriptContent=
+[EXT. HIGH ALPS AIRSPACE - NIGHT]
+The cargo ramp drops into freezing darkness. Wind screams at 300 knots.
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-701
+movieId=MOV-07
+sceneNumber=1
+title=Colosseum Chariot Battle
+scriptPages=8.0
+daylight=DAY_EXTERIOR
+priority=1
+status=COMPLETED
+estimatedHours=12.0
+locationId=
+scheduledDate=
+timeSlot=
+actors=
+equipment=
+synopsis=Gladiators clash on burning sands as the Roman senate roars.
+scriptContent=
+[EXT. COLOSSEUM ARENA - DAYLIGHT EXTERIOR]
+Iron chariot wheels kick up scarlet dust. Bronze blades clash.
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-801
+movieId=MOV-08
+sceneNumber=1
+title=Subway Platform Reunion
+scriptPages=3.0
+daylight=INTERIOR_STUDIO
+priority=3
+status=COMPLETED
+estimatedHours=4.0
+locationId=
+scheduledDate=
+timeSlot=
+actors=
+equipment=
+synopsis=Two childhood sweethearts meet across the platform after twenty-four years.
+scriptContent=
+[INT. EAST VILLAGE SUBWAY PLATFORM - NIGHT]
+Train headlights rake across the platform tiles. Their eyes meet in quiet realization.
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-901
+movieId=MOV-09
+sceneNumber=1
+title=Storm Lantern Watch
+scriptPages=4.5
+daylight=NIGHT_EXTERIOR
+priority=1
+status=DRAFT
+estimatedHours=6.0
+locationId=
+scheduledDate=
+timeSlot=
+actors=
+equipment=
+synopsis=A keeper battles howling winds to keep the lighthouse flame alive.
+scriptContent=
+[INT. LIGHTHOUSE LANTERN ROOM - NIGHT EXTERIOR]
+Salt spray batters the glass panes. Shadows rotate relentlessly.
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-1001
+movieId=MOV-10
+sceneNumber=1
+title=Red Sanders Forest Ambush
+scriptPages=6.5
+daylight=DAY_EXTERIOR
+priority=1
+status=SCHEDULED
+estimatedHours=9.0
+locationId=LOC-502
+scheduledDate=2026-10-04
+timeSlot=07:00 - 17:00
+actors=ACT-205
+equipment=
+synopsis=Pushpa confronts special police task force at the rocky forest river bend.
+scriptContent=
+[EXT. SESHACHALAM MISTY FOREST - DAYLIGHT EXTERIOR]
+Diesel smoke billows through teak trees. Pushpa steps out of the truck cab with quiet authority.
+
+PUSHPA
+"Pushpa ante flower anukuntiva? Fire-u!"
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-1101
+movieId=MOV-11
+sceneNumber=1
+title=Midnight Coastal Armada Attack
+scriptPages=5.5
+daylight=NIGHT_EXTERIOR
+priority=1
+status=COMPLETED
+estimatedHours=8.0
+locationId=
+scheduledDate=
+timeSlot=
+actors=
+equipment=
+synopsis=Warriors plunge from stormy cliffs onto intercepted smuggling vessels.
+scriptContent=
+[EXT. STORMY OCEAN CLIFFS - NIGHT EXTERIOR]
+Lightning reveals thirty boats riding twenty-foot black swells.
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-02
+movieId=MOV-01
+sceneNumber=2
+title=Desert Rover Ambush
+scriptPages=6.0
+daylight=DAY_EXTERIOR
+priority=1
+status=SCHEDULED
+estimatedHours=9.5
+locationId=LOC-502
+scheduledDate=2026-10-05
+timeSlot=08:00 - 17:30
+actors=ACT-203,ACT-204,ACT-201
+equipment=EQ-401,EQ-404
+synopsis=Malakor's scavengers intercept the transport crawler during high noon desert crossing.
+scriptContent=
+[EXT. BLACK ROCK DUNE RIDGE - DAY]
+Twin suns beat down relentlessly. Two armed sand-skiffs breach the perimeter.
+
+GOVERNOR MALAKOR
+(through loudspeaker)
+"Halt the crawler and surrender the crystalline core, Commander!"
+
+JAX
+"Brace for impact! Gunner, return fire on their treads!"
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-202
+movieId=MOV-02
+sceneNumber=2
+title=Interrogation Room Silence
+scriptPages=4.0
+daylight=INTERIOR_STUDIO
+priority=1
+status=SCHEDULED
+estimatedHours=6.0
+locationId=LOC-501
+scheduledDate=2026-10-12
+timeSlot=09:00 - 16:00
+actors=ACT-203,ACT-202
+equipment=EQ-401
+synopsis=An intense psychological duel between the chief investigator and prime suspect.
+scriptContent=
+[INT. PRECINCT INTERROGATION ROOM - DAY]
+The harsh fluorescent bulb buzzes. A heavy metal tape recorder clicks on.
+
+SUSPECT
+"You think silence is an admission? Silence is the only truth left."
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-302
+movieId=MOV-03
+sceneNumber=2
+title=Battle of Ashford Fields
+scriptPages=8.5
+daylight=DAY_EXTERIOR
+priority=1
+status=COMPLETED
+estimatedHours=12.0
+locationId=
+scheduledDate=
+timeSlot=
+actors=
+equipment=
+synopsis=Decisive medieval clash between the royal guard and rebel battalions.
+scriptContent=
+[EXT. ASHFORD MIST VALLEY - DAY]
+Royal banners whip in the gale. Cavalry shields slam together with thunderous force.
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-03
+movieId=MOV-01
+sceneNumber=3
+title=Twilight Rooftop Confrontation
+scriptPages=3.0
+daylight=GOLDEN_HOUR
+priority=1
+status=SCHEDULED
+estimatedHours=3.5
+locationId=LOC-503
+scheduledDate=2026-10-07
+timeSlot=17:00 - 20:00
+actors=ACT-203,ACT-201
+equipment=EQ-402,EQ-401
+synopsis=Jax faces Governor Malakor atop the Citadel spires as the twin suns set.
+scriptContent=
+[EXT. CITADEL APEX ROOFTOP - GOLDEN HOUR]
+The sky burns in vivid amber and violet. The wind whips Jax's tactical duster.
+
+MALAKOR
+"You crossed three galaxies to die on an abandoned roof?"
+
+JAX
+"I came to make sure you never leave it."
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-203
+movieId=MOV-02
+sceneNumber=3
+title=Lake House Flashback
+scriptPages=2.5
+daylight=GOLDEN_HOUR
+priority=1
+status=DRAFT
+estimatedHours=3.0
+locationId=LOC-502
+scheduledDate=
+timeSlot=
+actors=ACT-202
+equipment=
+synopsis=Memory sequence revealing the crucial betrayal that sparked the conspiracy.
+scriptContent=
+[EXT. LAKE HOUSE BOAT DOCK - GOLDEN HOUR]
+Water ripples softly in the dying orange light. A sealed envelope changes hands.
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-303
+movieId=MOV-03
+sceneNumber=3
+title=Council Chamber Treason
+scriptPages=4.0
+daylight=INTERIOR_STUDIO
+priority=3
+status=COMPLETED
+estimatedHours=6.0
+locationId=
+scheduledDate=
+timeSlot=
+actors=
+equipment=
+synopsis=Secret betrayal unveiled during late evening royal cabinet deliberations.
+scriptContent=
+[INT. KING'S PRIVY CHAMBER - NIGHT]
+The Chancellor burns a ciphered letter in the fireplace as guards assemble outside.
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-04
+movieId=MOV-01
+sceneNumber=4
+title=Cockpit Zero-G Emergency Descent
+scriptPages=5.0
+daylight=INTERIOR_STUDIO
+priority=3
+status=DRAFT
+estimatedHours=6.0
+locationId=LOC-501
+scheduledDate=
+timeSlot=
+actors=ACT-204,ACT-201
+equipment=EQ-401,EQ-403
+synopsis=Pilot Kira maneuvers the battered vessel through planetary atmospheric turbulence.
+scriptContent=
+[INT. VESSEL COCKPIT - NIGHT]
+Red alarms strobe violently as g-forces pin Kira against the flight harness.
+
+KIRA
+"Atmospheric thrusters failing! Hold on to something!"
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-204
+movieId=MOV-02
+sceneNumber=4
+title=Subway Platform Chase
+scriptPages=5.0
+daylight=INTERIOR_STUDIO
+priority=3
+status=DRAFT
+estimatedHours=7.0
+locationId=LOC-501
+scheduledDate=
+timeSlot=
+actors=ACT-203
+equipment=EQ-401,EQ-403
+synopsis=Paced foot pursuit through steam-filled underground commuter platform.
+scriptContent=
+[INT. CENTRAL METRO STATION - NIGHT]
+Footsteps echo through tiled tunnels. An express train screams past, shaking the floor.
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-304
+movieId=MOV-03
+sceneNumber=4
+title=Final Farewell at Sea Port
+scriptPages=3.0
+daylight=GOLDEN_HOUR
+priority=1
+status=COMPLETED
+estimatedHours=4.0
+locationId=
+scheduledDate=
+timeSlot=
+actors=
+equipment=
+synopsis=The exiled prince boards the royal frigate at sunset as the crowd watches.
+scriptContent=
+[EXT. ANCHORAGE PIER - GOLDEN HOUR]
+The frigate's sails catch the wind. A final handkerchief waves from the shoreline.
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-05
+movieId=MOV-01
+sceneNumber=5
+title=Night Perimeter Infiltration
+scriptPages=4.0
+daylight=NIGHT_EXTERIOR
+priority=2
+status=DRAFT
+estimatedHours=6.5
+locationId=LOC-503
+scheduledDate=
+timeSlot=
+actors=ACT-202
+equipment=EQ-401,EQ-404
+synopsis=Dr. Thorne hacks the subterranean power array under cover of nocturnal blizzard.
+scriptContent=
+[EXT. SUBTERRANEAN GENERATOR VAULT - NIGHT]
+Snow howls across the access hatch. Thorne splices the optical circuit bypass.
+
+DR. THORNE
+"Security override locked in. Opening blast doors now."
+###SCENE_END###
+
+###SCENE_START###
+id=SCN-06
+movieId=MOV-01
+sceneNumber=6
+title=Prologue: Galactic Council Briefing
+scriptPages=2.0
+daylight=INTERIOR_STUDIO
+priority=4
+status=COMPLETED
+estimatedHours=3.0
+locationId=LOC-501
+scheduledDate=
+timeSlot=
+actors=ACT-203
+equipment=
+synopsis=Archival transmission initiating the Aether expedition.
+scriptContent=
+[INT. COUNCIL CHAMBER ARCHIVES - DAY]
+Holographic star maps revolve in gentle loops around the council podium.
+
+COUNCIL ENVOY
+"This mission remains off the official records. Godspeed, Commander."
+###SCENE_END###
+
+###SCENE_START###
+id=T-SCN-01
+movieId=MOV-01
+sceneNumber=991
+title=Test Shoot A
+scriptPages=2.0
+daylight=INTERIOR_STUDIO
+priority=1
+status=SCHEDULED
+estimatedHours=4.0
+locationId=LOC-501
+scheduledDate=2026-11-11
+timeSlot=08:00 - 12:00
+actors=
+equipment=
+synopsis=Synopsis
+scriptContent=
+###SCENE_END###
+
+###SCENE_START###
+id=T-SCN-02
+movieId=MOV-01
+sceneNumber=992
+title=Test Shoot B
+scriptPages=2.0
+daylight=INTERIOR_STUDIO
+priority=1
+status=DRAFT
+estimatedHours=4.0
+locationId=LOC-501
+scheduledDate=
+timeSlot=
+actors=
+equipment=
+synopsis=Synopsis
+scriptContent=
+###SCENE_END###
+

@@ -1,0 +1,31 @@
+========================================================================
+                    FEATURE FILM SCREENPLAY & SCRIPT                     
+                    TITLE: GLADIATOR CHRONICLES
+========================================================================
+Studio / Production House : Paramount Pictures
+Movie ID                  : MOV-07
+Genre                     : Historical Action
+Director                  : Ridley Scott
+Production Phase          : Post-Production (Editing, Sound, VFX, Color Grading)
+Estimated Release Year    : 2026
+Total Script Breakdown    : 1 Scenes Registered
+========================================================================
+
+------------------------------------------------------------------------
+SCENE #01 - COLOSSEUM CHARIOT BATTLE
+LIGHTING / ENVIRONMENT: Day Exterior (Sunlight Dependent) | PRIORITY: Level 1
+PAGES: 8.0 Pages | ESTIMATED SHOOT TIME: 12.0 Hours | STATUS: COMPLETED
+SCHEDULED: TBD (TBD) | LOCATION ASSET: Unassigned
+CAST REQUIRED: None
+EQUIPMENT REQUIRED: None
+
+SYNOPSIS:
+Gladiators clash on burning sands as the Roman senate roars.
+
+SCREENPLAY ACTION & DIALOGUE:
+[EXT. COLOSSEUM ARENA - DAYLIGHT EXTERIOR]
+Iron chariot wheels kick up scarlet dust. Bronze blades clash.
+
+========================================================================
+                         END OF SCRIPT BREAKDOWN                        
+========================================================================
