@@ -5,8 +5,9 @@ package com.cineflow.model;
  */
 public enum ProductionPhase {
     PRE_PRODUCTION("Pre-Production (Script, Casting, Location Scouting)"),
-    PRODUCTION("Principal Photography (Active Shooting)"),
-    POST_PRODUCTION("Post-Production (Editing, Sound, VFX, Color Grading)");
+    PRODUCTION("In-Production / Shooting (Principal Photography)"),
+    POST_PRODUCTION("Post-Production (Editing, Sound, VFX, Color Grading)"),
+    RELEASED("Released (Theatrical / Streaming Distribution)");
 
     private final String description;
 

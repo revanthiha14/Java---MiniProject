@@ -35,24 +35,32 @@ public class Scene implements Identifiable<String>, Comparable<Scene>, Schedulab
     private double estimatedShootHours;
     private String[] productionChecklist; // Demonstrates array usage
     private String movieId; // Associated movie project identifier
+    private String scriptContent; // Screenplay dialogue and scene action block
 
     public Scene() {
-        this("SCN-000", "MOV-01", 0, "Untitled Scene", "No synopsis", 1.0,
+        this("SCN-000", "MOV-01", 0, "Untitled Scene", "No synopsis", "", 1.0,
                 DaylightRequirement.INTERIOR_STUDIO, 3, 4.0);
     }
 
     public Scene(String id, int sceneNumber, String title, String synopsis, double scriptPages,
                  DaylightRequirement daylightRequirement, int priority, double estimatedShootHours) {
-        this(id, "MOV-01", sceneNumber, title, synopsis, scriptPages, daylightRequirement, priority, estimatedShootHours);
+        this(id, "MOV-01", sceneNumber, title, synopsis, "", scriptPages, daylightRequirement, priority, estimatedShootHours);
     }
 
     public Scene(String id, String movieId, int sceneNumber, String title, String synopsis, double scriptPages,
                  DaylightRequirement daylightRequirement, int priority, double estimatedShootHours) {
+        this(id, movieId, sceneNumber, title, synopsis, "", scriptPages, daylightRequirement, priority, estimatedShootHours);
+    }
+
+    public Scene(String id, String movieId, int sceneNumber, String title, String synopsis,
+                 String scriptContent, double scriptPages, DaylightRequirement daylightRequirement,
+                 int priority, double estimatedShootHours) {
         this.id = id;
         this.movieId = movieId != null ? movieId : "MOV-01";
         this.sceneNumber = sceneNumber;
         this.title = title;
         this.synopsis = synopsis;
+        this.scriptContent = scriptContent != null ? scriptContent : "";
         this.scriptPages = scriptPages;
         this.daylightRequirement = daylightRequirement;
         this.status = SceneStatus.DRAFT;
@@ -89,6 +97,14 @@ public class Scene implements Identifiable<String>, Comparable<Scene>, Schedulab
     public void assignEquipment(String equipmentId) {
         if (equipmentId != null && !equipmentId.trim().isEmpty()) {
             this.requiredEquipmentIds.add(equipmentId.trim());
+        }
+    }
+
+    public void assignEquipment(String... equipmentIds) {
+        if (equipmentIds != null) {
+            for (String eqId : equipmentIds) {
+                assignEquipment(eqId);
+            }
         }
     }
 
@@ -146,7 +162,19 @@ public class Scene implements Identifiable<String>, Comparable<Scene>, Schedulab
         sb.append("Cast Required  : ").append(requiredActorIds.isEmpty() ? "None" : String.join(", ", requiredActorIds)).append("\n");
         sb.append("Equipment List : ").append(requiredEquipmentIds.isEmpty() ? "None" : String.join(", ", requiredEquipmentIds)).append("\n");
         sb.append("Prep Checklist : ").append(productionChecklist.length == 0 ? "None" : String.join("; ", productionChecklist)).append("\n");
+        if (scriptContent != null && !scriptContent.trim().isEmpty()) {
+            sb.append("\n--- SCREENPLAY & SCRIPT EXCERPT ---\n");
+            sb.append(scriptContent.trim()).append("\n");
+        }
         return sb.toString();
+    }
+
+    public String getScriptContent() {
+        return scriptContent != null ? scriptContent : "";
+    }
+
+    public void setScriptContent(String scriptContent) {
+        this.scriptContent = scriptContent != null ? scriptContent : "";
     }
 
     // Getters and Setters

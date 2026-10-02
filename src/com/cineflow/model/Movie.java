@@ -24,6 +24,7 @@ public class Movie implements Identifiable<String>, Reportable, CostTrackable, S
     private static final long serialVersionUID = 1L;
 
     private String id;
+    private String studioId; // Associated production house ID
     private String title;
     private String genre;
     private String directorName;
@@ -42,22 +43,28 @@ public class Movie implements Identifiable<String>, Reportable, CostTrackable, S
      * Default constructor with safe defaults.
      */
     public Movie() {
-        this("MOV-000", "Untitled Project", "Drama", "Unassigned", ProductionPhase.PRE_PRODUCTION, 2027);
+        this("MOV-000", "PH-101", "Untitled Project", "Drama", "Unassigned", ProductionPhase.PRE_PRODUCTION, 2027);
     }
 
     /**
      * Minimal constructor chaining to full constructor.
      */
     public Movie(String id, String title, String genre, String directorName) {
-        this(id, title, genre, directorName, ProductionPhase.PRE_PRODUCTION, 2026);
+        this(id, "PH-101", title, genre, directorName, ProductionPhase.PRE_PRODUCTION, 2026);
+    }
+
+    public Movie(String id, String title, String genre, String directorName,
+                 ProductionPhase productionPhase, int estimatedReleaseYear) {
+        this(id, "PH-101", title, genre, directorName, productionPhase, estimatedReleaseYear);
     }
 
     /**
-     * Full parameterized constructor initializing collections and budget manager.
+     * Full parameterized constructor initializing studioId, collections and budget manager.
      */
-    public Movie(String id, String title, String genre, String directorName,
+    public Movie(String id, String studioId, String title, String genre, String directorName,
                  ProductionPhase productionPhase, int estimatedReleaseYear) {
         this.id = id;
+        this.studioId = studioId != null ? studioId : "PH-101";
         this.title = title;
         this.genre = genre;
         this.directorName = directorName;
@@ -76,6 +83,7 @@ public class Movie implements Identifiable<String>, Reportable, CostTrackable, S
     // Method Overloading Demonstration: addScene variants
     public void addScene(Scene scene) {
         if (scene != null) {
+            scene.setMovieId(this.id);
             this.scenes.add(scene);
             refreshShootingQueue();
         }
@@ -84,6 +92,14 @@ public class Movie implements Identifiable<String>, Reportable, CostTrackable, S
     public void addScenes(Scene... sceneArray) {
         if (sceneArray != null) {
             for (Scene s : sceneArray) {
+                addScene(s);
+            }
+        }
+    }
+
+    public void addScenes(List<Scene> sceneList) {
+        if (sceneList != null) {
+            for (Scene s : sceneList) {
                 addScene(s);
             }
         }
@@ -119,15 +135,39 @@ public class Movie implements Identifiable<String>, Reportable, CostTrackable, S
         }
     }
 
+    public void assignCrew(String... crewIds) {
+        if (crewIds != null) {
+            for (String cId : crewIds) {
+                assignCrew(cId);
+            }
+        }
+    }
+
     public void bookEquipment(String equipmentId) {
         if (equipmentId != null && !equipmentId.trim().isEmpty()) {
             this.bookedEquipmentIds.add(equipmentId.trim());
         }
     }
 
+    public void bookEquipment(String... equipmentIds) {
+        if (equipmentIds != null) {
+            for (String eqId : equipmentIds) {
+                bookEquipment(eqId);
+            }
+        }
+    }
+
     public void bookLocation(String locationId) {
         if (locationId != null && !locationId.trim().isEmpty()) {
             this.bookedLocationIds.add(locationId.trim());
+        }
+    }
+
+    public void bookLocations(String... locationIds) {
+        if (locationIds != null) {
+            for (String locId : locationIds) {
+                bookLocation(locId);
+            }
         }
     }
 
@@ -198,6 +238,14 @@ public class Movie implements Identifiable<String>, Reportable, CostTrackable, S
         this.title = title;
     }
 
+    public String getStudioId() {
+        return studioId != null ? studioId : "PH-101";
+    }
+
+    public void setStudioId(String studioId) {
+        this.studioId = studioId;
+    }
+
     public String getGenre() {
         return genre;
     }
@@ -222,6 +270,14 @@ public class Movie implements Identifiable<String>, Reportable, CostTrackable, S
         this.productionPhase = productionPhase;
     }
 
+    public ProductionPhase getPhase() {
+        return productionPhase;
+    }
+
+    public void setPhase(ProductionPhase phase) {
+        this.productionPhase = phase;
+    }
+
     public int getEstimatedReleaseYear() {
         return estimatedReleaseYear;
     }
@@ -230,8 +286,28 @@ public class Movie implements Identifiable<String>, Reportable, CostTrackable, S
         this.estimatedReleaseYear = estimatedReleaseYear;
     }
 
+    public int getReleaseYear() {
+        return estimatedReleaseYear;
+    }
+
+    public void setReleaseYear(int releaseYear) {
+        this.estimatedReleaseYear = releaseYear;
+    }
+
     public BudgetService getBudgetManager() {
         return budgetManager;
+    }
+
+    public void setBudgetManager(BudgetService budgetManager) {
+        this.budgetManager = budgetManager;
+    }
+
+    public BudgetService getBudgetService() {
+        return budgetManager;
+    }
+
+    public void setBudgetService(BudgetService budgetService) {
+        this.budgetManager = budgetService;
     }
 
     public List<Scene> getScenes() {
@@ -250,7 +326,15 @@ public class Movie implements Identifiable<String>, Reportable, CostTrackable, S
         return Collections.unmodifiableSet(assignedActorIds);
     }
 
+    public Set<String> getActorIds() {
+        return Collections.unmodifiableSet(assignedActorIds);
+    }
+
     public Set<String> getAssignedCrewIds() {
+        return Collections.unmodifiableSet(assignedCrewIds);
+    }
+
+    public Set<String> getCrewIds() {
         return Collections.unmodifiableSet(assignedCrewIds);
     }
 
@@ -258,7 +342,15 @@ public class Movie implements Identifiable<String>, Reportable, CostTrackable, S
         return Collections.unmodifiableSet(bookedEquipmentIds);
     }
 
+    public Set<String> getEquipmentIds() {
+        return Collections.unmodifiableSet(bookedEquipmentIds);
+    }
+
     public Set<String> getBookedLocationIds() {
+        return Collections.unmodifiableSet(bookedLocationIds);
+    }
+
+    public Set<String> getLocationIds() {
         return Collections.unmodifiableSet(bookedLocationIds);
     }
 

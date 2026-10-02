@@ -8,6 +8,9 @@ import com.cineflow.exception.ValidationException;
 import com.cineflow.model.CallSheet;
 import com.cineflow.model.DaylightRequirement;
 import com.cineflow.model.Department;
+import com.cineflow.model.Movie;
+import com.cineflow.model.ProductionHouse;
+import com.cineflow.model.ProductionPhase;
 import com.cineflow.model.Scene;
 import com.cineflow.model.SceneStatus;
 import com.cineflow.model.asset.Equipment;
@@ -31,59 +34,96 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Controller managing the interactive text-based terminal interface.
+ * Controller managing the interactive text-based terminal interface for CineFlow 2.0.
+ * Multi-Movie Production House System (Horizon Studios).
+ *
  * Implements best practices:
+ *  - Simple English terminology
+ *  - Clean box-layout headers and zero distorted ASCII art
+ *  - Dynamic multi-movie switching and project isolation
  *  - Clear prompt messages during input reading and output display
- *  - Modular submenu navigation
  *  - Graceful exception handling with actionable feedback
  */
 public class MenuController {
+    private final ProductionHouse productionHouse;
     private final ProductionService productionService;
     private final PersonnelService personnelService;
     private final AssetService assetService;
-    private final BudgetService budgetService;
-    private final String movieTitle;
+    private final BudgetService fallbackBudgetService;
+
+    public MenuController(ProductionHouse productionHouse,
+                          ProductionService productionService,
+                          PersonnelService personnelService,
+                          AssetService assetService,
+                          BudgetService budgetService) {
+        this.productionHouse = productionHouse != null ? productionHouse : new ProductionHouse();
+        this.productionService = productionService;
+        this.personnelService = personnelService;
+        this.assetService = assetService;
+        this.fallbackBudgetService = budgetService;
+    }
 
     public MenuController(ProductionService productionService,
                           PersonnelService personnelService,
                           AssetService assetService,
                           BudgetService budgetService) {
-        this.productionService = productionService;
-        this.personnelService = personnelService;
-        this.assetService = assetService;
-        this.budgetService = budgetService;
-        this.movieTitle = "Chronicles of Aether (Feature Film)";
+        this(new ProductionHouse(), productionService, personnelService, assetService, budgetService);
+    }
+
+    private Movie getActiveMovie() {
+        return productionHouse.getActiveMovie();
+    }
+
+    private BudgetService getActiveBudgetService() {
+        Movie active = getActiveMovie();
+        if (active != null && active.getBudgetService() != null) {
+            return active.getBudgetService();
+        }
+        return fallbackBudgetService;
     }
 
     public void start() {
         boolean running = true;
         while (running) {
             ConsoleUI.printBanner();
-            System.out.println(" ACTIVE PRODUCTION: " + ConsoleUI.BOLD + movieTitle + ConsoleUI.RESET);
-            System.out.println(" [1] Production Dashboard & Project Overview");
-            System.out.println(" [2] Script & Scene Breakdown Management");
-            System.out.println(" [3] Cast & Crew Talent Roster");
-            System.out.println(" [4] Equipment & Location Inventory");
-            System.out.println(" [5] Shooting Schedule & Priority Queue");
-            System.out.println(" [6] Department Budgets & Expense Tracking");
-            System.out.println(" [7] Data Persistence & File I/O Operations");
-            System.out.println(" [8] Automated Test Suite Demo (Evaluation Verification)");
-            System.out.println(" [0] Exit Application");
+            Movie active = getActiveMovie();
+            String activeDisplay = active != null
+                    ? String.format("[%s] %s (%s)", active.getId(), active.getTitle(), active.getProductionPhase().name())
+                    : "No Movie Selected";
+            System.out.println("Active Movie: " + ConsoleUI.BOLD + activeDisplay + ConsoleUI.RESET);
+            System.out.println("------------------------------------------------------------------------");
+            System.out.println(" [1]  \uD83C\uDFAC Switch / Select Active Movie");
+            System.out.println(" [2]  \uD83C\uDFA5 View All Movies in Production House");
+            System.out.println(" [3]  \u2795 Add New Movie to Studio");
+            System.out.println(" [4]  \uD83D\uDCCA Movie Overview & Status");
+            System.out.println(" [5]  \uD83D\uDCCB Scenes & Shooting List");
+            System.out.println(" [6]  \uD83D\uDC65 Actors & Crew Members");
+            System.out.println(" [7]  \uD83D\uDCCD Locations & Equipment");
+            System.out.println(" [8]  \uD83D\uDCC5 Shooting Schedule & Priorities (Priority Queue)");
+            System.out.println(" [9]  \uD83D\uDCB0 Movie Budget & Expenses");
+            System.out.println(" [10] \uD83D\uDCDD Daily Shooting Plan (Call Sheet)");
+            System.out.println(" [11] \uD83D\uDCBE Save / Export Reports to File");
+            System.out.println(" [12] \uD83E\uDDEA Automated Test Suite Demo (For Evaluation / Faculty)");
+            System.out.println(" [0]  \uD83D\uDEAA Exit Application");
             System.out.println();
 
-            int choice = ConsoleUI.promptInt("Select an option", 0, 8);
+            int choice = ConsoleUI.promptInt("Select an option", 0, 12);
             switch (choice) {
-                case 1 -> showDashboard();
-                case 2 -> manageScenes();
-                case 3 -> managePersonnel();
-                case 4 -> manageAssets();
-                case 5 -> manageSchedule();
-                case 6 -> manageBudgets();
-                case 7 -> managePersistence();
-                case 8 -> runTestSuiteDemo();
+                case 1 -> switchActiveMovie();
+                case 2 -> viewAllMovies();
+                case 3 -> addNewMovie();
+                case 4 -> showMovieOverview();
+                case 5 -> manageScenes();
+                case 6 -> managePersonnel();
+                case 7 -> manageAssets();
+                case 8 -> manageSchedule();
+                case 9 -> manageBudgets();
+                case 10 -> manageCallSheets();
+                case 11 -> managePersistence();
+                case 12 -> runTestSuiteDemo();
                 case 0 -> {
-                    if (ConsoleUI.promptConfirmation("Are you sure you want to exit CineFlow?")) {
-                        ConsoleUI.printInfo("Thank you for using CineFlow. Film wrap complete!");
+                    if (ConsoleUI.promptConfirmation("Are you sure you want to exit the application?")) {
+                        ConsoleUI.printInfo("Thank you for using Horizon Studios CineFlow System. Film production wrap complete!");
                         running = false;
                     }
                 }
@@ -92,25 +132,171 @@ public class MenuController {
     }
 
     // =========================================================================
-    // 1. DASHBOARD
+    // 1. SWITCH / SELECT ACTIVE MOVIE
     // =========================================================================
-    private void showDashboard() {
-        ConsoleUI.printSectionHeader("Production Executive Dashboard");
+    private void switchActiveMovie() {
+        ConsoleUI.printSectionHeader("Switch Active Movie");
+        List<Movie> movies = productionHouse.getAllMovies();
+        if (movies.isEmpty()) {
+            ConsoleUI.printWarning("No movies currently registered in studio catalog.");
+            ConsoleUI.pauseForUser();
+            return;
+        }
+
+        System.out.println("Available Movies in " + productionHouse.getName() + ":");
+        for (int i = 0; i < movies.size(); i++) {
+            Movie m = movies.get(i);
+            boolean isActive = m.getId().equals(productionHouse.getActiveMovieId());
+            String activeTag = isActive ? ConsoleUI.GREEN + " [CURRENT ACTIVE]" + ConsoleUI.RESET : "";
+            System.out.printf("  [%d] [%s] %-28s (%s | %s)%s\n",
+                    i + 1, m.getId(), m.getTitle(), m.getGenre(), m.getProductionPhase().name(), activeTag);
+        }
+        System.out.println("  [0] Cancel / Keep Current Selection\n");
+
+        int choice = ConsoleUI.promptInt("Select movie number to activate", 0, movies.size());
+        if (choice > 0) {
+            Movie selected = movies.get(choice - 1);
+            productionHouse.setActiveMovie(selected);
+            productionService.setActiveMovieId(selected.getId());
+            ConsoleUI.printSuccess(String.format("Active movie switched to: [%s] %s (%s)",
+                    selected.getId(), selected.getTitle(), selected.getProductionPhase().name()));
+        } else {
+            ConsoleUI.printInfo("Active movie selection unchanged.");
+        }
+        ConsoleUI.pauseForUser();
+    }
+
+    // =========================================================================
+    // 2. VIEW ALL MOVIES IN PRODUCTION HOUSE
+    // =========================================================================
+    private void viewAllMovies() {
+        ConsoleUI.printSectionHeader("Horizon Studios - Film Slate & Movie Catalog");
+        System.out.printf("Studio: %s (ID: %s) | Established: %d | HQ: %s\n",
+                productionHouse.getName(), productionHouse.getId(),
+                productionHouse.getEstablishedYear(), productionHouse.getHeadquarters());
+        System.out.println("-".repeat(110));
+
+        List<Movie> movies = productionHouse.getAllMovies();
+        if (movies.isEmpty()) {
+            ConsoleUI.printWarning("No movies currently registered in studio catalog.");
+        } else {
+            System.out.printf("%-8s | %-24s | %-18s | %-18s | %-16s | %-12s | %s\n",
+                    "ID", "TITLE", "GENRE", "DIRECTOR", "STAGE", "PROGRESS", "ACTIVE");
+            System.out.println("-".repeat(110));
+            for (Movie m : movies) {
+                boolean isActive = m.getId().equals(productionHouse.getActiveMovieId());
+                String activeStr = isActive ? ConsoleUI.GREEN + "[ACTIVE]" + ConsoleUI.RESET : "   -   ";
+                String progressStr = String.format("%d/%d (%.0f%%)",
+                        m.getCompletedScenesCount(), m.getScenes().size(), m.getProductionProgressPercentage());
+                System.out.printf("%-8s | %-24s | %-18s | %-18s | %-16s | %-12s | %s\n",
+                        m.getId(),
+                        truncate(m.getTitle(), 24),
+                        truncate(m.getGenre(), 18),
+                        truncate(m.getDirectorName(), 18),
+                        truncate(m.getProductionPhase().name(), 16),
+                        progressStr,
+                        activeStr);
+            }
+            System.out.println("-".repeat(110));
+            System.out.printf("Studio Summary: %d Movie Projects | %d Central Talent | %d Physical Assets\n",
+                    movies.size(), personnelService.getAllPersonnel().size(), assetService.getAllAssets().size());
+        }
+        ConsoleUI.pauseForUser();
+    }
+
+    // =========================================================================
+    // 3. ADD NEW MOVIE TO STUDIO
+    // =========================================================================
+    private void addNewMovie() {
+        ConsoleUI.printSectionHeader("Add New Movie to Production House");
+        String id;
+        while (true) {
+            id = ConsoleUI.promptNonEmptyString("Enter Movie ID (e.g., MOV-04)");
+            if (productionHouse.getMovie(id).isPresent()) {
+                ConsoleUI.printWarning("A movie with ID '" + id + "' already exists! Please use a unique ID.");
+            } else {
+                break;
+            }
+        }
+
+        String title = ConsoleUI.promptNonEmptyString("Enter Movie Title");
+        String genre = ConsoleUI.promptNonEmptyString("Enter Genre (e.g., Action / Sci-Fi / Drama)");
+        String director = ConsoleUI.promptNonEmptyString("Enter Director Name");
+
+        System.out.println("\nSelect Production Stage:");
+        ProductionPhase[] phases = ProductionPhase.values();
+        for (int i = 0; i < phases.length; i++) {
+            System.out.printf("  [%d] %s\n", i + 1, phases[i].getDescription());
+        }
+        int phaseChoice = ConsoleUI.promptInt("Choice", 1, phases.length);
+        ProductionPhase phase = phases[phaseChoice - 1];
+
+        int year = ConsoleUI.promptInt("Enter Estimated Release Year", 2025, 2035);
+        double initialBudget = ConsoleUI.promptDouble("Enter Initial Production Budget Allocation", 0.0, 500000000.0);
+
+        Movie newMovie = new Movie(id, title, genre, director, phase, year);
+
+        if (initialBudget > 0) {
+            try {
+                BudgetService bs = newMovie.getBudgetService();
+                bs.allocateBudget(Department.DIRECTING, initialBudget * 0.15, "Directing & Creatives");
+                bs.allocateBudget(Department.CAMERA, initialBudget * 0.15, "Camera & Cinematography");
+                bs.allocateBudget(Department.ART_AND_PROPS, initialBudget * 0.15, "Sets & Practical Props");
+                bs.allocateBudget(Department.VFX_AND_POST, initialBudget * 0.25, "VFX & Post-Production");
+                bs.allocateBudget(Department.SOUND, initialBudget * 0.10, "Sound & Audio Capture");
+                bs.allocateBudget(Department.COSTUME_AND_MAKEUP, initialBudget * 0.10, "Wardrobe & Makeup");
+                bs.allocateBudget(Department.LOGISTICS_AND_CATERING, initialBudget * 0.10, "Logistics, Permits, Catering");
+            } catch (ValidationException e) {
+                ConsoleUI.printWarning("Could not auto-allocate initial budget: " + e.getMessage());
+            }
+        }
+
+        productionHouse.addMovie(newMovie);
+
+        if (ConsoleUI.promptConfirmation("Do you want to set this new movie as the ACTIVE project now?")) {
+            productionHouse.setActiveMovie(newMovie);
+            productionService.setActiveMovieId(newMovie.getId());
+            ConsoleUI.printSuccess(String.format("Movie '%s' registered and activated!", title));
+        } else {
+            ConsoleUI.printSuccess(String.format("Movie '%s' added to studio catalog!", title));
+        }
+        ConsoleUI.pauseForUser();
+    }
+
+    // =========================================================================
+    // 4. MOVIE OVERVIEW & STATUS (Dashboard)
+    // =========================================================================
+    private void showMovieOverview() {
+        Movie active = getActiveMovie();
+        if (active == null) {
+            ConsoleUI.printWarning("No active movie selected. Please choose a movie first.");
+            ConsoleUI.pauseForUser();
+            return;
+        }
+
+        ConsoleUI.printSectionHeader("Movie Overview & Status: " + active.getTitle());
         List<Scene> allScenes = productionService.getAllScenes();
         long completedScenes = allScenes.stream().filter(s -> s.getStatus() == SceneStatus.COMPLETED).count();
         long scheduledScenes = allScenes.stream().filter(s -> s.getStatus() == SceneStatus.SCHEDULED).count();
         long draftScenes = allScenes.stream().filter(s -> s.getStatus() == SceneStatus.DRAFT).count();
         double progress = allScenes.isEmpty() ? 0.0 : ((double) completedScenes / allScenes.size()) * 100.0;
 
-        double totalBudget = budgetService.getTotalAllocatedBudget();
-        double totalSpent = budgetService.getTotalSpentBudget();
-        double remainingBudget = budgetService.getRemainingBudget();
+        BudgetService bs = getActiveBudgetService();
+        double totalBudget = bs.getTotalAllocatedBudget();
+        double totalSpent = bs.getTotalSpentBudget();
+        double remainingBudget = bs.getRemainingBudget();
         double budgetUtil = totalBudget > 0 ? (totalSpent / totalBudget) * 100.0 : 0.0;
 
-        System.out.printf("Movie Title        : %s\n", movieTitle);
-        System.out.printf("Total Script Scenes: %d | Filmed: %d | Scheduled: %d | Draft: %d\n",
+        System.out.printf("Movie ID           : %s\n", active.getId());
+        System.out.printf("Movie Title        : %s\n", active.getTitle());
+        System.out.printf("Genre / Category   : %s\n", active.getGenre());
+        System.out.printf("Director           : %s\n", active.getDirectorName());
+        System.out.printf("Production Stage   : %s\n", active.getProductionPhase().getDescription());
+        System.out.printf("Estimated Release  : %d\n", active.getEstimatedReleaseYear());
+        System.out.println("-".repeat(75));
+        System.out.printf("Script Scenes      : Total: %d | Filmed: %d | Scheduled: %d | Draft: %d\n",
                 allScenes.size(), completedScenes, scheduledScenes, draftScenes);
-        System.out.printf("Production Progress: [%s] %.1f%% Completed\n",
+        System.out.printf("Filming Progress   : [%s] %.1f%% Completed\n",
                 renderProgressBar(progress, 25), progress);
         System.out.println("-".repeat(75));
         System.out.printf("Total Budget       : $%,.2f\n", totalBudget);
@@ -118,8 +304,9 @@ public class MenuController {
         System.out.printf("Remaining Reserve  : $%,.2f (%s)\n", remainingBudget,
                 remainingBudget >= 0 ? "HEALTHY" : "DEFICIT");
         System.out.println("-".repeat(75));
-        System.out.printf("Talent Roster      : %d Actors | %d Technical Crew Members\n",
-                personnelService.getAllActors().size(), personnelService.getAllCrew().size());
+        System.out.printf("Talent Assigned    : %d Actors | %d Technical Crew Members\n",
+                active.getAssignedActorIds().isEmpty() ? personnelService.getAllActors().size() : active.getAssignedActorIds().size(),
+                active.getAssignedCrewIds().isEmpty() ? personnelService.getAllCrew().size() : active.getAssignedCrewIds().size());
         System.out.printf("Physical Assets    : %d Equipment Units | %d Filming Locations\n",
                 assetService.getAllEquipment().size(), assetService.getAllLocations().size());
         System.out.printf("Shooting Queue     : %d scenes pending in PriorityQueue\n",
@@ -130,6 +317,8 @@ public class MenuController {
             System.out.printf("NEXT URGENT SHOOT  : Scene #%02d - \"%s\" (Priority %d | %s)\n",
                     nextScene.getSceneNumber(), nextScene.getTitle(), nextScene.getPriority(),
                     nextScene.getDaylightRequirement().getDescription());
+        } else {
+            System.out.println("NEXT URGENT SHOOT  : (All scenes filmed or queue empty)");
         }
         ConsoleUI.pauseForUser();
     }
@@ -140,14 +329,16 @@ public class MenuController {
     }
 
     // =========================================================================
-    // 2. SCENE MANAGEMENT
+    // 5. SCENES & SHOOTING LIST
     // =========================================================================
     private void manageScenes() {
         boolean inSubMenu = true;
         while (inSubMenu) {
-            ConsoleUI.printSectionHeader("Script & Scene Breakdown");
-            System.out.println(" [1] View All Script Scenes");
-            System.out.println(" [2] Add New Scene to Script Breakdown");
+            Movie active = getActiveMovie();
+            String title = active != null ? active.getTitle() : "Studio";
+            ConsoleUI.printSectionHeader("Scenes & Shooting List - " + title);
+            System.out.println(" [1] View All Scenes for Active Movie");
+            System.out.println(" [2] Add New Scene to Active Movie");
             System.out.println(" [3] View Full Scene Details & Prep Checklist");
             System.out.println(" [4] Filter Scenes by Lighting / Status");
             System.out.println(" [5] Mark Scene as FILMED / COMPLETED");
@@ -168,10 +359,12 @@ public class MenuController {
     }
 
     private void listAllScenes() {
-        ConsoleUI.printSectionHeader("Script Scene Breakdown Roster");
+        Movie active = getActiveMovie();
+        String title = active != null ? active.getTitle() : "Studio";
+        ConsoleUI.printSectionHeader("Scenes Breakdown - " + title);
         List<Scene> scenes = productionService.getAllScenes();
         if (scenes.isEmpty()) {
-            ConsoleUI.printWarning("No scenes currently registered.");
+            ConsoleUI.printWarning("No scenes currently registered for this movie.");
             ConsoleUI.pauseForUser();
             return;
         }
@@ -193,7 +386,10 @@ public class MenuController {
     private void addNewScene() {
         ConsoleUI.printSectionHeader("Add New Script Scene");
         try {
-            String id = ConsoleUI.promptNonEmptyString("Enter Scene ID (e.g., SCN-06)");
+            Movie active = getActiveMovie();
+            String movieId = active != null ? active.getId() : "MOV-01";
+
+            String id = ConsoleUI.promptNonEmptyString("Enter Scene ID (e.g., SCN-07)");
             int num = ConsoleUI.promptInt("Enter Scene Number", 1, 999);
             String title = ConsoleUI.promptNonEmptyString("Enter Scene Title");
             String synopsis = ConsoleUI.promptNonEmptyString("Enter Scene Synopsis");
@@ -210,8 +406,11 @@ public class MenuController {
             int priority = ConsoleUI.promptInt("Enter Urgency Priority (1=Critical, 5=Flexible)", 1, 5);
             double hours = ConsoleUI.promptDouble("Enter Estimated Shoot Duration (hours)", 0.5, 48.0);
 
-            Scene scene = new Scene(id, num, title, synopsis, pages, daylight, priority, hours);
+            Scene scene = new Scene(id, movieId, num, title, synopsis, pages, daylight, priority, hours);
             productionService.addScene(scene);
+            if (active != null) {
+                active.addScene(scene);
+            }
             ConsoleUI.printSuccess("Scene #" + num + " [\"" + title + "\"] registered and placed in PriorityQueue!");
         } catch (ValidationException e) {
             ConsoleUI.printError("Validation Failure: " + e.getMessage());
@@ -269,6 +468,10 @@ public class MenuController {
         String id = ConsoleUI.promptNonEmptyString("Enter Scene ID to mark as FILMED");
         try {
             productionService.markSceneFilmed(id);
+            Movie active = getActiveMovie();
+            if (active != null) {
+                active.refreshShootingQueue();
+            }
             ConsoleUI.printSuccess("Scene '" + id + "' marked as FILMED and removed from active shooting queue!");
         } catch (ResourceNotFoundException e) {
             ConsoleUI.printError(e.getMessage());
@@ -287,6 +490,10 @@ public class MenuController {
             } else {
                 scene.assignActor(actorId);
                 actor.assignScene(sceneId);
+                Movie active = getActiveMovie();
+                if (active != null) {
+                    active.assignActor(actorId);
+                }
                 ConsoleUI.printSuccess(String.format("Assigned %s (%s) to Scene #%d!",
                         actor.getName(), actor.getCharacterName(), scene.getSceneNumber()));
             }
@@ -297,21 +504,22 @@ public class MenuController {
     }
 
     // =========================================================================
-    // 3. PERSONNEL MANAGEMENT
+    // 6. ACTORS & CREW MEMBERS
     // =========================================================================
     private void managePersonnel() {
         boolean inSubMenu = true;
         while (inSubMenu) {
-            ConsoleUI.printSectionHeader("Cast & Crew Talent Roster");
+            ConsoleUI.printSectionHeader("Actors & Crew Members (Studio Talent Roster)");
             System.out.println(" [1] View Full Personnel Roster");
-            System.out.println(" [2] Register New Actor / Talent");
+            System.out.println(" [2] Register New Actor");
             System.out.println(" [3] Register Technical Crew Member");
             System.out.println(" [4] View Personnel Contract Profile");
-            System.out.println(" [5] Dynamic Payroll & Remuneration Audit");
+            System.out.println(" [5] Dynamic Payroll & Remuneration Audit (Polymorphism)");
             System.out.println(" [6] Filter Crew by Department");
+            System.out.println(" [7] Assign Cast / Crew to Active Movie");
             System.out.println(" [0] Back to Main Menu\n");
 
-            int choice = ConsoleUI.promptInt("Select an option", 0, 6);
+            int choice = ConsoleUI.promptInt("Select an option", 0, 7);
             switch (choice) {
                 case 1 -> listAllPersonnel();
                 case 2 -> registerActor();
@@ -319,13 +527,14 @@ public class MenuController {
                 case 4 -> viewPersonProfile();
                 case 5 -> auditPayroll();
                 case 6 -> filterCrewDepartment();
+                case 7 -> assignPersonnelToActiveMovie();
                 case 0 -> inSubMenu = false;
             }
         }
     }
 
     private void listAllPersonnel() {
-        ConsoleUI.printSectionHeader("Active Production Personnel");
+        ConsoleUI.printSectionHeader("Studio Personnel Roster");
         List<Person> list = personnelService.getAllPersonnel();
         System.out.printf("%-8s | %-22s | %-32s | %-12s | %-6s\n",
                 "ID", "NAME", "ROLE / DESIGNATION", "DAILY RATE", "DAYS");
@@ -358,6 +567,10 @@ public class MenuController {
                     actor.addSkill(sk);
                 }
             }
+            Movie active = getActiveMovie();
+            if (active != null && ConsoleUI.promptConfirmation("Assign this actor to active movie '" + active.getTitle() + "'?")) {
+                active.assignActor(id);
+            }
             ConsoleUI.printSuccess("Actor " + name + " (Role: " + character + ") registered successfully!");
         } catch (ValidationException e) {
             ConsoleUI.printError("Validation Failure: " + e.getMessage());
@@ -389,6 +602,10 @@ public class MenuController {
                     name.toLowerCase().replace(" ", ".") + "@crew.cineflow.studio",
                     "555-CREW", dailyRate, dept, designation, union, certs);
 
+            Movie active = getActiveMovie();
+            if (active != null && ConsoleUI.promptConfirmation("Assign this crew member to active movie '" + active.getTitle() + "'?")) {
+                active.assignCrew(id);
+            }
             ConsoleUI.printSuccess("Crew member " + name + " (" + designation + ") registered successfully!");
         } catch (ValidationException e) {
             ConsoleUI.printError("Validation Failure: " + e.getMessage());
@@ -419,7 +636,6 @@ public class MenuController {
         double total = 0.0;
         for (Person p : list) {
             int days = p.getDaysWorked() > 0 ? p.getDaysWorked() : shootDays;
-            // Dynamic Polymorphism: Calls Actor, CrewMember, or Director calculateRemuneration()
             double rem = p.calculateRemuneration(days);
             total += rem;
             System.out.printf("%-8s | %-22s | %-28s | %-6d | $%,14.2f\n",
@@ -447,13 +663,39 @@ public class MenuController {
         ConsoleUI.pauseForUser();
     }
 
+    private void assignPersonnelToActiveMovie() {
+        Movie active = getActiveMovie();
+        if (active == null) {
+            ConsoleUI.printWarning("No active movie selected!");
+            ConsoleUI.pauseForUser();
+            return;
+        }
+        ConsoleUI.printSectionHeader("Assign Personnel to Movie: " + active.getTitle());
+        String id = ConsoleUI.promptNonEmptyString("Enter Person ID (e.g., ACT-201 or CRW-301)");
+        try {
+            Person p = personnelService.getPersonById(id);
+            if (p instanceof Actor) {
+                active.assignActor(id);
+                ConsoleUI.printSuccess("Assigned Actor " + p.getName() + " to " + active.getTitle());
+            } else if (p instanceof CrewMember) {
+                active.assignCrew(id);
+                ConsoleUI.printSuccess("Assigned Crew Member " + p.getName() + " to " + active.getTitle());
+            } else {
+                ConsoleUI.printInfo("Director " + p.getName() + " linked to " + active.getTitle());
+            }
+        } catch (ResourceNotFoundException e) {
+            ConsoleUI.printError(e.getMessage());
+        }
+        ConsoleUI.pauseForUser();
+    }
+
     // =========================================================================
-    // 4. ASSET MANAGEMENT (Equipment & Locations)
+    // 7. LOCATIONS & EQUIPMENT (Asset Management)
     // =========================================================================
     private void manageAssets() {
         boolean inSubMenu = true;
         while (inSubMenu) {
-            ConsoleUI.printSectionHeader("Equipment & Location Inventory");
+            ConsoleUI.printSectionHeader("Locations & Equipment (Studio Assets)");
             System.out.println(" [1] View All Physical Assets");
             System.out.println(" [2] Register New Equipment Unit");
             System.out.println(" [3] Register New Filming Location");
@@ -507,7 +749,7 @@ public class MenuController {
             boolean ins = ConsoleUI.promptConfirmation("Is specialized insurance required?");
 
             assetService.registerEquipment(id, name, dailyCost, sn, category, condition, ins);
-            ConsoleUI.printSuccess("Equipment '" + name + "' added to production inventory!");
+            ConsoleUI.printSuccess("Equipment '" + name + "' added to studio inventory!");
         } catch (ValidationException e) {
             ConsoleUI.printError("Validation Failure: " + e.getMessage());
         }
@@ -561,7 +803,6 @@ public class MenuController {
                 "ID", "ASSET NAME", "TYPE", "DAYS", "TOTAL COST");
         System.out.println("-".repeat(85));
         for (ProductionAsset a : assets) {
-            // Dynamic Polymorphism: invokes Equipment vs Location computeTotalCost()
             System.out.printf("%-8s | %-28s | %-16s | %-6d | $%,14.2f\n",
                     a.getId(), truncate(a.getName(), 28), truncate(a.getAssetCategory(), 16),
                     a.getDaysBooked(), a.computeTotalCost());
@@ -573,27 +814,46 @@ public class MenuController {
     }
 
     // =========================================================================
-    // 5. SCHEDULE & PRIORITY QUEUE
+    // 8. SHOOTING SCHEDULE & PRIORITIES (Priority Queue)
     // =========================================================================
     private void manageSchedule() {
         boolean inSubMenu = true;
         while (inSubMenu) {
-            ConsoleUI.printSectionHeader("Shooting Schedule & Priority Queue");
-            System.out.println(" [1] View Shooting Priority Queue (Urgency / Weather Order)");
+            Movie active = getActiveMovie();
+            String title = active != null ? active.getTitle() : "Active Movie";
+            ConsoleUI.printSectionHeader("Shooting Schedule & Priorities (Priority Queue) - " + title);
+            System.out.println(" [1] View Next Urgent Scene to Shoot (PriorityQueue Peek)");
             System.out.println(" [2] Schedule a Scene Shoot (With Conflict Detection)");
-            System.out.println(" [3] View Generated Call Sheets");
-            System.out.println(" [4] Generate & Export New Daily Call Sheet to File");
+            System.out.println(" [3] View Shooting Priority Queue (Urgency & Lighting Order)");
+            System.out.println(" [4] Poll and Dispatch Next Urgent Scene (PriorityQueue Poll)");
+            System.out.println(" [5] Calculate Scene Cost Estimate (Lambda Expression)");
             System.out.println(" [0] Back to Main Menu\n");
 
-            int choice = ConsoleUI.promptInt("Select an option", 0, 4);
+            int choice = ConsoleUI.promptInt("Select an option", 0, 5);
             switch (choice) {
-                case 1 -> viewPriorityQueue();
+                case 1 -> peekNextUrgentScene();
                 case 2 -> scheduleSceneShoot();
-                case 3 -> viewCallSheets();
-                case 4 -> generateAndExportCallSheet();
+                case 3 -> viewPriorityQueue();
+                case 4 -> pollNextUrgentScene();
+                case 5 -> estimateSceneCostWithLambda();
                 case 0 -> inSubMenu = false;
             }
         }
+    }
+
+    private void peekNextUrgentScene() {
+        ConsoleUI.printSectionHeader("Next Urgent Scene to Shoot (PriorityQueue Peek)");
+        Scene nextScene = productionService.peekNextPriorityScene();
+        if (nextScene != null) {
+            System.out.printf("Top Priority Scene: #%02d - \"%s\"\n", nextScene.getSceneNumber(), nextScene.getTitle());
+            System.out.printf("Lighting / Daylight: %s\n", nextScene.getDaylightRequirement().getDescription());
+            System.out.printf("Urgency Priority  : Level %d\n", nextScene.getPriority());
+            System.out.printf("Estimated Duration: %.1f hours\n", nextScene.getEstimatedShootHours());
+            System.out.printf("Synopsis          : %s\n", nextScene.getSynopsis());
+        } else {
+            ConsoleUI.printInfo("No pending scenes in shooting priority queue for this movie.");
+        }
+        ConsoleUI.pauseForUser();
     }
 
     private void viewPriorityQueue() {
@@ -612,6 +872,38 @@ public class MenuController {
                         rank++, s.getId(), truncate(s.getTitle(), 32), s.getPriority(),
                         truncate(s.getDaylightRequirement().getDescription(), 24), s.getStatus().name());
             }
+        }
+        ConsoleUI.pauseForUser();
+    }
+
+    private void pollNextUrgentScene() {
+        ConsoleUI.printSectionHeader("Poll & Dispatch Next Urgent Scene");
+        Scene dispatched = productionService.pollNextPriorityScene();
+        if (dispatched != null) {
+            ConsoleUI.printSuccess(String.format("Polled and Dispatched Scene #%02d: \"%s\" (Priority %d, %s)",
+                    dispatched.getSceneNumber(), dispatched.getTitle(), dispatched.getPriority(),
+                    dispatched.getDaylightRequirement().name()));
+            System.out.println("Dispatched scene is now on production camera call!");
+        } else {
+            ConsoleUI.printWarning("No scenes available in priority queue to dispatch.");
+        }
+        ConsoleUI.pauseForUser();
+    }
+
+    private void estimateSceneCostWithLambda() {
+        ConsoleUI.printSectionHeader("Estimate Scene Cost (Custom Lambda Expression)");
+        String sceneId = ConsoleUI.promptNonEmptyString("Enter Scene ID to estimate");
+        int days = ConsoleUI.promptInt("Enter estimated shoot days", 1, 30);
+        try {
+            // Functional Interface CostEstimator implemented using a lambda expression
+            com.cineflow.service.CostEstimator estimator = (sc, d) ->
+                    (sc.getScriptPages() * 850.0) + (d * 2400.0) + (sc.getRequiredActorIds().size() * 1500.0);
+
+            double cost = productionService.estimateSceneCost(sceneId, days, estimator);
+            ConsoleUI.printSuccess(String.format("Estimated Shooting Cost for %s over %d days: $%,.2f",
+                    sceneId, days, cost));
+        } catch (ResourceNotFoundException e) {
+            ConsoleUI.printError(e.getMessage());
         }
         ConsoleUI.pauseForUser();
     }
@@ -635,8 +927,175 @@ public class MenuController {
         ConsoleUI.pauseForUser();
     }
 
-    private void viewCallSheets() {
-        ConsoleUI.printSectionHeader("Official Call Sheets");
+    // =========================================================================
+    // 9. MOVIE BUDGET & EXPENSES
+    // =========================================================================
+    private void manageBudgets() {
+        boolean inSubMenu = true;
+        while (inSubMenu) {
+            Movie active = getActiveMovie();
+            String title = active != null ? active.getTitle() : "Active Movie";
+            ConsoleUI.printSectionHeader("Movie Budget & Expenses - " + title);
+            System.out.println(" [1] View Department Budget Ledger & Variance");
+            System.out.println(" [2] Allocate / Adjust Department Budget Ceiling");
+            System.out.println(" [3] Log New Production Expense Transaction");
+            System.out.println(" [4] View Transaction Audit History");
+            System.out.println(" [5] Export Movie Budget Report to File");
+            System.out.println(" [0] Back to Main Menu\n");
+
+            int choice = ConsoleUI.promptInt("Select an option", 0, 5);
+            switch (choice) {
+                case 1 -> viewBudgetLedger();
+                case 2 -> allocateDepartmentBudget();
+                case 3 -> logExpenseTransaction();
+                case 4 -> viewTransactionHistory();
+                case 5 -> exportBudgetReport();
+                case 0 -> inSubMenu = false;
+            }
+        }
+    }
+
+    private void viewBudgetLedger() {
+        BudgetService bs = getActiveBudgetService();
+        ConsoleUI.printSectionHeader("Department Budget Variance Ledger");
+        System.out.printf("%-28s | %-14s | %-14s | %-14s | %-8s\n",
+                "DEPARTMENT", "ALLOCATED", "SPENT", "REMAINING", "UTIL %");
+        System.out.println("-".repeat(88));
+
+        for (Department dept : Department.values()) {
+            double alloc = bs.getAllocatedForDepartment(dept);
+            double spent = bs.getSpentForDepartment(dept);
+            double rem = bs.getRemainingForDepartment(dept);
+            double util = alloc > 0 ? (spent / alloc) * 100.0 : 0.0;
+            System.out.printf("%-28s | $%,12.2f | $%,12.2f | $%,12.2f | %6.1f%%\n",
+                    dept.getDisplayName(), alloc, spent, rem, util);
+        }
+        System.out.println("-".repeat(88));
+        System.out.printf("TOTALS: ALLOCATED: $%,.2f | SPENT: $%,.2f | REMAINING: $%,.2f\n",
+                bs.getTotalAllocatedBudget(),
+                bs.getTotalSpentBudget(),
+                bs.getRemainingBudget());
+        ConsoleUI.pauseForUser();
+    }
+
+    private void allocateDepartmentBudget() {
+        ConsoleUI.printSectionHeader("Allocate Department Budget");
+        try {
+            System.out.println("Select Department:");
+            Department[] depts = Department.values();
+            for (int i = 0; i < depts.length; i++) {
+                System.out.printf("  [%d] %s\n", i + 1, depts[i].getDisplayName());
+            }
+            int choice = ConsoleUI.promptInt("Choice", 1, depts.length);
+            Department dept = depts[choice - 1];
+
+            double amount = ConsoleUI.promptDouble("Enter New Budget Ceiling", 0.0, 50000000.0);
+            String just = ConsoleUI.promptString("Justification / Note (optional)");
+
+            BudgetService bs = getActiveBudgetService();
+            bs.allocateBudget(dept, amount, just.isEmpty() ? "Approved by Executive Producer" : just);
+            ConsoleUI.printSuccess(String.format("Department '%s' budget allocated to $%,.2f!",
+                    dept.getDisplayName(), amount));
+        } catch (ValidationException e) {
+            ConsoleUI.printError("Validation Failure: " + e.getMessage());
+        }
+        ConsoleUI.pauseForUser();
+    }
+
+    private void logExpenseTransaction() {
+        ConsoleUI.printSectionHeader("Log Production Expense Transaction");
+        try {
+            System.out.println("Select Department:");
+            Department[] depts = Department.values();
+            for (int i = 0; i < depts.length; i++) {
+                System.out.printf("  [%d] %s\n", i + 1, depts[i].getDisplayName());
+            }
+            int choice = ConsoleUI.promptInt("Choice", 1, depts.length);
+            Department dept = depts[choice - 1];
+
+            double amount = ConsoleUI.promptDouble("Enter Expense Amount", 1.0, 10000000.0);
+            String desc = ConsoleUI.promptNonEmptyString("Enter Expense Description");
+            String approver = ConsoleUI.promptNonEmptyString("Approved By (e.g., Line Producer)");
+
+            BudgetService bs = getActiveBudgetService();
+            BudgetService.ExpenseRecord record = bs.logExpense(dept, amount, desc, approver);
+            ConsoleUI.printSuccess("Expense logged successfully: " + record);
+        } catch (BudgetExceededException e) {
+            ConsoleUI.printError("FINANCIAL VIOLATION PREVENTED: " + e.getMessage());
+            System.out.printf("  [Audit] Department: %s | Requested: $%,.2f | Available: $%,.2f | Overrun: $%,.2f\n",
+                    e.getDepartment().getDisplayName(), e.getAttemptedAmount(),
+                    e.getAvailableBudget(), e.getOverdraftAmount());
+        } catch (ValidationException e) {
+            ConsoleUI.printError("Validation Failure: " + e.getMessage());
+        }
+        ConsoleUI.pauseForUser();
+    }
+
+    private void viewTransactionHistory() {
+        ConsoleUI.printSectionHeader("Expense Transaction History");
+        BudgetService bs = getActiveBudgetService();
+        List<BudgetService.ExpenseRecord> records = bs.getExpenseHistory();
+        if (records.isEmpty()) {
+            ConsoleUI.printWarning("No expenses recorded yet for this movie.");
+        } else {
+            for (BudgetService.ExpenseRecord er : records) {
+                System.out.println("  • " + er);
+            }
+        }
+        ConsoleUI.pauseForUser();
+    }
+
+    private void exportBudgetReport() {
+        String path = "data/budget_summary.txt";
+        new File("data").mkdirs();
+        try {
+            BudgetService bs = getActiveBudgetService();
+            bs.exportBudgetReportToFile(path);
+            ConsoleUI.printSuccess("Budget report exported successfully to: " + path);
+            System.out.println("\n" + productionService.readExportedFile(path));
+        } catch (IOException e) {
+            ConsoleUI.printError("Failed to export budget report: " + e.getMessage());
+        }
+        ConsoleUI.pauseForUser();
+    }
+
+    // =========================================================================
+    // 10. DAILY SHOOTING PLAN (Call Sheet)
+    // =========================================================================
+    private void manageCallSheets() {
+        boolean inSubMenu = true;
+        while (inSubMenu) {
+            Movie active = getActiveMovie();
+            String title = active != null ? active.getTitle() : "Active Movie";
+            ConsoleUI.printSectionHeader("Daily Shooting Plan (Call Sheet) - " + title);
+            System.out.println(" [1] View Current Daily Shooting Plan");
+            System.out.println(" [2] Create & Export New Daily Shooting Plan");
+            System.out.println(" [3] View All Saved Call Sheets");
+            System.out.println(" [0] Back to Main Menu\n");
+
+            int choice = ConsoleUI.promptInt("Select an option", 0, 3);
+            switch (choice) {
+                case 1 -> viewActiveCallSheet();
+                case 2 -> generateAndExportCallSheet();
+                case 3 -> viewAllCallSheets();
+                case 0 -> inSubMenu = false;
+            }
+        }
+    }
+
+    private void viewActiveCallSheet() {
+        ConsoleUI.printSectionHeader("Today's Daily Shooting Plan");
+        List<CallSheet> callSheets = productionService.getAllCallSheets();
+        if (callSheets.isEmpty()) {
+            ConsoleUI.printWarning("No Daily Shooting Plan registered yet for this movie.");
+        } else {
+            System.out.println(callSheets.get(0).generateDetailedReport());
+        }
+        ConsoleUI.pauseForUser();
+    }
+
+    private void viewAllCallSheets() {
+        ConsoleUI.printSectionHeader("All Registered Call Sheets");
         List<CallSheet> callSheets = productionService.getAllCallSheets();
         if (callSheets.isEmpty()) {
             ConsoleUI.printWarning("No Call Sheets on record.");
@@ -649,8 +1108,11 @@ public class MenuController {
     }
 
     private void generateAndExportCallSheet() {
-        ConsoleUI.printSectionHeader("Generate & Export Daily Call Sheet");
+        ConsoleUI.printSectionHeader("Generate & Export Daily Shooting Plan");
         try {
+            Movie active = getActiveMovie();
+            String movieId = active != null ? active.getId() : "MOV-01";
+
             String csId = ConsoleUI.promptNonEmptyString("Enter Call Sheet ID (e.g., CS-02)");
             int dayNum = ConsoleUI.promptInt("Enter Shoot Day Number", 1, 150);
             LocalDate date = ConsoleUI.promptDate("Enter Shoot Date");
@@ -659,7 +1121,7 @@ public class MenuController {
             String weather = ConsoleUI.promptNonEmptyString("Weather Advisory / Temperature");
             String safety = ConsoleUI.promptNonEmptyString("Hospital / Emergency Contact Information");
 
-            CallSheet cs = new CallSheet(csId, dayNum, date, crewCall, locName, weather, safety);
+            CallSheet cs = new CallSheet(csId, movieId, dayNum, date, crewCall, locName, weather, safety);
 
             // Add scenes scheduled on that date
             List<Scene> scenesForDate = productionService.filterScenes(s ->
@@ -677,8 +1139,12 @@ public class MenuController {
             // Set Call Times
             cs.setDepartmentCallTime(Department.CAMERA, "05:45 AM (Lens calibration)");
             cs.setDepartmentCallTime(Department.LIGHTING, "05:15 AM (Grid power-up)");
+            cs.setDepartmentCallTime(Department.SOUND, "06:15 AM (Wireless mic rigging)");
 
             productionService.registerCallSheet(cs);
+            if (active != null) {
+                active.addCallSheet(cs);
+            }
 
             // Export to file using IO Streams
             String exportPath = "data/callsheet_day_" + dayNum + ".txt";
@@ -696,138 +1162,13 @@ public class MenuController {
     }
 
     // =========================================================================
-    // 6. BUDGET MANAGEMENT
-    // =========================================================================
-    private void manageBudgets() {
-        boolean inSubMenu = true;
-        while (inSubMenu) {
-            ConsoleUI.printSectionHeader("Department Budgets & Expenditure Tracking");
-            System.out.println(" [1] View Department Budget Ledger & Variance");
-            System.out.println(" [2] Log New Production Expense Transaction");
-            System.out.println(" [3] Allocate / Adjust Department Budget Ceiling");
-            System.out.println(" [4] View Transaction Audit History");
-            System.out.println(" [5] Export Budget Audit Report to File");
-            System.out.println(" [0] Back to Main Menu\n");
-
-            int choice = ConsoleUI.promptInt("Select an option", 0, 5);
-            switch (choice) {
-                case 1 -> viewBudgetLedger();
-                case 2 -> logExpenseTransaction();
-                case 3 -> allocateDepartmentBudget();
-                case 4 -> viewTransactionHistory();
-                case 5 -> exportBudgetReport();
-                case 0 -> inSubMenu = false;
-            }
-        }
-    }
-
-    private void viewBudgetLedger() {
-        ConsoleUI.printSectionHeader("Department Budget Variance Ledger");
-        System.out.printf("%-28s | %-14s | %-14s | %-14s | %-8s\n",
-                "DEPARTMENT", "ALLOCATED", "SPENT", "REMAINING", "UTIL %");
-        System.out.println("-".repeat(88));
-
-        for (Department dept : Department.values()) {
-            double alloc = budgetService.getAllocatedForDepartment(dept);
-            double spent = budgetService.getSpentForDepartment(dept);
-            double rem = budgetService.getRemainingForDepartment(dept);
-            double util = alloc > 0 ? (spent / alloc) * 100.0 : 0.0;
-            System.out.printf("%-28s | $%,12.2f | $%,12.2f | $%,12.2f | %6.1f%%\n",
-                    dept.getDisplayName(), alloc, spent, rem, util);
-        }
-        System.out.println("-".repeat(88));
-        System.out.printf("TOTALS: ALLOCATED: $%,.2f | SPENT: $%,.2f | REMAINING: $%,.2f\n",
-                budgetService.getTotalAllocatedBudget(),
-                budgetService.getTotalSpentBudget(),
-                budgetService.getRemainingBudget());
-        ConsoleUI.pauseForUser();
-    }
-
-    private void logExpenseTransaction() {
-        ConsoleUI.printSectionHeader("Log Production Expense Transaction");
-        try {
-            System.out.println("Select Department:");
-            Department[] depts = Department.values();
-            for (int i = 0; i < depts.length; i++) {
-                System.out.printf("  [%d] %s (Rem: $%,.2f)\n",
-                        i + 1, depts[i].getDisplayName(), budgetService.getRemainingForDepartment(depts[i]));
-            }
-            int dChoice = ConsoleUI.promptInt("Choice", 1, depts.length);
-            Department dept = depts[dChoice - 1];
-
-            double amount = ConsoleUI.promptDouble("Enter Expense Amount", 1.0, 1000000.0);
-            String desc = ConsoleUI.promptNonEmptyString("Enter Expense Description");
-            String approver = ConsoleUI.promptNonEmptyString("Approved By (e.g., Line Producer)");
-
-            BudgetService.ExpenseRecord rec = budgetService.logExpense(dept, amount, desc, approver);
-            ConsoleUI.printSuccess(String.format("Transaction '%s' approved! Expensed $%,.2f to %s.",
-                    rec.getTransactionId(), amount, dept.getDisplayName()));
-
-        } catch (BudgetExceededException e) {
-            ConsoleUI.printError("BUDGET CEILING BREACHED! " + e.getMessage());
-            ConsoleUI.printWarning("Transaction aborted to protect production solvency.");
-        } catch (ValidationException e) {
-            ConsoleUI.printError("Validation Failure: " + e.getMessage());
-        }
-        ConsoleUI.pauseForUser();
-    }
-
-    private void allocateDepartmentBudget() {
-        ConsoleUI.printSectionHeader("Adjust Department Budget Allocation");
-        try {
-            Department[] depts = Department.values();
-            for (int i = 0; i < depts.length; i++) {
-                System.out.printf("  [%d] %s (Current: $%,.2f)\n",
-                        i + 1, depts[i].getDisplayName(), budgetService.getAllocatedForDepartment(depts[i]));
-            }
-            int sel = ConsoleUI.promptInt("Select Department", 1, depts.length);
-            Department dept = depts[sel - 1];
-
-            double newBudget = ConsoleUI.promptDouble("Enter New Allocation Ceiling", 0.0, 10000000.0);
-            String notes = ConsoleUI.promptString("Allocation Justification");
-
-            budgetService.allocateBudget(dept, newBudget, notes.isEmpty() ? "Standard Adjustment" : notes);
-            ConsoleUI.printSuccess("Budget for " + dept.getDisplayName() + " adjusted to $" + String.format("%,.2f", newBudget));
-        } catch (ValidationException e) {
-            ConsoleUI.printError("Validation Failure: " + e.getMessage());
-        }
-        ConsoleUI.pauseForUser();
-    }
-
-    private void viewTransactionHistory() {
-        ConsoleUI.printSectionHeader("Transaction Audit History");
-        List<BudgetService.ExpenseRecord> records = budgetService.getExpenseHistory();
-        if (records.isEmpty()) {
-            ConsoleUI.printWarning("No expenses recorded yet.");
-        } else {
-            for (BudgetService.ExpenseRecord er : records) {
-                System.out.println("  • " + er);
-            }
-        }
-        ConsoleUI.pauseForUser();
-    }
-
-    private void exportBudgetReport() {
-        String path = "data/budget_summary.txt";
-        new File("data").mkdirs();
-        try {
-            budgetService.exportBudgetReportToFile(path);
-            ConsoleUI.printSuccess("Budget report exported successfully to: " + path);
-            System.out.println("\n" + productionService.readExportedFile(path));
-        } catch (IOException e) {
-            ConsoleUI.printError("Failed to export budget report: " + e.getMessage());
-        }
-        ConsoleUI.pauseForUser();
-    }
-
-    // =========================================================================
-    // 7. PERSISTENCE
+    // 11. SAVE / EXPORT REPORTS TO FILE
     // =========================================================================
     private void managePersistence() {
         boolean inSubMenu = true;
         while (inSubMenu) {
-            ConsoleUI.printSectionHeader("Data Persistence & Storage Operations");
-            System.out.println(" [1] Export All Reports to Files (Call Sheets & Budget)");
+            ConsoleUI.printSectionHeader("Save / Export Reports to File");
+            System.out.println(" [1] Export All Reports to Files (Call Sheet & Budget)");
             System.out.println(" [2] Read and View an Exported Report File");
             System.out.println(" [0] Back to Main Menu\n");
 
@@ -836,7 +1177,8 @@ public class MenuController {
                 case 1 -> {
                     try {
                         new File("data").mkdirs();
-                        budgetService.exportBudgetReportToFile("data/budget_summary.txt");
+                        BudgetService bs = getActiveBudgetService();
+                        bs.exportBudgetReportToFile("data/budget_summary.txt");
                         List<CallSheet> csList = productionService.getAllCallSheets();
                         if (!csList.isEmpty()) {
                             productionService.exportCallSheetToFile(csList.get(0), "data/callsheet_export.txt");
@@ -863,7 +1205,7 @@ public class MenuController {
     }
 
     // =========================================================================
-    // 8. AUTOMATED TEST SUITE / EVALUATION VERIFICATION DEMO
+    // 12. AUTOMATED TEST SUITE / EVALUATION VERIFICATION DEMO
     // =========================================================================
     private void runTestSuiteDemo() {
         ConsoleUI.printSectionHeader("Automated Object-Oriented Concept Test Suite");

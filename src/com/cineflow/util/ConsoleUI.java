@@ -25,16 +25,18 @@ public final class ConsoleUI {
     private ConsoleUI() {}
 
     public static void printBanner() {
-        printStudioHeader("HORIZON STUDIOS", "Movie Production Management System", "Multi-Project Studio");
+        System.out.println("========================================================================");
+        System.out.println("           HORIZON STUDIOS - MOVIE PRODUCTION MANAGEMENT SYSTEM         ");
+        System.out.println("========================================================================");
     }
 
     public static void printStudioHeader(String studioName, String movieTitle, String phase) {
-        System.out.println("==========================================================================");
-        System.out.println("              " + studioName.toUpperCase() + " - MOVIE PRODUCTION SYSTEM");
-        System.out.println("==========================================================================");
+        System.out.println("========================================================================");
+        System.out.println("           " + studioName.toUpperCase() + " - MOVIE PRODUCTION MANAGEMENT SYSTEM");
+        System.out.println("========================================================================");
         if (movieTitle != null && !movieTitle.isEmpty()) {
-            System.out.println(" ACTIVE MOVIE : " + movieTitle + " (" + phase + ")");
-            System.out.println("--------------------------------------------------------------------------");
+            System.out.println("Active Movie: " + movieTitle + (phase != null && !phase.isEmpty() ? " (" + phase + ")" : ""));
+            System.out.println("------------------------------------------------------------------------");
         }
     }
 

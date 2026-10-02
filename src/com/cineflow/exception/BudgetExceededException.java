@@ -31,4 +31,12 @@ public class BudgetExceededException extends CineFlowException {
     public double getRemainingBudget() {
         return remainingBudget;
     }
+
+    public double getAvailableBudget() {
+        return remainingBudget;
+    }
+
+    public double getOverdraftAmount() {
+        return Math.max(0.0, attemptedAmount - remainingBudget);
+    }
 }

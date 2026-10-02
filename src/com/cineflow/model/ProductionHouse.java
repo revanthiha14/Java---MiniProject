@@ -68,6 +68,18 @@ public class ProductionHouse implements Identifiable<String>, Reportable, Serial
         return null;
     }
 
+    public boolean setActiveMovie(Movie movie) {
+        if (movie != null && movies.containsKey(movie.getId())) {
+            this.activeMovieId = movie.getId();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean setActiveMovie(String movieId) {
+        return setActiveMovieId(movieId);
+    }
+
     public boolean setActiveMovieId(String movieId) {
         if (movieId != null && movies.containsKey(movieId)) {
             this.activeMovieId = movieId;
@@ -78,6 +90,22 @@ public class ProductionHouse implements Identifiable<String>, Reportable, Serial
 
     public int getMovieCount() {
         return movies.size();
+    }
+
+    public boolean removeMovie(String movieId) {
+        if (movieId != null && movies.containsKey(movieId)) {
+            movies.remove(movieId);
+            if (movieId.equals(activeMovieId)) {
+                activeMovieId = movies.isEmpty() ? null : movies.keySet().iterator().next();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public void clearMovies() {
+        movies.clear();
+        activeMovieId = null;
     }
 
     @Override
