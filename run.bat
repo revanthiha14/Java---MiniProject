@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 > nul
-title CineFlow 2.0 - Cinema Production Management & Studio Ecosystem
+title CineFlow - Cinema Production Management System
 if not exist "bin" mkdir bin
 if not exist "data" mkdir data
 

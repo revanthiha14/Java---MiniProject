@@ -1,230 +1,45 @@
 package com.cineflow.model;
 
-import com.cineflow.service.BudgetService;
-import java.io.Serializable;
+import com.cineflow.exception.BudgetExceededException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Set;
 
 /**
- * Represents a complete movie production project under a production house.
- * Demonstrates:
- *  - Multiple interface implementation (Identifiable, Reportable, CostTrackable)
- *  - Collections Framework: List (scenes, call sheets), Set (cast, crew, assets), Queue (shooting priority queue)
- *  - Composition: Movie has a dedicated BudgetService, scenes, and personnel references
- *  - Constructor chaining with this()
- *  - Method overloading
+ * Represents a Movie project.
+ * Demonstrates: Composition, Polymorphic Collections (List of Person), and Exception Handling.
  */
-public class Movie implements Identifiable<String>, Reportable, CostTrackable, Serializable {
-    private static final long serialVersionUID = 1L;
-
+public class Movie {
     private String id;
-    private String studioId; // Associated production house ID
     private String title;
     private String genre;
-    private String directorName;
-    private ProductionPhase productionPhase;
-    private int estimatedReleaseYear;
-    private BudgetService budgetManager;
+    private String director;
+    private int releaseYear;
+    private double budget;
+    private MovieStatus status;
+
     private List<Scene> scenes;
-    private Queue<Scene> shootingQueue;
-    private List<CallSheet> callSheets;
-    private Set<String> assignedActorIds;
-    private Set<String> assignedCrewIds;
-    private Set<String> bookedEquipmentIds;
-    private Set<String> bookedLocationIds;
+    private List<Person> castAndCrew; // Polymorphic collection storing both Actor and CrewMember
+    private List<Expense> expenses;
     private List<Review> reviews;
 
-    /**
-     * Default constructor with safe defaults.
-     */
-    public Movie() {
-        this("MOV-000", "PH-101", "Untitled Project", "Drama", "Unassigned", ProductionPhase.PRE_PRODUCTION, 2027);
+    public Movie(String id, String title, String genre, String director, int releaseYear, double budget) {
+        this(id, title, genre, director, releaseYear, budget, MovieStatus.PLANNING);
     }
 
-    /**
-     * Minimal constructor chaining to full constructor.
-     */
-    public Movie(String id, String title, String genre, String directorName) {
-        this(id, "PH-101", title, genre, directorName, ProductionPhase.PRE_PRODUCTION, 2026);
-    }
-
-    public Movie(String id, String title, String genre, String directorName,
-                 ProductionPhase productionPhase, int estimatedReleaseYear) {
-        this(id, "PH-101", title, genre, directorName, productionPhase, estimatedReleaseYear);
-    }
-
-    /**
-     * Full parameterized constructor initializing studioId, collections and budget manager.
-     */
-    public Movie(String id, String studioId, String title, String genre, String directorName,
-                 ProductionPhase productionPhase, int estimatedReleaseYear) {
+    public Movie(String id, String title, String genre, String director, int releaseYear, double budget, MovieStatus status) {
         this.id = id;
-        this.studioId = studioId != null ? studioId : "PH-101";
         this.title = title;
         this.genre = genre;
-        this.directorName = directorName;
-        this.productionPhase = productionPhase;
-        this.estimatedReleaseYear = estimatedReleaseYear;
-        this.budgetManager = new BudgetService();
+        this.director = director;
+        this.releaseYear = releaseYear;
+        this.budget = budget;
+        this.status = (status != null) ? status : MovieStatus.PLANNING;
         this.scenes = new ArrayList<>();
-        this.shootingQueue = new PriorityQueue<>();
-        this.callSheets = new ArrayList<>();
-        this.assignedActorIds = new HashSet<>();
-        this.assignedCrewIds = new HashSet<>();
-        this.bookedEquipmentIds = new HashSet<>();
-        this.bookedLocationIds = new HashSet<>();
+        this.castAndCrew = new ArrayList<>();
+        this.expenses = new ArrayList<>();
         this.reviews = new ArrayList<>();
     }
 
-    // Method Overloading Demonstration: addScene variants
-    public void addScene(Scene scene) {
-        if (scene != null) {
-            scene.setMovieId(this.id);
-            this.scenes.add(scene);
-            refreshShootingQueue();
-        }
-    }
-
-    public void addScenes(Scene... sceneArray) {
-        if (sceneArray != null) {
-            for (Scene s : sceneArray) {
-                addScene(s);
-            }
-        }
-    }
-
-    public void addScenes(List<Scene> sceneList) {
-        if (sceneList != null) {
-            for (Scene s : sceneList) {
-                addScene(s);
-            }
-        }
-    }
-
-    public synchronized void refreshShootingQueue() {
-        shootingQueue.clear();
-        for (Scene s : scenes) {
-            if (s.getStatus() == SceneStatus.DRAFT || s.getStatus() == SceneStatus.SCHEDULED) {
-                shootingQueue.offer(s);
-            }
-        }
-    }
-
-    // Method Overloading Demonstration: assignActor variants
-    public void assignActor(String actorId) {
-        if (actorId != null && !actorId.trim().isEmpty()) {
-            this.assignedActorIds.add(actorId.trim());
-        }
-    }
-
-    public void assignActors(String... actorIds) {
-        if (actorIds != null) {
-            for (String aId : actorIds) {
-                assignActor(aId);
-            }
-        }
-    }
-
-    public void assignCrew(String crewId) {
-        if (crewId != null && !crewId.trim().isEmpty()) {
-            this.assignedCrewIds.add(crewId.trim());
-        }
-    }
-
-    public void assignCrew(String... crewIds) {
-        if (crewIds != null) {
-            for (String cId : crewIds) {
-                assignCrew(cId);
-            }
-        }
-    }
-
-    public void bookEquipment(String equipmentId) {
-        if (equipmentId != null && !equipmentId.trim().isEmpty()) {
-            this.bookedEquipmentIds.add(equipmentId.trim());
-        }
-    }
-
-    public void bookEquipment(String... equipmentIds) {
-        if (equipmentIds != null) {
-            for (String eqId : equipmentIds) {
-                bookEquipment(eqId);
-            }
-        }
-    }
-
-    public void bookLocation(String locationId) {
-        if (locationId != null && !locationId.trim().isEmpty()) {
-            this.bookedLocationIds.add(locationId.trim());
-        }
-    }
-
-    public void bookLocations(String... locationIds) {
-        if (locationIds != null) {
-            for (String locId : locationIds) {
-                bookLocation(locId);
-            }
-        }
-    }
-
-    public void addCallSheet(CallSheet sheet) {
-        if (sheet != null) {
-            this.callSheets.add(sheet);
-        }
-    }
-
-    public long getCompletedScenesCount() {
-        return scenes.stream().filter(s -> s.getStatus() == SceneStatus.COMPLETED).count();
-    }
-
-    public double getProductionProgressPercentage() {
-        if (scenes.isEmpty()) return 0.0;
-        return ((double) getCompletedScenesCount() / scenes.size()) * 100.0;
-    }
-
-    @Override
-    public double computeTotalCost() {
-        return budgetManager.getTotalSpentBudget();
-    }
-
-    @Override
-    public String getCostBreakdown() {
-        return String.format("Allocated: $%,.2f | Expended: $%,.2f | Remaining: $%,.2f",
-                budgetManager.getTotalAllocatedBudget(),
-                budgetManager.getTotalSpentBudget(),
-                budgetManager.getRemainingBudget());
-    }
-
-    @Override
-    public String generateDetailedReport() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("========================================================================\n");
-        sb.append(String.format("                     MOVIE PROFILE: %s\n", title.toUpperCase()));
-        sb.append("========================================================================\n");
-        sb.append(String.format("Movie ID       : %s\n", id));
-        sb.append(String.format("Genre          : %s | Estimated Release: %d\n", genre, estimatedReleaseYear));
-        sb.append(String.format("Director       : %s\n", directorName));
-        sb.append(String.format("Production Stage: %s\n", productionPhase.getDescription()));
-        sb.append(String.format("Progress       : %d / %d Scenes Filmed (%.1f%%)\n",
-                getCompletedScenesCount(), scenes.size(), getProductionProgressPercentage()));
-        sb.append(String.format("Budget Status  : %s\n", getCostBreakdown()));
-        sb.append(String.format("Audience Rating: %s\n", getRatingSummary()));
-        sb.append(String.format("Roster Summary : %d Actors Assigned | %d Crew Members Assigned\n",
-                assignedActorIds.size(), assignedCrewIds.size()));
-        sb.append(String.format("Assets Booked  : %d Equipment Items | %d Locations\n",
-                bookedEquipmentIds.size(), bookedLocationIds.size()));
-        sb.append("========================================================================\n");
-        return sb.toString();
-    }
-
-    // Getters and Setters
-    @Override
     public String getId() {
         return id;
     }
@@ -241,14 +56,6 @@ public class Movie implements Identifiable<String>, Reportable, CostTrackable, S
         this.title = title;
     }
 
-    public String getStudioId() {
-        return studioId != null ? studioId : "PH-101";
-    }
-
-    public void setStudioId(String studioId) {
-        this.studioId = studioId;
-    }
-
     public String getGenre() {
         return genre;
     }
@@ -257,161 +64,129 @@ public class Movie implements Identifiable<String>, Reportable, CostTrackable, S
         this.genre = genre;
     }
 
-    public String getDirectorName() {
-        return directorName;
+    public String getDirector() {
+        return director;
     }
 
-    public void setDirectorName(String directorName) {
-        this.directorName = directorName;
-    }
-
-    public ProductionPhase getProductionPhase() {
-        return productionPhase;
-    }
-
-    public void setProductionPhase(ProductionPhase productionPhase) {
-        this.productionPhase = productionPhase;
-    }
-
-    public ProductionPhase getPhase() {
-        return productionPhase;
-    }
-
-    public void setPhase(ProductionPhase phase) {
-        this.productionPhase = phase;
-    }
-
-    public int getEstimatedReleaseYear() {
-        return estimatedReleaseYear;
-    }
-
-    public void setEstimatedReleaseYear(int estimatedReleaseYear) {
-        this.estimatedReleaseYear = estimatedReleaseYear;
+    public void setDirector(String director) {
+        this.director = director;
     }
 
     public int getReleaseYear() {
-        return estimatedReleaseYear;
+        return releaseYear;
     }
 
     public void setReleaseYear(int releaseYear) {
-        this.estimatedReleaseYear = releaseYear;
+        this.releaseYear = releaseYear;
     }
 
-    public BudgetService getBudgetManager() {
-        return budgetManager;
+    public double getBudget() {
+        return budget;
     }
 
-    public void setBudgetManager(BudgetService budgetManager) {
-        this.budgetManager = budgetManager;
+    public void setBudget(double budget) {
+        this.budget = budget;
     }
 
-    public BudgetService getBudgetService() {
-        return budgetManager;
+    public MovieStatus getStatus() {
+        return status;
     }
 
-    public void setBudgetService(BudgetService budgetService) {
-        this.budgetManager = budgetService;
+    public void setStatus(MovieStatus status) {
+        this.status = status;
     }
 
     public List<Scene> getScenes() {
         return scenes;
     }
 
-    public Queue<Scene> getShootingQueue() {
-        return shootingQueue;
+    public List<Person> getCastAndCrew() {
+        return castAndCrew;
     }
 
-    public List<CallSheet> getCallSheets() {
-        return callSheets;
-    }
-
-    public Set<String> getAssignedActorIds() {
-        return Collections.unmodifiableSet(assignedActorIds);
-    }
-
-    public Set<String> getActorIds() {
-        return Collections.unmodifiableSet(assignedActorIds);
-    }
-
-    public Set<String> getAssignedCrewIds() {
-        return Collections.unmodifiableSet(assignedCrewIds);
-    }
-
-    public Set<String> getCrewIds() {
-        return Collections.unmodifiableSet(assignedCrewIds);
-    }
-
-    public Set<String> getBookedEquipmentIds() {
-        return Collections.unmodifiableSet(bookedEquipmentIds);
-    }
-
-    public Set<String> getEquipmentIds() {
-        return Collections.unmodifiableSet(bookedEquipmentIds);
-    }
-
-    public Set<String> getBookedLocationIds() {
-        return Collections.unmodifiableSet(bookedLocationIds);
-    }
-
-    public Set<String> getLocationIds() {
-        return Collections.unmodifiableSet(bookedLocationIds);
-    }
-
-    // Method Overloading Demonstration: addReview variants
-    public void addReview(Review review) {
-        if (review != null) {
-            if (review.getMovieId() == null || review.getMovieId().trim().isEmpty()) {
-                review.setMovieId(this.id);
-            }
-            this.reviews.add(review);
-        }
-    }
-
-    public void addReview(String reviewerName, int rating, String comment) {
-        addReview(new Review(this.id, reviewerName, rating, comment));
+    public List<Expense> getExpenses() {
+        return expenses;
     }
 
     public List<Review> getReviews() {
-        return Collections.unmodifiableList(reviews);
+        return reviews;
     }
 
-    public int getReviewCount() {
-        return reviews.size();
+    public void addScene(Scene scene) {
+        scenes.add(scene);
+    }
+
+    public void addPerson(Person person) {
+        castAndCrew.add(person);
+    }
+
+    /**
+     * Adds a review to the movie.
+     * Enforces business rules:
+     * 1. Movie status must be RELEASED.
+     * 2. Rating must be between 1 and 5.
+     * Returns true if added successfully, false otherwise.
+     */
+    public boolean addReview(Review review) {
+        if (this.status != MovieStatus.RELEASED) {
+            return false;
+        }
+        if (review.getRating() < 1 || review.getRating() > 5) {
+            return false;
+        }
+        reviews.add(review);
+        return true;
     }
 
     public double getAverageRating() {
-        if (reviews == null || reviews.isEmpty()) {
+        if (reviews.isEmpty()) {
             return 0.0;
         }
-        return reviews.stream().mapToInt(Review::getRating).average().orElse(0.0);
-    }
-
-    public String getRatingSummary() {
-        if (reviews == null || reviews.isEmpty()) {
-            return "No reviews yet";
+        double sum = 0.0;
+        for (Review r : reviews) {
+            sum += r.getRating();
         }
-        double avg = getAverageRating();
-        int roundedStars = (int) Math.round(avg);
-        String stars = "★".repeat(Math.max(1, Math.min(5, roundedStars))) + "☆".repeat(Math.max(0, 5 - roundedStars));
-        return String.format("%s %.1f / 5.0 (%d %s)",
-                stars, avg, reviews.size(), reviews.size() == 1 ? "review" : "reviews");
+        return sum / reviews.size();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Movie movie)) return false;
-        return Objects.equals(id, movie.id);
+    /**
+     * Adds an expense to the movie.
+     * Throws BudgetExceededException if the expense exceeds the movie's total budget.
+     */
+    public void addExpense(Expense expense) throws BudgetExceededException {
+        double newTotal = getTotalExpenses() + expense.getAmount();
+        if (newTotal > budget) {
+            double remaining = getRemainingBudget();
+            throw new BudgetExceededException(String.format(
+                    "Expense of $%,.2f exceeds remaining budget of $%,.2f! (Allocated Budget: $%,.2f)",
+                    expense.getAmount(), remaining, budget));
+        }
+        expenses.add(expense);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public double getTotalExpenses() {
+        double sum = 0.0;
+        for (Expense e : expenses) {
+            sum += e.getAmount();
+        }
+        return sum;
+    }
+
+    public double getRemainingBudget() {
+        return budget - getTotalExpenses();
+    }
+
+    public double getBudgetUtilizationPercentage() {
+        if (budget <= 0) return 0.0;
+        return (getTotalExpenses() / budget) * 100.0;
     }
 
     @Override
     public String toString() {
-        return String.format("[%s] %s (%s, %d) - Stage: %s | Rating: %s",
-                id, title, genre, estimatedReleaseYear, productionPhase.name(), getRatingSummary());
+        String ratingInfo = reviews.isEmpty()
+                ? "No Ratings"
+                : String.format("%.1f/5.0 Stars (%d review%s)", getAverageRating(), reviews.size(), reviews.size() == 1 ? "" : "s");
+        return String.format("[%s] %s (%d) | %s | Status: %s | Budget: $%,.2f | Rating: %s",
+                id, title, releaseYear, genre, status, budget, ratingInfo);
     }
 }

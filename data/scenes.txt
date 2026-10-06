@@ -1,0 +1,9 @@
+# MovieID|SceneNumber|Title|Location|Status
+MOV-04|1|Rooftop Chase|Gotham Heights|PLANNED
+MOV-03|1|Forest Border Ambush|Maredumilli Forest|COMPLETED
+MOV-03|2|Port Cargo Standoff|Visakhapatnam Port|IN_PROGRESS
+MOV-01|1|Deep Orbit Discovery|Soundstage A (CGI)|COMPLETED
+MOV-01|2|Spacewalk Sensor Repair|Exterior Orbital Rig|IN_PROGRESS
+MOV-01|3|Atmospheric Entry Bridge|Flight Deck Set|PLANNED
+MOV-02|1|Rainy Pier Encounter|Dock Warehouse #4|COMPLETED
+MOV-02|2|Interrogation Room|Studio Stage B|PLANNED

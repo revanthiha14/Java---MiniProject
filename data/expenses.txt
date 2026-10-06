@@ -1,0 +1,9 @@
+# MovieID|ExpenseID|Category|Amount|Description
+MOV-04|EXP-01|Practical Effects|500000.0|IMAX rig and miniature models
+MOV-03|EXP-01|Stunts & Action|400000.0|Forest convoy chase and blast effects
+MOV-03|EXP-02|Art Direction|180000.0|Timber check-post replica set
+MOV-01|EXP-01|Visual Effects|250000.0|Zero-G wire rigging and 3D composites
+MOV-01|EXP-02|Camera Gear|120000.0|High-speed sensor camera rental
+MOV-01|EXP-03|Costumes|45000.0|Hero astronaut suits and tailoring
+MOV-02|EXP-01|Screenplay Rights|35000.0|Acquisition of original noir script
+MOV-02|EXP-02|Set Design|60000.0|Warehouse set construction and rain rig
