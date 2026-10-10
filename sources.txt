@@ -13,6 +13,8 @@ D:\Java---MiniProject\Java---MiniProject\src\com\cineflow\model\Person.java
 D:\Java---MiniProject\Java---MiniProject\src\com\cineflow\model\ProductionHouse.java
 D:\Java---MiniProject\Java---MiniProject\src\com\cineflow\model\Review.java
 D:\Java---MiniProject\Java---MiniProject\src\com\cineflow\model\Scene.java
+D:\Java---MiniProject\Java---MiniProject\src\com\cineflow\service\CastManager.java
 D:\Java---MiniProject\Java---MiniProject\src\com\cineflow\service\FileService.java
 D:\Java---MiniProject\Java---MiniProject\src\com\cineflow\service\MovieManager.java
+D:\Java---MiniProject\Java---MiniProject\src\com\cineflow\service\ReviewManager.java
 D:\Java---MiniProject\Java---MiniProject\src\com\cineflow\ui\ConsoleMenu.java

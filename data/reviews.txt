@@ -2,6 +2,7 @@
 MOV-04|Bob|3|Great visuals but convoluted plot.
 MOV-04|Alice|5|Masterpiece visuals!
 MOV-04|Rev|5|Excellent Movie!
+MOV-04|Rev|4|Nice movie
 MOV-03|John FilmCritic|5|Remarkable action sequences and gripping drama!
 MOV-03|Sarah Jenkins|4|High voltage performances and outstanding music.
 MOV-03|Reviewer 1|5|Awesome movie!

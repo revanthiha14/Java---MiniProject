@@ -195,6 +195,8 @@ classDiagram
         +findSceneByNumber(sceneNumber) Scene
         +getSceneOrThrow(sceneNumber) Scene
         +addPerson(Person) void
+        +removePerson(personId) boolean
+        +findPersonById(personId) Person
         +addExpense(Expense) void
         +addReview(Review) void
         +getAverageRating() double
@@ -220,7 +222,30 @@ classDiagram
         +toString() String
     }
 
-    %% Service & File Handling
+    %% Service & Management Classes
+    class CastManager {
+        +CastManager()
+        +addPerson(Movie, Person) void
+        +addActor(Movie, Actor) void
+        +addCrewMember(Movie, CrewMember) void
+        +removePersonById(Movie, personId) boolean
+        +findPersonById(Movie, personId) Person
+        +searchPersonnel(Movie, query) List~Person~
+        +getActors(Movie) List~Actor~
+        +getCrewMembers(Movie) List~CrewMember~
+        +getAllPersonnel(Movie) List~Person~
+    }
+
+    class ReviewManager {
+        +ReviewManager()
+        +addReview(Movie, Review) void
+        +calculateAverageRating(Movie) double
+        +getRatingDistribution(Movie) Map~Integer, Integer~
+        +filterMoviesByMinRating(movies, minRating) List~Movie~
+        +getReviews(Movie) List~Review~
+        +getTotalReviewCount(Movie) int
+    }
+
     class FileService {
         -String dataDir
         +FileService()
@@ -233,6 +258,8 @@ classDiagram
     class MovieManager {
         -Map~String, ProductionHouse~ studios
         -FileService fileService
+        -CastManager castManager
+        -ReviewManager reviewManager
         -String activeStudioId
         -String activeMovieId
         +MovieManager()
@@ -249,6 +276,8 @@ classDiagram
         +findMovieAnywhere(id: String) Movie
         +findMovieOrThrow(id: String) Movie
         +searchMovies(query, genre, minRating) List~Movie~
+        +getCastManager() CastManager
+        +getReviewManager() ReviewManager
         +saveData() void
         +loadData() void
         +seedInitialData() void
@@ -257,8 +286,11 @@ classDiagram
     %% Presentation / CLI
     class ConsoleMenu {
         -MovieManager manager
+        -CastManager castManager
+        -ReviewManager reviewManager
         -Scanner scanner
         +ConsoleMenu(manager: MovieManager)
+        +ConsoleMenu(manager, castManager, reviewManager)
         +start() void
     }
 
@@ -279,9 +311,22 @@ classDiagram
     Movie ..> ValidationException : Throws on rule violations
     Movie ..> ResourceNotFoundException : Throws on missing scene/record
 
+    CastManager ..> Movie : Operates on personnel roster
+    CastManager ..> Person : Manages polymorphically
+    CastManager ..> ResourceNotFoundException : Throws when member missing
+    CastManager ..> ValidationException : Throws on duplicate/null
+
+    ReviewManager ..> Movie : Validates lifecycle & calculates metrics
+    ReviewManager ..> Review : Enforces 1-5 rating & status rules
+    ReviewManager ..> ValidationException : Throws on unreleased/invalid
+
     MovieManager o-- ProductionHouse : Manages via HashMap
     MovieManager o-- FileService : Uses for Text File I/O
-    ConsoleMenu o-- MovieManager : Delegates business operations
+    MovieManager o-- CastManager : Uses for cast coordination
+    MovieManager o-- ReviewManager : Uses for review filtering
+    ConsoleMenu o-- MovieManager : Coordinates business services
+    ConsoleMenu o-- CastManager : Delegates cast roster operations
+    ConsoleMenu o-- ReviewManager : Delegates review operations
     ConsoleMenu ..> CineFlowException : Handles all custom exceptions
     Main ..> MovieManager : Initializes
     Main ..> ConsoleMenu : Launches
@@ -291,24 +336,27 @@ classDiagram
 
 ## 2. Summary of Key OOP Concepts Demonstrated
 
-1. **Classes and Objects**: Separation of distinct real-world domain entities (`Movie`, `ProductionHouse`, `Scene`, `Expense`, `Review`).
-2. **Encapsulation**: Private fields accessed through getters/setters with proactive input validation in constructors and setters.
+1. **Classes and Objects**: Separation of domain entities (`Movie`, `ProductionHouse`, `Scene`, `Expense`, `Review`, `Person`) and service managers (`MovieManager`, `CastManager`, `ReviewManager`, `FileService`).
+2. **Encapsulation & Single Responsibility Principle (SRP)**:
+   - `CastManager` manages personnel roster operations (add, remove, search, filter).
+   - `ReviewManager` manages audience feedback, rating verification, and distribution analytics.
+   - Private attributes with validated getters and setters across all entities.
 3. **Inheritance & Abstraction**:
-   - `Person` is an abstract base class containing shared properties (`id`, `name`, `email`) and an abstract method `public abstract String getRole()`.
-   - Subclasses `Actor` and `CrewMember` inherit from `Person` via `extends` and call `super(...)`.
+   - `Person` is an abstract base class extended by concrete subclasses `Actor` and `CrewMember`.
+   - `CineFlowException` is an abstract base checked exception extended by four concrete specialized checked exceptions.
 4. **Polymorphism & Dynamic Method Dispatch**:
    - `Actor` and `CrewMember` override `getRole()`.
-   - In `Movie`, a polymorphic collection `List<Person> castAndCrew` stores both subclasses. Iterating over the list dynamically invokes the overridden subclass method at runtime.
-5. **Enumerations**: `MovieStatus` encapsulates lifecycle stages (`PLANNING`, `PRODUCTION`, `POST_PRODUCTION`, `RELEASED`).
+   - In `Movie` and `CastManager`, `Person` references are handled polymorphically, and `instanceof` with downcasting is demonstrated in `getActors()` and `getCrewMembers()`.
+5. **Enumerations**: `MovieStatus` encapsulates the 4 lifecycle states (`PLANNING`, `PRODUCTION`, `POST_PRODUCTION`, `RELEASED`).
 6. **Custom Checked Exception Hierarchy**:
-   - Base checked exception `CineFlowException extends Exception`.
-   - `BudgetExceededException extends CineFlowException`: Thrown when expenses exceed allocated budget.
-   - `ResourceNotFoundException extends CineFlowException`: Thrown when a requested studio, movie, or scene is not found.
-   - `ScheduleConflictException extends CineFlowException`: Thrown when scheduling multiple scenes at the same filming location on the same shoot date.
-   - `ValidationException extends CineFlowException`: Thrown when domain validation fails (empty fields, invalid ratings, negative budgets, reviews before release).
+   - `CineFlowException extends Exception`
+   - `BudgetExceededException extends CineFlowException`
+   - `ResourceNotFoundException extends CineFlowException`
+   - `ScheduleConflictException extends CineFlowException`
+   - `ValidationException extends CineFlowException`
 7. **Collections Framework**:
-   - `ArrayList` for ordered, dynamic collections of movies, scenes, personnel, expenses, and reviews.
-   - `HashMap` in `MovieManager` (`Map<String, ProductionHouse>`) for efficient $O(1)$ key-value lookups by studio ID.
+   - `ArrayList` for ordered dynamic collections (movies, scenes, personnel, expenses, reviews).
+   - `HashMap` for $O(1)$ studio lookups by ID and frequency counting in `ReviewManager.getRatingDistribution()`.
 8. **File Handling (Java I/O)**:
-   - Human-readable pipe-delimited (`|`) text files in `data/` using `BufferedReader`, `PrintWriter`, `FileReader`, and `FileWriter`.
-   - Resilient parsing skips corrupted records gracefully with logged warnings rather than terminating the application or wiping existing in-memory state.
+   - Human-readable pipe-delimited text files in `data/` using `BufferedReader`, `PrintWriter`, `FileReader`, and `FileWriter`.
+   - Fault-tolerant parsing skips corrupted lines gracefully with logged warnings rather than terminating the application or silently wiping existing memory state.

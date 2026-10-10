@@ -25,12 +25,16 @@ import java.util.Map;
 public class MovieManager {
     private final Map<String, ProductionHouse> studios;
     private final FileService fileService;
+    private final CastManager castManager;
+    private final ReviewManager reviewManager;
     private String activeStudioId;
     private String activeMovieId;
 
     public MovieManager() {
         this.studios = new HashMap<>();
         this.fileService = new FileService();
+        this.castManager = new CastManager();
+        this.reviewManager = new ReviewManager();
         initializeData();
     }
 
@@ -217,13 +221,21 @@ public class MovieManager {
                     || m.getGenre().toLowerCase().contains(g);
 
             boolean matchesRating = (minRating <= 0.0)
-                    || (!m.getReviews().isEmpty() && m.getAverageRating() >= minRating);
+                    || (!m.getReviews().isEmpty() && reviewManager.calculateAverageRating(m) >= minRating);
 
             if (matchesQuery && matchesGenre && matchesRating) {
                 results.add(m);
             }
         }
         return results;
+    }
+
+    public CastManager getCastManager() {
+        return castManager;
+    }
+
+    public ReviewManager getReviewManager() {
+        return reviewManager;
     }
 
     public void saveData() throws IOException {

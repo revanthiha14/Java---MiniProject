@@ -14,10 +14,14 @@ import com.cineflow.model.Person;
 import com.cineflow.model.ProductionHouse;
 import com.cineflow.model.Review;
 import com.cineflow.model.Scene;
+import com.cineflow.service.CastManager;
 import com.cineflow.service.MovieManager;
+import com.cineflow.service.ReviewManager;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -27,10 +31,18 @@ import java.util.Scanner;
  */
 public class ConsoleMenu {
     private final MovieManager manager;
+    private final CastManager castManager;
+    private final ReviewManager reviewManager;
     private final Scanner scanner;
 
     public ConsoleMenu(MovieManager manager) {
+        this(manager, manager.getCastManager(), manager.getReviewManager());
+    }
+
+    public ConsoleMenu(MovieManager manager, CastManager castManager, ReviewManager reviewManager) {
         this.manager = manager;
+        this.castManager = (castManager != null) ? castManager : new CastManager();
+        this.reviewManager = (reviewManager != null) ? reviewManager : new ReviewManager();
         this.scanner = new Scanner(System.in);
     }
 
@@ -313,15 +325,18 @@ public class ConsoleMenu {
         System.out.printf (" Remaining      : $%,.2f (%.1f%% spent)%n",
                 movie.getRemainingBudget(), movie.getBudgetUtilizationPercentage());
         System.out.println(" Total Scenes   : " + movie.getScenes().size());
-        System.out.println(" Cast & Crew    : " + movie.getCastAndCrew().size() + " members");
-        System.out.println(" Total Reviews  : " + movie.getReviews().size());
+        System.out.printf (" Cast & Crew    : %d members (%d actors, %d crew)%n",
+                castManager.getAllPersonnel(movie).size(),
+                castManager.getActors(movie).size(),
+                castManager.getCrewMembers(movie).size());
+        System.out.println(" Total Reviews  : " + reviewManager.getTotalReviewCount(movie));
 
         if (movie.getReviews().isEmpty()) {
             System.out.println(" Average Rating : No reviews yet");
         } else {
             System.out.printf (" Average Rating : %.1f / 5.0 Stars (%d review%s)%n",
-                    movie.getAverageRating(), movie.getReviews().size(),
-                    movie.getReviews().size() == 1 ? "" : "s");
+                    reviewManager.calculateAverageRating(movie), reviewManager.getTotalReviewCount(movie),
+                    reviewManager.getTotalReviewCount(movie) == 1 ? "" : "s");
         }
         System.out.println("==================================================");
     }
@@ -442,29 +457,56 @@ public class ConsoleMenu {
         }
 
         System.out.println("--- CAST & CREW FOR: " + movie.getTitle() + " ---");
-        System.out.println(" 1. View Cast & Crew List");
-        System.out.println(" 2. Add Actor");
-        System.out.println(" 3. Add Crew Member");
+        System.out.println(" 1. View Full Cast & Crew Roster");
+        System.out.println(" 2. View Actors Only");
+        System.out.println(" 3. View Crew Members Only");
+        System.out.println(" 4. Search Personnel (by ID, Name, or Role)");
+        System.out.println(" 5. Add Actor");
+        System.out.println(" 6. Add Crew Member");
+        System.out.println(" 7. Remove Member by ID");
         System.out.println(" 0. Back to Main Menu");
         System.out.print("Enter choice: ");
 
         int choice = readInt();
         switch (choice) {
             case 1 -> {
-                List<Person> personnel = movie.getCastAndCrew();
+                List<Person> personnel = castManager.getAllPersonnel(movie);
                 if (personnel.isEmpty()) {
                     System.out.println("No cast or crew added yet.");
                 } else {
-                    System.out.println("\n----------------------------------------------------------------------------------");
-                    System.out.printf("  %-8s %-22s | %-26s | %s%n", "ID", "Name", "Role/Specialization", "Email");
-                    System.out.println("----------------------------------------------------------------------------------");
-                    for (Person p : personnel) {
-                        p.displayInfo();
-                    }
-                    System.out.println("----------------------------------------------------------------------------------");
+                    displayPersonnelTable(personnel);
                 }
             }
             case 2 -> {
+                List<Actor> actors = castManager.getActors(movie);
+                if (actors.isEmpty()) {
+                    System.out.println("No actors found in this movie.");
+                } else {
+                    System.out.println("\n--- ACTORS ROSTER (" + actors.size() + " member" + (actors.size() == 1 ? "" : "s") + ") ---");
+                    displayPersonnelTable(new ArrayList<>(actors));
+                }
+            }
+            case 3 -> {
+                List<CrewMember> crew = castManager.getCrewMembers(movie);
+                if (crew.isEmpty()) {
+                    System.out.println("No crew members found in this movie.");
+                } else {
+                    System.out.println("\n--- CREW ROSTER (" + crew.size() + " member" + (crew.size() == 1 ? "" : "s") + ") ---");
+                    displayPersonnelTable(new ArrayList<>(crew));
+                }
+            }
+            case 4 -> {
+                System.out.print("Enter search keyword (ID, name, or role): ");
+                String query = readLine();
+                List<Person> matched = castManager.searchPersonnel(movie, query);
+                if (matched.isEmpty()) {
+                    System.out.println("No personnel found matching '" + query + "'.");
+                } else {
+                    System.out.println("\n--- SEARCH RESULTS (" + matched.size() + " found) ---");
+                    displayPersonnelTable(matched);
+                }
+            }
+            case 5 -> {
                 System.out.print("Enter Person ID (e.g. ACT-105): ");
                 String id = readLine();
                 System.out.print("Enter Actor's Name: ");
@@ -476,13 +518,13 @@ public class ConsoleMenu {
 
                 try {
                     Actor actor = new Actor(id, name, email, charName);
-                    movie.addPerson(actor);
+                    castManager.addActor(movie, actor);
                     System.out.println("\nActor '" + name + "' added successfully!");
                 } catch (ValidationException e) {
                     System.out.println("\n[VALIDATION ERROR] " + e.getMessage());
                 }
             }
-            case 3 -> {
+            case 6 -> {
                 System.out.print("Enter Person ID (e.g. CRW-205): ");
                 String id = readLine();
                 System.out.print("Enter Crew Member's Name: ");
@@ -494,8 +536,20 @@ public class ConsoleMenu {
 
                 try {
                     CrewMember crew = new CrewMember(id, name, email, dept);
-                    movie.addPerson(crew);
+                    castManager.addCrewMember(movie, crew);
                     System.out.println("\nCrew Member '" + name + "' added successfully!");
+                } catch (ValidationException e) {
+                    System.out.println("\n[VALIDATION ERROR] " + e.getMessage());
+                }
+            }
+            case 7 -> {
+                System.out.print("Enter Person ID to remove (e.g. ACT-101): ");
+                String id = readLine();
+                try {
+                    castManager.removePersonById(movie, id);
+                    System.out.println("\nPerson with ID '" + id + "' was successfully removed from '" + movie.getTitle() + "'.");
+                } catch (ResourceNotFoundException e) {
+                    System.out.println("\n[RESOURCE NOT FOUND] " + e.getMessage());
                 } catch (ValidationException e) {
                     System.out.println("\n[VALIDATION ERROR] " + e.getMessage());
                 }
@@ -503,6 +557,16 @@ public class ConsoleMenu {
             case 0 -> {}
             default -> System.out.println("Invalid option.");
         }
+    }
+
+    private void displayPersonnelTable(List<Person> personnel) {
+        System.out.println("\n----------------------------------------------------------------------------------");
+        System.out.printf("  %-8s %-22s | %-26s | %s%n", "ID", "Name", "Role/Specialization", "Email");
+        System.out.println("----------------------------------------------------------------------------------");
+        for (Person p : personnel) {
+            p.displayInfo();
+        }
+        System.out.println("----------------------------------------------------------------------------------");
     }
 
     // =========================================================================
@@ -585,11 +649,11 @@ public class ConsoleMenu {
 
         try {
             Review review = new Review(reviewer, rating, comment);
-            movie.addReview(review);
+            reviewManager.addReview(movie, review);
             System.out.println("\nReview added successfully!");
             System.out.printf("Updated Average Rating: %.1f / 5.0 Stars (%d review%s)%n",
-                    movie.getAverageRating(), movie.getReviews().size(),
-                    movie.getReviews().size() == 1 ? "" : "s");
+                    reviewManager.calculateAverageRating(movie), reviewManager.getTotalReviewCount(movie),
+                    reviewManager.getTotalReviewCount(movie) == 1 ? "" : "s");
         } catch (ValidationException e) {
             System.out.println("\n[VALIDATION ERROR] " + e.getMessage());
             if (movie.getStatus() != MovieStatus.RELEASED) {
@@ -599,7 +663,7 @@ public class ConsoleMenu {
     }
 
     // =========================================================================
-    // 10. VIEW MOVIE REVIEWS
+    // 10. VIEW MOVIE REVIEWS & RATING DISTRIBUTION
     // =========================================================================
     private void viewMovieReviews() {
         Movie movie = manager.getActiveMovie();
@@ -609,7 +673,7 @@ public class ConsoleMenu {
         }
 
         System.out.println("--- REVIEWS FOR: " + movie.getTitle() + " ---");
-        List<Review> reviews = movie.getReviews();
+        List<Review> reviews = reviewManager.getReviews(movie);
         if (reviews.isEmpty()) {
             System.out.println("No reviews recorded for this movie yet.");
             if (movie.getStatus() != MovieStatus.RELEASED) {
@@ -619,7 +683,19 @@ public class ConsoleMenu {
         }
 
         System.out.printf("Average Rating: %.1f / 5.0 Stars (based on %d review%s)%n%n",
-                movie.getAverageRating(), reviews.size(), reviews.size() == 1 ? "" : "s");
+                reviewManager.calculateAverageRating(movie), reviews.size(), reviews.size() == 1 ? "" : "s");
+
+        // Star breakdown via ReviewManager
+        Map<Integer, Integer> distribution = reviewManager.getRatingDistribution(movie);
+        System.out.println("Rating Distribution:");
+        for (int star = 5; star >= 1; star--) {
+            int count = distribution.getOrDefault(star, 0);
+            String stars = "*".repeat(star);
+            System.out.printf("  %-5s (%d Star%s) : %d review%s%n",
+                    stars, star, (star == 1 ? " " : "s"), count, (count == 1 ? "" : "s"));
+        }
+        System.out.println();
+
         for (int i = 0; i < reviews.size(); i++) {
             System.out.printf(" %d. %s%n", (i + 1), reviews.get(i));
         }

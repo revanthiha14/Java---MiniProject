@@ -1,5 +1,4 @@
 # MovieID|Type|PersonID|Name|Email|RoleOrDepartment
-MOV-04|ACTOR|ACT-106|Christian Bale|bale@warner.com|Bruce Wayne
 MOV-04|CREW|CRW-206|Hoyte van Hoytema|hoyte@camera.com|Cinematography
 MOV-04|ACTOR|ACT-999|John Doe|john@film.com|Lead Detective
 MOV-03|ACTOR|ACT-104|Allu Arjun|allu@mythri.com|Pushpa Raj

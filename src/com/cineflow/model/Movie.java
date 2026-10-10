@@ -249,6 +249,29 @@ public class Movie {
         castAndCrew.add(person);
     }
 
+    public boolean removePerson(String personId) {
+        if (personId == null) return false;
+        String trimmed = personId.trim();
+        for (int i = 0; i < castAndCrew.size(); i++) {
+            if (castAndCrew.get(i).getId().equalsIgnoreCase(trimmed)) {
+                castAndCrew.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Person findPersonById(String personId) {
+        if (personId == null) return null;
+        String trimmed = personId.trim();
+        for (Person p : castAndCrew) {
+            if (p.getId().equalsIgnoreCase(trimmed)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
     /**
      * Adds a review to the movie.
      * Enforces business rules:
