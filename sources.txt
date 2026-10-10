@@ -1,5 +1,9 @@
 D:\Java---MiniProject\Java---MiniProject\src\com\cineflow\Main.java
 D:\Java---MiniProject\Java---MiniProject\src\com\cineflow\exception\BudgetExceededException.java
+D:\Java---MiniProject\Java---MiniProject\src\com\cineflow\exception\CineFlowException.java
+D:\Java---MiniProject\Java---MiniProject\src\com\cineflow\exception\ResourceNotFoundException.java
+D:\Java---MiniProject\Java---MiniProject\src\com\cineflow\exception\ScheduleConflictException.java
+D:\Java---MiniProject\Java---MiniProject\src\com\cineflow\exception\ValidationException.java
 D:\Java---MiniProject\Java---MiniProject\src\com\cineflow\model\Actor.java
 D:\Java---MiniProject\Java---MiniProject\src\com\cineflow\model\CrewMember.java
 D:\Java---MiniProject\Java---MiniProject\src\com\cineflow\model\Expense.java

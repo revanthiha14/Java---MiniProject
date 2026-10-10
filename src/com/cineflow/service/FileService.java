@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * Handles saving and loading application data using plain text files.
  * Demonstrates: File I/O (BufferedReader, PrintWriter), String Tokenization/Parsing,
- * and Exception Handling (IOException).
+ * Robust Error Handling (skipping malformed records gracefully), and IOException propagation.
  */
 public class FileService {
     private final String dataDir;
@@ -45,6 +45,9 @@ public class FileService {
      * Saves all production houses, movies, scenes, cast/crew, expenses, and reviews to text files.
      */
     public void saveAllData(List<ProductionHouse> studios) throws IOException {
+        if (studios == null) {
+            throw new IOException("Cannot save null studio collection.");
+        }
         saveStudios(studios);
         saveMovies(studios);
         saveScenes(studios);
@@ -81,12 +84,13 @@ public class FileService {
     private void saveScenes(List<ProductionHouse> studios) throws IOException {
         File file = new File(dataDir, "scenes.txt");
         try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
-            writer.println("# MovieID|SceneNumber|Title|Location|Status");
+            writer.println("# MovieID|SceneNumber|Title|Location|Status|ShootingDate");
             for (ProductionHouse ph : studios) {
                 for (Movie m : ph.getMovies()) {
                     for (Scene sc : m.getScenes()) {
                         writer.println(m.getId() + "|" + sc.getSceneNumber() + "|"
-                                + sc.getTitle() + "|" + sc.getLocation() + "|" + sc.getStatus());
+                                + sc.getTitle() + "|" + sc.getLocation() + "|"
+                                + sc.getStatus() + "|" + sc.getShootingDate());
                     }
                 }
             }
@@ -145,6 +149,7 @@ public class FileService {
 
     /**
      * Loads all production houses, movies, scenes, cast/crew, expenses, and reviews from text files.
+     * Skips malformed records gracefully with explanatory warnings without crashing.
      */
     public List<ProductionHouse> loadAllData() throws IOException {
         Map<String, ProductionHouse> studioMap = new HashMap<>();
@@ -155,13 +160,21 @@ public class FileService {
         if (studioFile.exists()) {
             try (BufferedReader reader = new BufferedReader(new FileReader(studioFile))) {
                 String line;
+                int lineNum = 0;
                 while ((line = reader.readLine()) != null) {
+                    lineNum++;
                     line = line.trim();
                     if (line.isEmpty() || line.startsWith("#")) continue;
                     String[] parts = line.split("\\|");
                     if (parts.length >= 3) {
-                        ProductionHouse ph = new ProductionHouse(parts[0].trim(), parts[1].trim(), parts[2].trim());
-                        studioMap.put(ph.getId(), ph);
+                        try {
+                            ProductionHouse ph = new ProductionHouse(parts[0].trim(), parts[1].trim(), parts[2].trim());
+                            studioMap.put(ph.getId(), ph);
+                        } catch (Exception e) {
+                            System.err.println("[WARNING] studios.txt line " + lineNum + " skipped: " + e.getMessage());
+                        }
+                    } else {
+                        System.err.println("[WARNING] studios.txt line " + lineNum + " malformed (insufficient fields): " + line);
                     }
                 }
             }
@@ -172,33 +185,43 @@ public class FileService {
         if (movieFile.exists()) {
             try (BufferedReader reader = new BufferedReader(new FileReader(movieFile))) {
                 String line;
+                int lineNum = 0;
                 while ((line = reader.readLine()) != null) {
+                    lineNum++;
                     line = line.trim();
                     if (line.isEmpty() || line.startsWith("#")) continue;
                     String[] parts = line.split("\\|");
                     if (parts.length >= 7) {
-                        String movieId = parts[0].trim();
-                        String studioId = parts[1].trim();
-                        String title = parts[2].trim();
-                        String genre = parts[3].trim();
-                        String director = parts[4].trim();
-                        int releaseYear = Integer.parseInt(parts[5].trim());
-                        double budget = Double.parseDouble(parts[6].trim());
+                        try {
+                            String movieId = parts[0].trim();
+                            String studioId = parts[1].trim();
+                            String title = parts[2].trim();
+                            String genre = parts[3].trim();
+                            String director = parts[4].trim();
+                            int releaseYear = Integer.parseInt(parts[5].trim());
+                            double budget = Double.parseDouble(parts[6].trim());
 
-                        MovieStatus status = MovieStatus.PLANNING;
-                        if (parts.length >= 8) {
-                            try {
-                                status = MovieStatus.valueOf(parts[7].trim().toUpperCase());
-                            } catch (Exception ignored) {}
+                            MovieStatus status = MovieStatus.PLANNING;
+                            if (parts.length >= 8) {
+                                try {
+                                    status = MovieStatus.valueOf(parts[7].trim().toUpperCase());
+                                } catch (Exception ignored) {}
+                            }
+
+                            Movie movie = new Movie(movieId, title, genre, director, releaseYear, budget, status);
+                            movieMap.put(movieId, movie);
+
+                            ProductionHouse ph = studioMap.get(studioId);
+                            if (ph != null) {
+                                ph.getMovies().add(movie);
+                            } else {
+                                System.err.println("[WARNING] Movie '" + movieId + "' references unknown Studio ID: " + studioId);
+                            }
+                        } catch (Exception e) {
+                            System.err.println("[WARNING] movies.txt line " + lineNum + " skipped: " + e.getMessage());
                         }
-
-                        Movie movie = new Movie(movieId, title, genre, director, releaseYear, budget, status);
-                        movieMap.put(movieId, movie);
-
-                        ProductionHouse ph = studioMap.get(studioId);
-                        if (ph != null) {
-                            ph.addMovie(movie);
-                        }
+                    } else {
+                        System.err.println("[WARNING] movies.txt line " + lineNum + " malformed: " + line);
                     }
                 }
             }
@@ -209,21 +232,30 @@ public class FileService {
         if (sceneFile.exists()) {
             try (BufferedReader reader = new BufferedReader(new FileReader(sceneFile))) {
                 String line;
+                int lineNum = 0;
                 while ((line = reader.readLine()) != null) {
+                    lineNum++;
                     line = line.trim();
                     if (line.isEmpty() || line.startsWith("#")) continue;
                     String[] parts = line.split("\\|");
                     if (parts.length >= 5) {
-                        String movieId = parts[0].trim();
-                        int sceneNum = Integer.parseInt(parts[1].trim());
-                        String title = parts[2].trim();
-                        String location = parts[3].trim();
-                        String status = parts[4].trim();
+                        try {
+                            String movieId = parts[0].trim();
+                            int sceneNum = Integer.parseInt(parts[1].trim());
+                            String title = parts[2].trim();
+                            String location = parts[3].trim();
+                            String status = parts[4].trim();
+                            String shootingDate = (parts.length >= 6) ? parts[5].trim() : "TBD";
 
-                        Movie movie = movieMap.get(movieId);
-                        if (movie != null) {
-                            movie.addScene(new Scene(sceneNum, title, location, status));
+                            Movie movie = movieMap.get(movieId);
+                            if (movie != null) {
+                                movie.getScenes().add(new Scene(sceneNum, title, location, status, shootingDate));
+                            }
+                        } catch (Exception e) {
+                            System.err.println("[WARNING] scenes.txt line " + lineNum + " skipped: " + e.getMessage());
                         }
+                    } else {
+                        System.err.println("[WARNING] scenes.txt line " + lineNum + " malformed: " + line);
                     }
                 }
             }
@@ -234,26 +266,34 @@ public class FileService {
         if (castCrewFile.exists()) {
             try (BufferedReader reader = new BufferedReader(new FileReader(castCrewFile))) {
                 String line;
+                int lineNum = 0;
                 while ((line = reader.readLine()) != null) {
+                    lineNum++;
                     line = line.trim();
                     if (line.isEmpty() || line.startsWith("#")) continue;
                     String[] parts = line.split("\\|");
                     if (parts.length >= 6) {
-                        String movieId = parts[0].trim();
-                        String type = parts[1].trim();
-                        String personId = parts[2].trim();
-                        String name = parts[3].trim();
-                        String email = parts[4].trim();
-                        String roleOrDept = parts[5].trim();
+                        try {
+                            String movieId = parts[0].trim();
+                            String type = parts[1].trim();
+                            String personId = parts[2].trim();
+                            String name = parts[3].trim();
+                            String email = parts[4].trim();
+                            String roleOrDept = parts[5].trim();
 
-                        Movie movie = movieMap.get(movieId);
-                        if (movie != null) {
-                            if ("ACTOR".equalsIgnoreCase(type)) {
-                                movie.addPerson(new Actor(personId, name, email, roleOrDept));
-                            } else if ("CREW".equalsIgnoreCase(type)) {
-                                movie.addPerson(new CrewMember(personId, name, email, roleOrDept));
+                            Movie movie = movieMap.get(movieId);
+                            if (movie != null) {
+                                if ("ACTOR".equalsIgnoreCase(type)) {
+                                    movie.getCastAndCrew().add(new Actor(personId, name, email, roleOrDept));
+                                } else if ("CREW".equalsIgnoreCase(type)) {
+                                    movie.getCastAndCrew().add(new CrewMember(personId, name, email, roleOrDept));
+                                }
                             }
+                        } catch (Exception e) {
+                            System.err.println("[WARNING] cast_crew.txt line " + lineNum + " skipped: " + e.getMessage());
                         }
+                    } else {
+                        System.err.println("[WARNING] cast_crew.txt line " + lineNum + " malformed: " + line);
                     }
                 }
             }
@@ -264,21 +304,29 @@ public class FileService {
         if (expenseFile.exists()) {
             try (BufferedReader reader = new BufferedReader(new FileReader(expenseFile))) {
                 String line;
+                int lineNum = 0;
                 while ((line = reader.readLine()) != null) {
+                    lineNum++;
                     line = line.trim();
                     if (line.isEmpty() || line.startsWith("#")) continue;
                     String[] parts = line.split("\\|");
                     if (parts.length >= 5) {
-                        String movieId = parts[0].trim();
-                        String expId = parts[1].trim();
-                        String category = parts[2].trim();
-                        double amount = Double.parseDouble(parts[3].trim());
-                        String desc = parts[4].trim();
+                        try {
+                            String movieId = parts[0].trim();
+                            String expId = parts[1].trim();
+                            String category = parts[2].trim();
+                            double amount = Double.parseDouble(parts[3].trim());
+                            String desc = parts[4].trim();
 
-                        Movie movie = movieMap.get(movieId);
-                        if (movie != null) {
-                            movie.getExpenses().add(new Expense(expId, category, amount, desc));
+                            Movie movie = movieMap.get(movieId);
+                            if (movie != null) {
+                                movie.getExpenses().add(new Expense(expId, category, amount, desc));
+                            }
+                        } catch (Exception e) {
+                            System.err.println("[WARNING] expenses.txt line " + lineNum + " skipped: " + e.getMessage());
                         }
+                    } else {
+                        System.err.println("[WARNING] expenses.txt line " + lineNum + " malformed: " + line);
                     }
                 }
             }
@@ -289,20 +337,28 @@ public class FileService {
         if (reviewFile.exists()) {
             try (BufferedReader reader = new BufferedReader(new FileReader(reviewFile))) {
                 String line;
+                int lineNum = 0;
                 while ((line = reader.readLine()) != null) {
+                    lineNum++;
                     line = line.trim();
                     if (line.isEmpty() || line.startsWith("#")) continue;
                     String[] parts = line.split("\\|");
                     if (parts.length >= 4) {
-                        String movieId = parts[0].trim();
-                        String reviewerName = parts[1].trim();
-                        int rating = Integer.parseInt(parts[2].trim());
-                        String comment = parts[3].trim();
+                        try {
+                            String movieId = parts[0].trim();
+                            String reviewerName = parts[1].trim();
+                            int rating = Integer.parseInt(parts[2].trim());
+                            String comment = parts[3].trim();
 
-                        Movie movie = movieMap.get(movieId);
-                        if (movie != null) {
-                            movie.getReviews().add(new Review(reviewerName, rating, comment));
+                            Movie movie = movieMap.get(movieId);
+                            if (movie != null) {
+                                movie.getReviews().add(new Review(reviewerName, rating, comment));
+                            }
+                        } catch (Exception e) {
+                            System.err.println("[WARNING] reviews.txt line " + lineNum + " skipped: " + e.getMessage());
                         }
+                    } else {
+                        System.err.println("[WARNING] reviews.txt line " + lineNum + " malformed: " + line);
                     }
                 }
             }

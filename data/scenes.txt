@@ -1,9 +1,9 @@
-# MovieID|SceneNumber|Title|Location|Status
-MOV-04|1|Rooftop Chase|Gotham Heights|PLANNED
-MOV-03|1|Forest Border Ambush|Maredumilli Forest|COMPLETED
-MOV-03|2|Port Cargo Standoff|Visakhapatnam Port|IN_PROGRESS
-MOV-01|1|Deep Orbit Discovery|Soundstage A (CGI)|COMPLETED
-MOV-01|2|Spacewalk Sensor Repair|Exterior Orbital Rig|IN_PROGRESS
-MOV-01|3|Atmospheric Entry Bridge|Flight Deck Set|PLANNED
-MOV-02|1|Rainy Pier Encounter|Dock Warehouse #4|COMPLETED
-MOV-02|2|Interrogation Room|Studio Stage B|PLANNED
+# MovieID|SceneNumber|Title|Location|Status|ShootingDate
+MOV-04|1|Rooftop Chase|Gotham Heights|PLANNED|2027-04-01
+MOV-03|1|Forest Border Ambush|Maredumilli Forest|COMPLETED|2026-03-25
+MOV-03|2|Port Cargo Standoff|Visakhapatnam Port|IN_PROGRESS|2026-03-12
+MOV-01|1|Deep Orbit Discovery|Soundstage A (CGI)|COMPLETED|2026-11-10
+MOV-01|2|Spacewalk Sensor Repair|Exterior Orbital Rig|IN_PROGRESS|2026-11-15
+MOV-01|3|Atmospheric Entry Bridge|Flight Deck Set|PLANNED|2026-11-20
+MOV-02|1|Rainy Pier Encounter|Dock Warehouse #4|COMPLETED|2027-01-10
+MOV-02|2|Interrogation Room|Studio Stage B|PLANNED|2027-01-15

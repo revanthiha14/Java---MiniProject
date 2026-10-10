@@ -10,6 +10,60 @@
 classDiagram
     direction TB
 
+    %% Custom Exception Hierarchy (Inheritance)
+    class Exception {
+        <<external>>
+    }
+
+    class CineFlowException {
+        +CineFlowException(message: String)
+        +CineFlowException(message: String, cause: Throwable)
+    }
+
+    class BudgetExceededException {
+        -double attemptedAmount
+        -double remainingBudget
+        -double totalBudget
+        +BudgetExceededException(message: String)
+        +BudgetExceededException(attemptedAmount, remainingBudget, totalBudget)
+        +getAttemptedAmount() double
+        +getRemainingBudget() double
+        +getTotalBudget() double
+    }
+
+    class ResourceNotFoundException {
+        -String resourceType
+        -String resourceId
+        +ResourceNotFoundException(message: String)
+        +ResourceNotFoundException(resourceType, resourceId)
+        +getResourceType() String
+        +getResourceId() String
+    }
+
+    class ScheduleConflictException {
+        -String locationOrEntity
+        -String conflictDate
+        -String reason
+        +ScheduleConflictException(message: String)
+        +ScheduleConflictException(locationOrEntity, conflictDate, reason)
+        +getLocationOrEntity() String
+        +getConflictDate() String
+        +getReason() String
+    }
+
+    class ValidationException {
+        -String fieldName
+        +ValidationException(message: String)
+        +ValidationException(fieldName, message)
+        +getFieldName() String
+    }
+
+    Exception <|-- CineFlowException : Extends
+    CineFlowException <|-- BudgetExceededException : Inheritance
+    CineFlowException <|-- ResourceNotFoundException : Inheritance
+    CineFlowException <|-- ScheduleConflictException : Inheritance
+    CineFlowException <|-- ValidationException : Inheritance
+
     %% Abstract Base Class & Subclasses (Inheritance & Polymorphism)
     class Person {
         <<abstract>>
@@ -63,8 +117,11 @@ classDiagram
         -String comment
         +Review(reviewerName, rating, comment)
         +getReviewerName() String
+        +setReviewerName(name) void
         +getRating() int
+        +setRating(rating) void
         +getComment() String
+        +setComment(comment) void
         +toString() String
     }
 
@@ -74,7 +131,9 @@ classDiagram
         -String title
         -String location
         -String status
+        -String shootingDate
         +Scene(sceneNumber, title, location, status)
+        +Scene(sceneNumber, title, location, status, shootingDate)
         +getSceneNumber() int
         +setSceneNumber(number) void
         +getTitle() String
@@ -83,6 +142,8 @@ classDiagram
         +setLocation(loc) void
         +getStatus() String
         +setStatus(status) void
+        +getShootingDate() String
+        +setShootingDate(date) void
         +toString() String
     }
 
@@ -93,9 +154,13 @@ classDiagram
         -String description
         +Expense(id, category, amount, description)
         +getId() String
+        +setId(id) void
         +getCategory() String
+        +setCategory(category) void
         +getAmount() double
+        +setAmount(amount) void
         +getDescription() String
+        +setDescription(desc) void
         +toString() String
     }
 
@@ -111,6 +176,7 @@ classDiagram
         -List~Person~ castAndCrew
         -List~Expense~ expenses
         -List~Review~ reviews
+        +Movie(id, title, genre, director, year, budget)
         +Movie(id, title, genre, director, year, budget, status)
         +getId() String
         +getTitle() String
@@ -125,9 +191,12 @@ classDiagram
         +getExpenses() List~Expense~
         +getReviews() List~Review~
         +addScene(Scene) void
+        +scheduleScene(sceneNumber, shootingDate) void
+        +findSceneByNumber(sceneNumber) Scene
+        +getSceneOrThrow(sceneNumber) Scene
         +addPerson(Person) void
         +addExpense(Expense) void
-        +addReview(Review) boolean
+        +addReview(Review) void
         +getAverageRating() double
         +getTotalExpenses() double
         +getRemainingBudget() double
@@ -147,12 +216,8 @@ classDiagram
         +getMovies() List~Movie~
         +addMovie(Movie) void
         +findMovieById(id) Movie
+        +getMovieOrThrow(id) Movie
         +toString() String
-    }
-
-    %% Custom Exception
-    class BudgetExceededException {
-        +BudgetExceededException(message: String)
     }
 
     %% Service & File Handling
@@ -173,13 +238,16 @@ classDiagram
         +MovieManager()
         +addStudio(ProductionHouse) void
         +getStudio(id: String) ProductionHouse
+        +getStudioOrThrow(id: String) ProductionHouse
         +getAllStudios() List~ProductionHouse~
         +getAllMovies() List~Movie~
         +getActiveStudio() ProductionHouse
-        +setActiveStudioId(id: String) boolean
+        +setActiveStudioId(id: String) void
         +getActiveMovie() Movie
-        +setActiveMovieId(id: String) boolean
+        +setActiveMovieId(id: String) void
         +addMovieToActiveStudio(Movie) void
+        +findMovieAnywhere(id: String) Movie
+        +findMovieOrThrow(id: String) Movie
         +searchMovies(query, genre, minRating) List~Movie~
         +saveData() void
         +loadData() void
@@ -205,12 +273,16 @@ classDiagram
     Movie *-- Scene : Composition (1 to Many)
     Movie *-- Expense : Composition (1 to Many)
     Movie o-- Person : Polymorphic Association (1 to Many)
+    
     Movie ..> BudgetExceededException : Throws on budget overrun
+    Movie ..> ScheduleConflictException : Throws on date/location clash
+    Movie ..> ValidationException : Throws on rule violations
+    Movie ..> ResourceNotFoundException : Throws on missing scene/record
 
     MovieManager o-- ProductionHouse : Manages via HashMap
     MovieManager o-- FileService : Uses for Text File I/O
     ConsoleMenu o-- MovieManager : Delegates business operations
-    ConsoleMenu ..> BudgetExceededException : Handles exception
+    ConsoleMenu ..> CineFlowException : Handles all custom exceptions
     Main ..> MovieManager : Initializes
     Main ..> ConsoleMenu : Launches
 ```
@@ -219,13 +291,24 @@ classDiagram
 
 ## 2. Summary of Key OOP Concepts Demonstrated
 
-1. **Classes and Objects**: Separation of domain entities (`Movie`, `ProductionHouse`, `Scene`, `Expense`, `Review`).
-2. **Encapsulation**: Private fields accessed through getters/setters with validation logic (`addReview` checks `RELEASED` status and rating 1-5).
-3. **Inheritance & Abstraction**: Base abstract class `Person` extended by `Actor` and `CrewMember`.
-4. **Polymorphism & Method Overriding**: `Actor` and `CrewMember` override `getRole()`. In `Movie`, `List<Person>` stores both actors and crew polymorphically.
-5. **Enumerations**: `MovieStatus` encapsulates lifecycle phases (`PLANNING`, `PRODUCTION`, `POST_PRODUCTION`, `RELEASED`).
-6. **Collections Framework**:
-   - `ArrayList` for movies, scenes, personnel, expenses, reviews.
-   - `HashMap` in `MovieManager` for $O(1)$ key-value studio lookups by ID.
-7. **Custom Exception Handling**: `BudgetExceededException` checked exception enforces budget ceilings.
-8. **File Handling (I/O Streams)**: Human-readable text files in `data/` using `BufferedReader` and `PrintWriter` with pipe delimiters.
+1. **Classes and Objects**: Separation of distinct real-world domain entities (`Movie`, `ProductionHouse`, `Scene`, `Expense`, `Review`).
+2. **Encapsulation**: Private fields accessed through getters/setters with proactive input validation in constructors and setters.
+3. **Inheritance & Abstraction**:
+   - `Person` is an abstract base class containing shared properties (`id`, `name`, `email`) and an abstract method `public abstract String getRole()`.
+   - Subclasses `Actor` and `CrewMember` inherit from `Person` via `extends` and call `super(...)`.
+4. **Polymorphism & Dynamic Method Dispatch**:
+   - `Actor` and `CrewMember` override `getRole()`.
+   - In `Movie`, a polymorphic collection `List<Person> castAndCrew` stores both subclasses. Iterating over the list dynamically invokes the overridden subclass method at runtime.
+5. **Enumerations**: `MovieStatus` encapsulates lifecycle stages (`PLANNING`, `PRODUCTION`, `POST_PRODUCTION`, `RELEASED`).
+6. **Custom Checked Exception Hierarchy**:
+   - Base checked exception `CineFlowException extends Exception`.
+   - `BudgetExceededException extends CineFlowException`: Thrown when expenses exceed allocated budget.
+   - `ResourceNotFoundException extends CineFlowException`: Thrown when a requested studio, movie, or scene is not found.
+   - `ScheduleConflictException extends CineFlowException`: Thrown when scheduling multiple scenes at the same filming location on the same shoot date.
+   - `ValidationException extends CineFlowException`: Thrown when domain validation fails (empty fields, invalid ratings, negative budgets, reviews before release).
+7. **Collections Framework**:
+   - `ArrayList` for ordered, dynamic collections of movies, scenes, personnel, expenses, and reviews.
+   - `HashMap` in `MovieManager` (`Map<String, ProductionHouse>`) for efficient $O(1)$ key-value lookups by studio ID.
+8. **File Handling (Java I/O)**:
+   - Human-readable pipe-delimited (`|`) text files in `data/` using `BufferedReader`, `PrintWriter`, `FileReader`, and `FileWriter`.
+   - Resilient parsing skips corrupted records gracefully with logged warnings rather than terminating the application or wiping existing in-memory state.

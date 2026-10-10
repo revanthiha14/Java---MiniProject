@@ -1,6 +1,10 @@
 package com.cineflow.ui;
 
 import com.cineflow.exception.BudgetExceededException;
+import com.cineflow.exception.CineFlowException;
+import com.cineflow.exception.ResourceNotFoundException;
+import com.cineflow.exception.ScheduleConflictException;
+import com.cineflow.exception.ValidationException;
 import com.cineflow.model.Actor;
 import com.cineflow.model.CrewMember;
 import com.cineflow.model.Expense;
@@ -19,7 +23,7 @@ import java.util.Scanner;
 /**
  * Text-based console user interface for CineFlow.
  * Demonstrates: Console Input Handling (Scanner), Menu Loops, Sub-menus,
- * Formatted Output, and Exception Handling.
+ * Formatted Output, Exception Handling (5 custom exceptions), and Graceful Error Recovery.
  */
 public class ConsoleMenu {
     private final MovieManager manager;
@@ -39,7 +43,7 @@ public class ConsoleMenu {
             System.out.println(" 3. Search Movies (ID, Name, Genre, Rating)");
             System.out.println(" 4. Update Movie Status (Lifecycle)");
             System.out.println(" 5. Movie Statistics / Overview");
-            System.out.println(" 6. Manage Scenes (View, Add, Update)");
+            System.out.println(" 6. Manage Scenes (View, Add, Update, Schedule Shoot)");
             System.out.println(" 7. Manage Cast & Crew (View, Add Actor/Crew)");
             System.out.println(" 8. Manage Budget & Expenses");
             System.out.println(" 9. Add Movie Review");
@@ -132,10 +136,11 @@ public class ConsoleMenu {
         System.out.print("\nEnter Movie ID to switch (or press Enter to keep current): ");
         String id = readLine();
         if (!id.isEmpty()) {
-            if (manager.setActiveMovieId(id)) {
+            try {
+                manager.setActiveMovieId(id);
                 System.out.println("Active Movie switched to: " + manager.getActiveMovie().getTitle());
-            } else {
-                System.out.println("Error: Movie with ID '" + id + "' not found.");
+            } catch (ResourceNotFoundException e) {
+                System.out.println("\n[RESOURCE NOT FOUND] " + e.getMessage());
             }
         }
     }
@@ -150,16 +155,6 @@ public class ConsoleMenu {
         System.out.println("--- ADD NEW MOVIE TO " + studio.getName().toUpperCase() + " ---");
         System.out.print("Enter Movie ID (e.g., MOV-05): ");
         String id = readLine();
-        if (id.isEmpty()) {
-            System.out.println("Movie ID cannot be empty.");
-            return;
-        }
-
-        if (manager.findMovieAnywhere(id) != null) {
-            System.out.println("Movie with ID '" + id + "' already exists!");
-            return;
-        }
-
         System.out.print("Enter Movie Title: ");
         String title = readLine();
         System.out.print("Enter Genre: ");
@@ -185,9 +180,15 @@ public class ConsoleMenu {
             default -> MovieStatus.PLANNING;
         };
 
-        Movie movie = new Movie(id, title, genre, director, year, budget, initialStatus);
-        manager.addMovieToActiveStudio(movie);
-        System.out.println("Movie '" + title + "' added successfully with status: " + initialStatus);
+        try {
+            Movie movie = new Movie(id, title, genre, director, year, budget, initialStatus);
+            manager.addMovieToActiveStudio(movie);
+            System.out.println("\nMovie '" + title + "' added successfully with status: " + initialStatus);
+        } catch (ValidationException e) {
+            System.out.println("\n[VALIDATION ERROR] " + e.getMessage());
+        } catch (ResourceNotFoundException e) {
+            System.out.println("\n[RESOURCE NOT FOUND] " + e.getMessage());
+        }
     }
 
     // =========================================================================
@@ -195,7 +196,7 @@ public class ConsoleMenu {
     // =========================================================================
     private void searchMovies() {
         System.out.println("--- SEARCH & FILTER MOVIES ---");
-        System.out.println(" 1. Search by Movie ID or Title");
+        System.out.println(" 1. Search by Movie ID or Title keyword");
         System.out.println(" 2. Filter by Genre");
         System.out.println(" 3. Filter by Minimum Average Rating");
         System.out.println(" 4. View All Movies Across All Studios");
@@ -240,10 +241,11 @@ public class ConsoleMenu {
         System.out.print("\nEnter Movie ID to set as Active Movie (or press Enter to skip): ");
         String selId = readLine();
         if (!selId.isEmpty()) {
-            if (manager.setActiveMovieId(selId)) {
+            try {
+                manager.setActiveMovieId(selId);
                 System.out.println("Active movie switched to: " + manager.getActiveMovie().getTitle());
-            } else {
-                System.out.println("Movie ID '" + selId + "' not found.");
+            } catch (ResourceNotFoundException e) {
+                System.out.println("\n[RESOURCE NOT FOUND] " + e.getMessage());
             }
         }
     }
@@ -325,7 +327,7 @@ public class ConsoleMenu {
     }
 
     // =========================================================================
-    // 6. SCENE MANAGEMENT
+    // 6. SCENE MANAGEMENT & SHOOTING SCHEDULE CONFLICT HANDLING
     // =========================================================================
     private void manageScenes() {
         Movie movie = manager.getActiveMovie();
@@ -338,6 +340,7 @@ public class ConsoleMenu {
         System.out.println(" 1. View All Scenes");
         System.out.println(" 2. Add New Scene");
         System.out.println(" 3. Update Scene Status");
+        System.out.println(" 4. Schedule Scene Shoot Date");
         System.out.println(" 0. Back to Main Menu");
         System.out.print("Enter choice: ");
 
@@ -361,12 +364,20 @@ public class ConsoleMenu {
                 String title = readLine();
                 System.out.print("Enter Location / Setting: ");
                 String location = readLine();
-                System.out.print("Enter Status (PLANNED / IN_PROGRESS / COMPLETED): ");
-                String status = readLine().toUpperCase();
-                if (status.isEmpty()) status = "PLANNED";
+                System.out.print("Enter Status (PLANNED / IN_PROGRESS / COMPLETED) [Default PLANNED]: ");
+                String status = readLine();
+                System.out.print("Enter Shooting Date (YYYY-MM-DD or press Enter for TBD): ");
+                String shootDate = readLine();
 
-                movie.addScene(new Scene(sceneNum, title, location, status));
-                System.out.println("Scene #" + sceneNum + " added successfully!");
+                try {
+                    Scene sc = new Scene(sceneNum, title, location, status, shootDate);
+                    movie.addScene(sc);
+                    System.out.println("\nScene #" + sceneNum + " added successfully!");
+                } catch (ValidationException e) {
+                    System.out.println("\n[VALIDATION ERROR] " + e.getMessage());
+                } catch (ScheduleConflictException e) {
+                    System.out.println("\n[SCHEDULE CONFLICT] " + e.getMessage());
+                }
             }
             case 3 -> {
                 List<Scene> scenes = movie.getScenes();
@@ -376,23 +387,43 @@ public class ConsoleMenu {
                 }
                 System.out.print("Enter Scene Number to update: ");
                 int sceneNum = readInt();
-                Scene target = null;
-                for (Scene sc : scenes) {
-                    if (sc.getSceneNumber() == sceneNum) {
-                        target = sc;
-                        break;
-                    }
-                }
-                if (target == null) {
-                    System.out.println("Scene #" + sceneNum + " not found.");
-                } else {
+                try {
+                    Scene target = movie.getSceneOrThrow(sceneNum);
                     System.out.println("Current status: " + target.getStatus());
                     System.out.print("Enter new status (PLANNED / IN_PROGRESS / COMPLETED): ");
-                    String newStatus = readLine().toUpperCase();
+                    String newStatus = readLine();
                     if (!newStatus.isEmpty()) {
                         target.setStatus(newStatus);
-                        System.out.println("Scene #" + sceneNum + " updated to " + newStatus);
+                        System.out.println("Scene #" + sceneNum + " status updated to " + target.getStatus());
                     }
+                } catch (ResourceNotFoundException e) {
+                    System.out.println("\n[RESOURCE NOT FOUND] " + e.getMessage());
+                }
+            }
+            case 4 -> {
+                List<Scene> scenes = movie.getScenes();
+                if (scenes.isEmpty()) {
+                    System.out.println("No scenes to schedule.");
+                    return;
+                }
+                System.out.print("Enter Scene Number to schedule: ");
+                int sceneNum = readInt();
+                try {
+                    Scene target = movie.getSceneOrThrow(sceneNum);
+                    System.out.printf("Scheduling Scene #%d ('%s') at '%s'%n",
+                            target.getSceneNumber(), target.getTitle(), target.getLocation());
+                    System.out.println("Current Shooting Date: " + target.getShootingDate());
+                    System.out.print("Enter New Shooting Date (YYYY-MM-DD): ");
+                    String newDate = readLine();
+
+                    movie.scheduleScene(sceneNum, newDate);
+                    System.out.println("\nScene #" + sceneNum + " successfully scheduled for " + newDate + "!");
+                } catch (ResourceNotFoundException e) {
+                    System.out.println("\n[RESOURCE NOT FOUND] " + e.getMessage());
+                } catch (ScheduleConflictException e) {
+                    System.out.println("\n[SCHEDULE CONFLICT ERROR] " + e.getMessage());
+                } catch (ValidationException e) {
+                    System.out.println("\n[VALIDATION ERROR] " + e.getMessage());
                 }
             }
             case 0 -> {}
@@ -443,8 +474,13 @@ public class ConsoleMenu {
                 System.out.print("Enter Character Role: ");
                 String charName = readLine();
 
-                movie.addPerson(new Actor(id, name, email, charName));
-                System.out.println("Actor '" + name + "' added successfully!");
+                try {
+                    Actor actor = new Actor(id, name, email, charName);
+                    movie.addPerson(actor);
+                    System.out.println("\nActor '" + name + "' added successfully!");
+                } catch (ValidationException e) {
+                    System.out.println("\n[VALIDATION ERROR] " + e.getMessage());
+                }
             }
             case 3 -> {
                 System.out.print("Enter Person ID (e.g. CRW-205): ");
@@ -456,8 +492,13 @@ public class ConsoleMenu {
                 System.out.print("Enter Department (e.g. Camera, Sound, VFX, Directing): ");
                 String dept = readLine();
 
-                movie.addPerson(new CrewMember(id, name, email, dept));
-                System.out.println("Crew Member '" + name + "' added successfully!");
+                try {
+                    CrewMember crew = new CrewMember(id, name, email, dept);
+                    movie.addPerson(crew);
+                    System.out.println("\nCrew Member '" + name + "' added successfully!");
+                } catch (ValidationException e) {
+                    System.out.println("\n[VALIDATION ERROR] " + e.getMessage());
+                }
             }
             case 0 -> {}
             default -> System.out.println("Invalid option.");
@@ -507,15 +548,16 @@ public class ConsoleMenu {
                 System.out.print("Enter Description: ");
                 String desc = readLine();
 
-                Expense exp = new Expense(id, cat, amount, desc);
-
                 try {
+                    Expense exp = new Expense(id, cat, amount, desc);
                     movie.addExpense(exp);
-                    System.out.println("Expense added successfully!");
+                    System.out.println("\nExpense added successfully!");
                     System.out.printf("Updated Remaining Budget: $%,.2f%n", movie.getRemainingBudget());
                 } catch (BudgetExceededException e) {
-                    System.err.println("\n[BUDGET EXCEEDED ERROR] " + e.getMessage());
-                    System.out.println("The expense was NOT added due to insufficient funds.");
+                    System.out.println("\n[BUDGET EXCEEDED ERROR] " + e.getMessage());
+                    System.out.println("The expense was NOT added due to insufficient allocated funds.");
+                } catch (ValidationException e) {
+                    System.out.println("\n[VALIDATION ERROR] " + e.getMessage());
                 }
             }
             case 0 -> {}
@@ -533,43 +575,26 @@ public class ConsoleMenu {
             return;
         }
 
-        // Rule: Reviews can only be added when movie status is RELEASED
-        if (movie.getStatus() != MovieStatus.RELEASED) {
-            System.out.println("\n[ERROR] Reviews can only be added when the movie status is RELEASED!");
-            System.out.println("Current status of '" + movie.getTitle() + "' is: " + movie.getStatus());
-            System.out.println("Please update the movie's status to RELEASED (Option 4) before adding reviews.");
-            return;
-        }
-
         System.out.println("--- ADD REVIEW FOR: " + movie.getTitle() + " ---");
         System.out.print("Enter Reviewer Name: ");
         String reviewer = readLine();
-        if (reviewer.isEmpty()) {
-            System.out.println("Reviewer name cannot be empty.");
-            return;
-        }
-
         System.out.print("Enter Star Rating (1 to 5): ");
         int rating = readInt();
-
-        // Rule: Reject ratings below 1 or above 5
-        if (rating < 1 || rating > 5) {
-            System.out.println("\n[ERROR] Rating rejected! Rating must be between 1 and 5 stars.");
-            return;
-        }
-
         System.out.print("Enter Review Comment: ");
         String comment = readLine();
 
-        Review review = new Review(reviewer, rating, comment);
-        boolean added = movie.addReview(review);
-        if (added) {
+        try {
+            Review review = new Review(reviewer, rating, comment);
+            movie.addReview(review);
             System.out.println("\nReview added successfully!");
             System.out.printf("Updated Average Rating: %.1f / 5.0 Stars (%d review%s)%n",
                     movie.getAverageRating(), movie.getReviews().size(),
                     movie.getReviews().size() == 1 ? "" : "s");
-        } else {
-            System.out.println("Failed to add review.");
+        } catch (ValidationException e) {
+            System.out.println("\n[VALIDATION ERROR] " + e.getMessage());
+            if (movie.getStatus() != MovieStatus.RELEASED) {
+                System.out.println("Tip: Use Option 4 to update the movie lifecycle to RELEASED before submitting reviews.");
+            }
         }
     }
 
@@ -627,32 +652,29 @@ public class ConsoleMenu {
                 System.out.print("\nEnter Studio ID to switch (or press Enter to keep current): ");
                 String id = readLine();
                 if (!id.isEmpty()) {
-                    if (manager.setActiveStudioId(id)) {
+                    try {
+                        manager.setActiveStudioId(id);
                         System.out.println("Active Studio switched to: " + manager.getActiveStudio().getName());
-                    } else {
-                        System.out.println("Error: Studio with ID '" + id + "' not found.");
+                    } catch (ResourceNotFoundException e) {
+                        System.out.println("\n[RESOURCE NOT FOUND] " + e.getMessage());
                     }
                 }
             }
             case 2 -> {
                 System.out.print("Enter Studio ID (e.g., PH-104): ");
                 String id = readLine();
-                if (id.isEmpty()) {
-                    System.out.println("Studio ID cannot be empty.");
-                    return;
-                }
-                if (manager.getStudio(id) != null) {
-                    System.out.println("Studio with ID '" + id + "' already exists!");
-                    return;
-                }
                 System.out.print("Enter Studio Name: ");
                 String name = readLine();
                 System.out.print("Enter Headquarters: ");
                 String hq = readLine();
 
-                ProductionHouse ph = new ProductionHouse(id, name, hq);
-                manager.addStudio(ph);
-                System.out.println("Production House '" + name + "' registered successfully!");
+                try {
+                    ProductionHouse ph = new ProductionHouse(id, name, hq);
+                    manager.addStudio(ph);
+                    System.out.println("\nProduction House '" + name + "' registered successfully!");
+                } catch (ValidationException e) {
+                    System.out.println("\n[VALIDATION ERROR] " + e.getMessage());
+                }
             }
             case 0 -> {}
             default -> System.out.println("Invalid option.");
@@ -669,7 +691,7 @@ public class ConsoleMenu {
             System.out.println("Data saved successfully!");
             System.out.println("Files updated: data/studios.txt, movies.txt, scenes.txt, cast_crew.txt, expenses.txt, reviews.txt");
         } catch (IOException e) {
-            System.err.println("Error saving data: " + e.getMessage());
+            System.err.println("[FILE ERROR] Error saving data: " + e.getMessage());
         }
     }
 
@@ -679,7 +701,7 @@ public class ConsoleMenu {
             manager.loadData();
             System.out.println("Data loaded successfully from text files!");
         } catch (IOException e) {
-            System.err.println("Error loading data: " + e.getMessage());
+            System.err.println("[FILE ERROR] Error loading data: " + e.getMessage());
         }
     }
 
@@ -705,7 +727,7 @@ public class ConsoleMenu {
             try {
                 return Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.print("Invalid integer. Please enter a number: ");
+                System.out.print("Invalid integer. Please enter a valid number: ");
             }
         }
     }
