@@ -1,0 +1,43 @@
+================================================================================
+          POST-PRODUCTION WORKFLOW DASHBOARD: THE DARK HORIZON
+================================================================================
+ Overall Pipeline Progress: 23.8% Completed (0 of 8 Tasks Done)
+--------------------------------------------------------------------------------
+
+>>> PICTURE & VIDEO EDITING (2 Tasks)
+    [IN PROGRESS]   POST-01 : Assembly Cut & Scene Stitching   | [====      ] 45%
+                    Lead : Lead Assembly Editor   | Specs: Avid Media Composer / 4K ProRes Proxy
+                    Notes: Initial sequence assembly from camera dailies
+
+    [PLANNED]       POST-02 : Director's Cut to Picture Lock   | [=         ] 15%
+                    Lead : Christopher Nolan & Chief Editor | Specs: Edit Decision List (EDL) v2.1
+                    Notes: Fine-tuning scene pacing and locking final frame cuts
+
+>>> SOUND DESIGN & AUDIO MIXING (2 Tasks)
+    [IN PROGRESS]   POST-03 : Foley, Ambience & ADR Sound Design | [===       ] 35%
+                    Lead : Foley Artist & Supervising Sound Designer | Specs: Pro Tools HDX / 96kHz 24-bit Multi-Track
+                    Notes: Footsteps, prop movement, background ambience and dialogue cleanup
+
+    [PLANNED]       POST-04 : Dolby Atmos 7.1.4 Theatrical Final Mix | [          ] 0%
+                    Lead : Chief Re-Recording Mixer | Specs: Dolby RMU / 128 Dynamic Spatial Objects
+                    Notes: Master dynamic mix balancing dialogue clarity, Foley, and orchestral score
+
+>>> VISUAL EFFECTS & CGI ANIMATION (2 Tasks)
+    [IN PROGRESS]   POST-05 : 3D CGI Asset Modeling & Dynamics | [======    ] 60%
+                    Lead : VFX Studio Supervisor  | Specs: Maya / Houdini Pyro Simulation
+                    Notes: Hero vehicle & creature geometry models with physics simulations
+
+    [PLANNED]       POST-06 : Digital Compositing & Chroma Keying | [==        ] 25%
+                    Lead : Lead Nuke Compositor   | Specs: ACES 2065-1 Wide Gamut Color Space
+                    Notes: Multi-layer background rotoscoping, clean plates, and wire removal
+
+>>> RENDER FARM & MASTER EXPORT (2 Tasks)
+    [PLANNED]       POST-07 : Render Farm Batch Processing (CGI Frames) | [=         ] 10%
+                    Lead : Render Pipeline Technical Director | Specs: 128-Node GPU Cluster / Redshift & Arnold
+                    Notes: High-resolution frame queue processing and ray-tracing passes
+
+    [PLANNED]       POST-08 : DCI Master Package (DCP) & QC Sign-off | [          ] 0%
+                    Lead : Mastering Lab Engineer | Specs: DCI-Compliant JPEG 2000 / 250 Mbps / 4K
+                    Notes: Final theatrical digital container creation, SHA-1 checksums, and audio sync check
+
+================================================================================

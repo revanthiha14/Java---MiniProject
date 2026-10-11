@@ -1,0 +1,50 @@
+================================================================================
+                           CINEFLOW PRODUCTION CALL SHEET                       
+================================================================================
+ MOVIE: THE END                          | DIRECTOR: Nolan
+ CALL SHEET ID: CS-01                     | DATE: 2026-11-10
+ SHOOTING DAY : DAY 1 OF 30                 | STATUS: WRAPPED
+ GENERAL CREW CALL: 06:30 AM             | ESTIMATED WRAP: 12 Hours
+--------------------------------------------------------------------------------
+ SHOOTING LOCATION / SET:
+   Soundstage A - Main Production Rig (The End Set)
+
+ WEATHER & SUN CONDITIONS:
+   Indoor Stage (Climate Controlled, Ambient 21°C)
+
+ SAFETY, MEDICAL & EMERGENCY PROTOCOLS:
+   Nearest Hospital: Nearest Emergency Medical Center (Emergency: 911 / 108 / 999)
+   On-Set Safety Lead: Safety Officer & Certified Set Medic on Channel 1
+================================================================================
+                         SCHEDULED SCENES BREAKDOWN                             
+================================================================================
+ SCENE #  | TITLE / SLUGLINE                       | PAGES  | D/N    | STATUS    
+---------+----------------------------------------+--------+--------+-----------
+ Scene #1 | Lead intro                             | 1.0    | DAY    | PLANNED   
+         | Slugline: EXT. NYC TIME SQUARE - DAY                          
+--------------------------------------------------------------------------------
+ Total Scheduled Pages Today: 1.0 Pages (Est. Camera Roll: ~1 min runtime)
+================================================================================
+                            CAST & TALENT CALL TIMES                            
+================================================================================
+ CAST ID  | ACTOR NAME         | CHARACTER ROLE   | PICKUP   | H/MU     | ON SET  
+---------+--------------------+------------------+----------+----------+---------
+ ACT-01  | Lead Talent        | Main Protagonist | 05:30 AM | 06:15 AM | 07:30 AM
+         | Instructions: Wardrobe check & on-camera rehearsal
+================================================================================
+                          DEPARTMENT & CREW DIRECTIVES                          
+================================================================================
+   CAMERA: Primary A & B camera packages on Technocrane.
+   SOUND: Soundstage isolation baffles engaged; wireless lavaliers on lead talent.
+   SFX/STUNT: Controlled atmosphere haze test passed; safety officer on set.
+   CATERING: Hot breakfast 06:00 AM / Catered hot lunch 12:30 PM (Courtesy 30 min).
+================================================================================
+                    DAILY SHOOTING REPORT (DSR WRAP STATUS)                     
+================================================================================
+ CURRENT STATUS : WRAPPED
+ PAGES COMPLETED: 1.0 of 1.0 Scheduled Pages
+ WRAP / PRODUCTION NOTES:
+   First camera setup achieved on schedule. Day 1 principal photography wrapped cleanly.
+================================================================================
+       *** REPORT ALL SAFETY HAZARDS TO 1ST AD & MEDIC IMMEDIATELY ***          
+================================================================================

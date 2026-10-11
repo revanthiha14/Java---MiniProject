@@ -1,13 +1,9 @@
 # MovieID|ReviewerName|Rating|Comment
+MOV-04|Vigneshwaran|5|Gripping action thriller with an ensemble cast.
+MOV-04|Nandhini Devi|4|Strong performances and an effective background score.
+MOV-03|Meenakshi Sundaram|5|Impressive visuals and memorable music.
+MOV-03|Sanjay Raman|4|A grand historical drama.
 MOV-01|Arjun Kumar|5|Excellent action and a powerful lead performance.
 MOV-01|Priya Sharma|4|Engaging thriller with memorable music.
 MOV-02|Karthik Raj|5|Entertaining action comedy with a strong lead performance.
 MOV-02|Divya Lakshmi|4|A fun commercial entertainer.
-MOV-03|Meenakshi Sundaram|5|Impressive visuals and memorable music.
-MOV-03|Sanjay Raman|4|A grand historical drama.
-MOV-04|Vigneshwaran|5|Gripping action thriller with an ensemble cast.
-MOV-04|Nandhini Devi|4|Strong performances and an effective background score.
-MOV-05|Harish Balaji|5|Energetic performances and an engaging story.
-MOV-05|Keerthana S|4|A memorable action entertainer.
-MOV-06|Rahul Krishnan|3|Ambitious action drama with mixed reception.
-MOV-06|Ananya R|4|Strong performances and large-scale production.

@@ -1,0 +1,31 @@
+# MovieID|TrackID|CharacterName|VoiceArtist|Language|Status|RetakeCount|RetakeReason|StudioLocation
+MOV-04|DUB-01|Lead Protagonist|Original Lead Actor|English (Original)|IN_PROGRESS|1|Retake scene 2 dialogue pacing|Main Scoring Stage
+MOV-04|DUB-02|Lead Protagonist|Regional Voice Artist A|Hindi|PLANNED|0||YRF Studios, Mumbai
+MOV-04|DUB-03|Lead Protagonist|Regional Voice Artist B|Telugu|PLANNED|0||Prasad Labs, Hyderabad
+MOV-04|DUB-04|Lead Antagonist|Dubbing Voice Specialist|English (Original)|RECORDED|0||Audio Post Stage 1
+MOV-04|DUB-05|Lead Antagonist|Regional Voice Artist C|Hindi|PLANNED|0||Supa Studio, Mumbai
+MOV-04|DUB-06|Supporting Cast|Ensemble Voice Cast|English (Original)|APPROVED|0||Voice Booth B
+MOV-05|DUB-01|Lead Protagonist|Original Lead Actor|English (Original)|IN_PROGRESS|1|Retake scene 2 dialogue pacing|Main Scoring Stage
+MOV-05|DUB-02|Lead Protagonist|Regional Voice Artist A|Hindi|PLANNED|0||YRF Studios, Mumbai
+MOV-05|DUB-03|Lead Protagonist|Regional Voice Artist B|Telugu|PLANNED|0||Prasad Labs, Hyderabad
+MOV-05|DUB-04|Lead Antagonist|Dubbing Voice Specialist|English (Original)|RECORDED|0||Audio Post Stage 1
+MOV-05|DUB-05|Lead Antagonist|Regional Voice Artist C|Hindi|PLANNED|0||Supa Studio, Mumbai
+MOV-05|DUB-06|Supporting Cast|Ensemble Voice Cast|English (Original)|APPROVED|0||Voice Booth B
+MOV-03|DUB-01|Lead Protagonist|Original Lead Actor|English (Original)|IN_PROGRESS|1|Retake scene 2 dialogue pacing|Main Scoring Stage
+MOV-03|DUB-02|Lead Protagonist|Regional Voice Artist A|Hindi|PLANNED|0||YRF Studios, Mumbai
+MOV-03|DUB-03|Lead Protagonist|Regional Voice Artist B|Telugu|PLANNED|0||Prasad Labs, Hyderabad
+MOV-03|DUB-04|Lead Antagonist|Dubbing Voice Specialist|English (Original)|RECORDED|0||Audio Post Stage 1
+MOV-03|DUB-05|Lead Antagonist|Regional Voice Artist C|Hindi|PLANNED|0||Supa Studio, Mumbai
+MOV-03|DUB-06|Supporting Cast|Ensemble Voice Cast|English (Original)|APPROVED|0||Voice Booth B
+MOV-01|DUB-01|Lead Protagonist|Original Lead Actor|English (Original)|IN_PROGRESS|1|Retake scene 2 dialogue pacing|Main Scoring Stage
+MOV-01|DUB-02|Lead Protagonist|Regional Voice Artist A|Hindi|PLANNED|0||YRF Studios, Mumbai
+MOV-01|DUB-03|Lead Protagonist|Regional Voice Artist B|Telugu|PLANNED|0||Prasad Labs, Hyderabad
+MOV-01|DUB-04|Lead Antagonist|Dubbing Voice Specialist|English (Original)|RECORDED|0||Audio Post Stage 1
+MOV-01|DUB-05|Lead Antagonist|Regional Voice Artist C|Hindi|PLANNED|0||Supa Studio, Mumbai
+MOV-01|DUB-06|Supporting Cast|Ensemble Voice Cast|English (Original)|APPROVED|0||Voice Booth B
+MOV-02|DUB-01|Lead Protagonist|Original Lead Actor|English (Original)|IN_PROGRESS|1|Retake scene 2 dialogue pacing|Main Scoring Stage
+MOV-02|DUB-02|Lead Protagonist|Regional Voice Artist A|Hindi|PLANNED|0||YRF Studios, Mumbai
+MOV-02|DUB-03|Lead Protagonist|Regional Voice Artist B|Telugu|PLANNED|0||Prasad Labs, Hyderabad
+MOV-02|DUB-04|Lead Antagonist|Dubbing Voice Specialist|English (Original)|RECORDED|0||Audio Post Stage 1
+MOV-02|DUB-05|Lead Antagonist|Regional Voice Artist C|Hindi|PLANNED|0||Supa Studio, Mumbai
+MOV-02|DUB-06|Supporting Cast|Ensemble Voice Cast|English (Original)|APPROVED|0||Voice Booth B

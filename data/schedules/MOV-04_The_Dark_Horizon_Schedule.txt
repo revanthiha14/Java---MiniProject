@@ -1,0 +1,60 @@
+================================================================================
+       MASTER PRODUCTION & RELEASE ROADMAP: THE DARK HORIZON
+================================================================================
+ Director: Christopher Nolan         | Status: POST_PRODUCTION | Year: 2027
+ Pipeline Progress: 0 / 12 Milestones Completed (0%)
+--------------------------------------------------------------------------------
+
+[PRE-PRODUCTION]
+   [PLANNED]     MS-01  : Script & Storyline Narration to Cast        
+                 Target Date : TBD             | Lead: Christopher Nolan & Screenwriter
+                 Notes       : Table read and story orientation with lead cast
+
+   [PLANNED]     MS-02  : Look Test & Poster Photoshoot               
+                 Target Date : TBD             | Lead: Lead Cast & Publicity Team
+                 Notes       : Character styling tests and high-res poster stills
+
+[PRODUCTION]
+   [PLANNED]     MS-03  : Scene Filming (Principal Photography)       
+                 Target Date : TBD             | Lead: Christopher Nolan & Cinematographer
+                 Notes       : Execution of planned script scenes on set and location
+
+[POST-PRODUCTION]
+   [PLANNED]     MS-04  : Picture & Video Editing (Assembly to Final Cut)
+                 Target Date : TBD             | Lead: Chief Editor
+                 Notes       : Assembly cut, rough cut, and picture lock
+
+   [PLANNED]     MS-05  : Audio Dubbing (Voice-Over / ADR) & Sound Design
+                 Target Date : TBD             | Lead: Sound Supervisor & Lead Cast
+                 Notes       : Actor voice-overs, ADR dubbing, Foley, and background score
+
+   [PLANNED]     MS-06  : VFX, CGI Animation & Color Grading (DI)     
+                 Target Date : TBD             | Lead: VFX Supervisor & Colorist
+                 Notes       : CGI compositing, 3D visual effects, and digital intermediate color grading
+
+[PROMOTION & RELEASE]
+   [PLANNED]     MS-07  : Official First Look & Poster Release        
+                 Target Date : TBD             | Lead: Studio Marketing & Publicity
+                 Notes       : Unveil official title logo and first look poster across media
+
+   [PLANNED]     MS-08  : Official Teaser Release                     
+                 Target Date : TBD             | Lead: Digital Media Team
+                 Notes       : Atmospheric 60-second teaser establishing movie universe
+
+   [PLANNED]     MS-09  : Official Theatrical Trailer Release         
+                 Target Date : TBD             | Lead: Studio Distribution Head
+                 Notes       : Theatrical trailer launch in theaters and streaming platforms
+
+   [PLANNED]     MS-10  : Press Meet & Media Conference (Optional) [OPTIONAL]
+                 Target Date : TBD             | Lead: PR Officer & Cast
+                 Notes       : Journalist Q&A, cast press conference, and interviews
+
+   [PLANNED]     MS-11  : Promotional Tours, City Campaigns & Marketing
+                 Target Date : TBD             | Lead: Cast & PR Lead
+                 Notes       : Multi-city promotional tours, college visits, and media appearances
+
+   [PLANNED]     MS-12  : Worldwide Movie Premiere & Theatrical Release
+                 Target Date : TBD             | Lead: Studio & Global Distributors
+                 Notes       : Grand theatrical premiere and global multi-screen release
+
+================================================================================

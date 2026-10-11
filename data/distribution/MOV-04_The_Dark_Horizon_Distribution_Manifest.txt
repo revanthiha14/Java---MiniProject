@@ -1,0 +1,16 @@
+================================================================================
+         THEATRICAL & DIGITAL (OTT) DISTRIBUTION: THE DARK HORIZON
+================================================================================
+ Primary Theatrical Date : 2027-11-20 | Status: ADVANCE_BOOKING_OPEN
+ Primary Distributor     : Warner Bros. Pictures | Region: Domestic / Primary Region
+ Total Global Screens    : 5,066 Screens across 2 Territory Deals
+ Digital / OTT Partner   : Netflix (Streaming Date: 2028-01-15)
+--------------------------------------------------------------------------------
+
+ DEAL ID  | REGION / TERRITORY   | DISTRIBUTOR          | THEATRICAL | STATUS       | SCREENS  | OTT PLATFORM     | DIGITAL   
+---------+----------------------+----------------------+------------+--------------+----------+------------------+-----------
+ REL-01  | Domestic / Primar... | Warner Bros. Pict... | 2027-11-20 | ADVANCE_BOOKING_OPEN | 3800     | Netflix          | 2028-01-15
+         | Notes: 45-day theatrical exclusivity; Dolby Atmos, IMAX & standard DCI screens.
+ REL-02  | Overseas / Intern... | Global Film Alliance | 2027-11-20 | ADVANCE_BOOKING_OPEN | 1266     | Netflix          | 2028-01-15
+         | Notes: Simultaneous multi-language subtitled release across 45+ international territories.
+================================================================================

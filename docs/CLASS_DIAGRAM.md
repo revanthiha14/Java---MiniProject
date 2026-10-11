@@ -101,13 +101,247 @@ classDiagram
     Person <|-- Actor : Inheritance
     Person <|-- CrewMember : Inheritance
 
-    %% Lifecycle Enum
+    %% Lifecycle & Production Enums
     class MovieStatus {
         <<enumeration>>
         PLANNING
         PRODUCTION
         POST_PRODUCTION
         RELEASED
+    }
+
+    class ProductionStage {
+        <<enumeration>>
+        SCRIPT_NARRATION
+        POSTER_PHOTOSHOOT
+        PRINCIPAL_PHOTOGRAPHY
+        PICTURE_EDITING
+        AUDIO_AND_DUBBING
+        VFX_AND_CGI
+        POSTER_RELEASE
+        TEASER_RELEASE
+        TRAILER_RELEASE
+        PRESS_MEET
+        PROMOTIONAL_CAMPAIGN
+        THEATRICAL_RELEASE
+        +getPhaseName() String
+        +getDisplayName() String
+        +getSequenceOrder() int
+    }
+
+    %% Production Milestone Entity
+    class ProductionMilestone {
+        -String id
+        -ProductionStage stage
+        -String title
+        -String targetDate
+        -String status
+        -String responsibleLead
+        -boolean optional
+        -String notes
+        +ProductionMilestone(id, stage, targetDate)
+        +ProductionMilestone(id, stage, title, targetDate, status, lead, optional, notes)
+        +getId() String
+        +setId(id) void
+        +getStage() ProductionStage
+        +setStage(stage) void
+        +getTitle() String
+        +setTitle(title) void
+        +getTargetDate() String
+        +setTargetDate(targetDate) void
+        +getStatus() String
+        +setStatus(status) void
+        +getResponsibleLead() String
+        +setResponsibleLead(lead) void
+        +isOptional() boolean
+        +setOptional(optional) void
+        +getNotes() String
+        +setNotes(notes) void
+        +isCompleted() boolean
+        +isInProgress() boolean
+        +getStatusBadge() String
+        +toString() String
+    }
+
+    %% Voice Dubbing Entity
+    class DubbingTrack {
+        -String trackId
+        -String characterName
+        -String voiceArtist
+        -String language
+        -String status
+        -int retakeCount
+        -String retakeReason
+        -String studioLocation
+        +DubbingTrack(trackId, characterName, voiceArtist, language)
+        +DubbingTrack(trackId, characterName, voiceArtist, language, status, retakes, reason, studio)
+        +getTrackId() String
+        +setTrackId(id) void
+        +getCharacterName() String
+        +setCharacterName(name) void
+        +getVoiceArtist() String
+        +setVoiceArtist(artist) void
+        +getLanguage() String
+        +setLanguage(lang) void
+        +getStatus() String
+        +setStatus(status) void
+        +getRetakeCount() int
+        +setRetakeCount(count) void
+        +getRetakeReason() String
+        +setRetakeReason(reason) void
+        +getStudioLocation() String
+        +setStudioLocation(studio) void
+        +logRetake(reason) void
+        +approveTrack() void
+        +isApproved() boolean
+        +getStatusBadge() String
+        +toString() String
+    }
+
+    %% Post-Production Enums & Tasks
+    class PostProductionType {
+        <<enumeration>>
+        EDITING
+        SOUND_MIXING
+        VFX
+        RENDERING
+        +getDisplayName() String
+    }
+
+    class PostProductionTask {
+        -String taskId
+        -PostProductionType type
+        -String taskName
+        -String leadSpecialist
+        -String status
+        -int progressPercentage
+        -String technicalSpecs
+        -String notes
+        +PostProductionTask(taskId, type, taskName, lead)
+        +PostProductionTask(taskId, type, taskName, lead, status, progress, specs, notes)
+        +getTaskId() String
+        +setTaskId(id) void
+        +getType() PostProductionType
+        +setType(type) void
+        +getTaskName() String
+        +setTaskName(name) void
+        +getLeadSpecialist() String
+        +setLeadSpecialist(lead) void
+        +getStatus() String
+        +setStatus(status) void
+        +getProgressPercentage() int
+        +setProgressPercentage(progress) void
+        +getTechnicalSpecs() String
+        +setTechnicalSpecs(specs) void
+        +getNotes() String
+        +setNotes(notes) void
+        +updateProgress(percentage, status, notes) void
+        +markCompleted() void
+        +isCompleted() boolean
+        +getStatusBadge() String
+        +getProgressBar() String
+        +toString() String
+    }
+
+    %% Daily Call Sheet & Cast Call Entities
+    class CastCallEntry {
+        -String actorId
+        -String actorName
+        -String characterName
+        -String pickupTime
+        -String makeupCall
+        -String onSetCall
+        -String instructions
+        +CastCallEntry(actorId, actorName, characterName, pickupTime, makeupCall, onSetCall, instructions)
+        +getActorId() String
+        +getActorName() String
+        +getCharacterName() String
+        +getPickupTime() String
+        +getMakeupCall() String
+        +getOnSetCall() String
+        +getInstructions() String
+        +toSerializedString() String
+        +fromSerializedString(data) CastCallEntry
+        +toString() String
+    }
+
+    class CallSheet {
+        -String sheetId
+        -int dayNumber
+        -int totalDays
+        -String shootDate
+        -String generalCrewCall
+        -String shootingLocation
+        -String weatherAndSun
+        -String nearestHospital
+        -String status
+        -List~Integer~ scheduledSceneNumbers
+        -List~CastCallEntry~ castCalls
+        -String departmentNotes
+        -double pagesShot
+        -String wrapNotes
+        +CallSheet(sheetId, dayNumber, totalDays, shootDate, generalCrewCall, location, weather, hospital, status)
+        +getSheetId() String
+        +getDayNumber() int
+        +getTotalDays() int
+        +getShootDate() String
+        +getGeneralCrewCall() String
+        +getShootingLocation() String
+        +getWeatherAndSun() String
+        +getNearestHospital() String
+        +getStatus() String
+        +getScheduledSceneNumbers() List~Integer~
+        +addScheduledScene(sceneNumber) void
+        +removeScheduledScene(sceneNumber) boolean
+        +getCastCalls() List~CastCallEntry~
+        +addCastCall(entry) void
+        +removeCastCall(actorId) boolean
+        +getDepartmentNotes() String
+        +setDepartmentNotes(notes) void
+        +getPagesShot() double
+        +setPagesShot(pages) void
+        +getWrapNotes() String
+        +setWrapNotes(notes) void
+        +recordWrap(pagesShot, wrapNotes) void
+        +calculateTotalScheduledPages(movie) double
+        +getFormattedCallSheet(movie) String
+        +toString() String
+    }
+
+    %% Theatrical & OTT Distribution Entity
+    class DistributionRelease {
+        -String releaseId
+        -String region
+        -String distributor
+        -String theatricalReleaseDate
+        -String theatricalStatus
+        -int screenCount
+        -String ottPlatform
+        -String digitalReleaseDate
+        -String notes
+        +DistributionRelease(releaseId, region, distributor, theatricalReleaseDate)
+        +DistributionRelease(releaseId, region, distributor, theatricalDate, theatricalStatus, screenCount, ottPlatform, digitalDate, notes)
+        +getReleaseId() String
+        +setReleaseId(id) void
+        +getRegion() String
+        +setRegion(region) void
+        +getDistributor() String
+        +setDistributor(distributor) void
+        +getTheatricalReleaseDate() String
+        +setTheatricalReleaseDate(date) void
+        +getTheatricalStatus() String
+        +setTheatricalStatus(status) void
+        +getScreenCount() int
+        +setScreenCount(count) void
+        +getOttPlatform() String
+        +setOttPlatform(platform) void
+        +hasOttPlatform() boolean
+        +getDigitalReleaseDate() String
+        +setDigitalReleaseDate(date) void
+        +hasDigitalReleaseDate() boolean
+        +getNotes() String
+        +setNotes(notes) void
+        +toString() String
     }
 
     %% Review Entity
@@ -132,8 +366,12 @@ classDiagram
         -String location
         -String status
         -String shootingDate
+        -String slugline
+        -double scriptPages
+        -String scriptContent
         +Scene(sceneNumber, title, location, status)
         +Scene(sceneNumber, title, location, status, shootingDate)
+        +Scene(sceneNumber, title, location, status, shootingDate, slugline, pages, content)
         +getSceneNumber() int
         +setSceneNumber(number) void
         +getTitle() String
@@ -144,6 +382,15 @@ classDiagram
         +setStatus(status) void
         +getShootingDate() String
         +setShootingDate(date) void
+        +getSlugline() String
+        +setSlugline(slug) void
+        +getScriptPages() double
+        +setScriptPages(pages) void
+        +getScriptContent() String
+        +setScriptContent(content) void
+        +hasScript() boolean
+        +updateScript(slug, pages, content) void
+        +getFormattedScript() String
         +toString() String
     }
 
@@ -172,12 +419,66 @@ classDiagram
         -int releaseYear
         -double budget
         -MovieStatus status
+        -String screenplayWriter
+        -String scriptDraftVersion
+        -String synopsis
         -List~Scene~ scenes
         -List~Person~ castAndCrew
         -List~Expense~ expenses
         -List~Review~ reviews
+        -List~ProductionMilestone~ masterSchedule
+        -List~DubbingTrack~ dubbingTracks
+        -List~PostProductionTask~ postProductionTasks
+        -List~CallSheet~ callSheets
+        -List~DistributionRelease~ distributionReleases
         +Movie(id, title, genre, director, year, budget)
         +Movie(id, title, genre, director, year, budget, status)
+        +getScreenplayWriter() String
+        +setScreenplayWriter(writer) void
+        +getScriptDraftVersion() String
+        +setScriptDraftVersion(draft) void
+        +getSynopsis() String
+        +setSynopsis(synopsis) void
+        +getTotalScriptPages() double
+        +getEstimatedRuntimeMinutes() double
+        +getScenesWithScriptCount() int
+        +getFormattedScreenplay() String
+        +getMasterSchedule() List~ProductionMilestone~
+        +initializeDefaultSchedule() void
+        +findMilestoneById(id) ProductionMilestone
+        +findMilestoneByStage(stage) ProductionMilestone
+        +getCompletedMilestonesCount() int
+        +getFormattedTimeline() String
+        +validateScheduleSequence() List~String~
+        +getDubbingTracks() List~DubbingTrack~
+        +initializeDefaultDubbingTracks() void
+        +addDubbingTrack(DubbingTrack) void
+        +findDubbingTrackById(trackId) DubbingTrack
+        +getDubbingTracksByLanguage(lang) List~DubbingTrack~
+        +getApprovedDubbingTracksCount() int
+        +getTotalRetakesCount() int
+        +getFormattedDubbingSummary() String
+        +getPostProductionTasks() List~PostProductionTask~
+        +initializeDefaultPostProductionTasks() void
+        +addPostProductionTask(PostProductionTask) void
+        +findPostProductionTaskById(taskId) PostProductionTask
+        +getPostProductionTasksByType(PostProductionType) List~PostProductionTask~
+        +getAveragePostProductionProgress() double
+        +getCompletedPostProductionTasksCount() int
+        +getFormattedPostProductionDashboard() String
+        +getDistributionReleases() List~DistributionRelease~
+        +addDistributionRelease(DistributionRelease) void
+        +removeDistributionRelease(releaseId) boolean
+        +findDistributionReleaseById(releaseId) DistributionRelease
+        +getPrimaryDistributionRelease() DistributionRelease
+        +getTheatricalReleaseDate() String
+        +getReleaseRegion() String
+        +getDistributor() String
+        +getTheatricalStatus() String
+        +getOttPlatform() String
+        +getDigitalReleaseDate() String
+        +getTotalTheatricalScreens() int
+        +getFormattedDistributionSummary() String
         +getId() String
         +getTitle() String
         +getGenre() String
@@ -253,6 +554,12 @@ classDiagram
         +saveAllData(studios: List~ProductionHouse~) void
         +loadAllData() List~ProductionHouse~
         +hasExistingData() boolean
+        +exportScreenplayToFile(Movie) File
+        +exportScheduleToFile(Movie) File
+        +exportDubbingToFile(Movie) File
+        +exportPostProductionToFile(Movie) File
+        +exportCallSheetToFile(Movie, CallSheet) File
+        +exportDistributionToFile(Movie) File
     }
 
     class MovieManager {
@@ -278,6 +585,13 @@ classDiagram
         +searchMovies(query, genre, minRating) List~Movie~
         +getCastManager() CastManager
         +getReviewManager() ReviewManager
+        +getFileService() FileService
+        +exportActiveMovieScreenplay() File
+        +exportActiveMovieSchedule() File
+        +exportActiveMovieDubbing() File
+        +exportActiveMoviePostProduction() File
+        +exportActiveMovieCallSheet(CallSheet) File
+        +exportActiveMovieDistribution() File
         +saveData() void
         +loadData() void
         +seedInitialData() void
@@ -297,39 +611,6 @@ classDiagram
     class Main {
         +main(args: String[]) void
     }
-
-    %% Relationships
-    Movie --> MovieStatus : Uses
-    Movie *-- Review : Aggregation (1 to Many)
-    ProductionHouse *-- Movie : Aggregation (1 to Many)
-    Movie *-- Scene : Composition (1 to Many)
-    Movie *-- Expense : Composition (1 to Many)
-    Movie o-- Person : Polymorphic Association (1 to Many)
-    
-    Movie ..> BudgetExceededException : Throws on budget overrun
-    Movie ..> ScheduleConflictException : Throws on date/location clash
-    Movie ..> ValidationException : Throws on rule violations
-    Movie ..> ResourceNotFoundException : Throws on missing scene/record
-
-    CastManager ..> Movie : Operates on personnel roster
-    CastManager ..> Person : Manages polymorphically
-    CastManager ..> ResourceNotFoundException : Throws when member missing
-    CastManager ..> ValidationException : Throws on duplicate/null
-
-    ReviewManager ..> Movie : Validates lifecycle & calculates metrics
-    ReviewManager ..> Review : Enforces 1-5 rating & status rules
-    ReviewManager ..> ValidationException : Throws on unreleased/invalid
-
-    MovieManager o-- ProductionHouse : Manages via HashMap
-    MovieManager o-- FileService : Uses for Text File I/O
-    MovieManager o-- CastManager : Uses for cast coordination
-    MovieManager o-- ReviewManager : Uses for review filtering
-    ConsoleMenu o-- MovieManager : Coordinates business services
-    ConsoleMenu o-- CastManager : Delegates cast roster operations
-    ConsoleMenu o-- ReviewManager : Delegates review operations
-    ConsoleMenu ..> CineFlowException : Handles all custom exceptions
-    Main ..> MovieManager : Initializes
-    Main ..> ConsoleMenu : Launches
 ```
 
 ---
@@ -360,3 +641,6 @@ classDiagram
 8. **File Handling (Java I/O)**:
    - Human-readable pipe-delimited text files in `data/` using `BufferedReader`, `PrintWriter`, `FileReader`, and `FileWriter`.
    - Fault-tolerant parsing skips corrupted lines gracefully with logged warnings rather than terminating the application or silently wiping existing memory state.
+9. **Production Operations & Release Modeling**:
+   - Real-world film studio workflows modeled through specialized entities: `ProductionMilestone` (master roadmap), `DubbingTrack` (multi-language voice dubbing), `PostProductionTask` (sound, VFX, editing), `CallSheet` (daily shooting schedules), `CastCallEntry` (individual actor call times), and `DistributionRelease` (theatrical territories, distributors, screen counts, theatrical status, OTT platform, and digital streaming premiere dates).
+   - Dedicated text document generators for screenplays, schedules, dubbing manifests, post-production reports, daily call sheets, and theatrical/OTT distribution manifests under `data/`.

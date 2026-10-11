@@ -1,0 +1,16 @@
+================================================================================
+         THEATRICAL & DIGITAL (OTT) DISTRIBUTION: SHADOWS OF THE PAST
+================================================================================
+ Primary Theatrical Date : 2027-11-20 | Status: SCHEDULED
+ Primary Distributor     : PVR Inox Pictures | Region: Domestic / Primary Region
+ Total Global Screens    : 3,500 Screens across 2 Territory Deals
+ Digital / OTT Partner   : Netflix (Streaming Date: 2028-01-15)
+--------------------------------------------------------------------------------
+
+ DEAL ID  | REGION / TERRITORY   | DISTRIBUTOR          | THEATRICAL | STATUS       | SCREENS  | OTT PLATFORM     | DIGITAL   
+---------+----------------------+----------------------+------------+--------------+----------+------------------+-----------
+ REL-01  | Domestic / Primar... | PVR Inox Pictures    | 2027-11-20 | SCHEDULED    | 2500     | Netflix          | 2028-01-15
+         | Notes: 45-day theatrical exclusivity; Dolby Atmos, IMAX & standard DCI screens.
+ REL-02  | Overseas / Intern... | Global Film Alliance | 2027-11-20 | SCHEDULED    | 1000     | Netflix          | 2028-01-15
+         | Notes: Simultaneous multi-language subtitled release across 45+ international territories.
+================================================================================

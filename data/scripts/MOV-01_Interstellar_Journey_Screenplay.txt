@@ -1,0 +1,43 @@
+================================================================================
+                              INTERSTELLAR JOURNEY
+================================================================================
+ Screenplay Written by: Marcus Sterling
+ Directed by:           Marcus Sterling
+ Genre:                 Sci-Fi | Release Year: 2026
+ Script Draft:          Shooting Draft v1.0
+ Total Scenes:          3 (Scenes with script: 0/3)
+ Screenplay Length:     3.0 Pages (Est. Runtime: ~3 minutes)
+--------------------------------------------------------------------------------
+ LOGLINE / SYNOPSIS:
+   A sci-fi cinematic feature directed by Marcus Sterling.
+================================================================================
+
+================================================================================
+SCENE #1    TEA SHOP INTRODUCTION                [Pages: 1.0 | Est: ~1 min]
+SLUGLINE: EXT. CHENNAI, TAMIL NADU - DAY
+LOCATION: Chennai, Tamil Nadu       | STATUS: COMPLETED  | SHOOT: 2022-10-15
+--------------------------------------------------------------------------------
+   [No screenplay dialogue or action description recorded for this scene yet]
+   [Use 'Add/Modify Scene Script' to enter screenplay dialogue.]
+================================================================================
+
+================================================================================
+SCENE #2    DAS FAMILY CONFRONTATION             [Pages: 1.0 | Est: ~1 min]
+SLUGLINE: EXT. PRODUCTION SET, CHENNAI - DAY
+LOCATION: Production Set, Chennai   | STATUS: COMPLETED  | SHOOT: 2022-11-02
+--------------------------------------------------------------------------------
+   [No screenplay dialogue or action description recorded for this scene yet]
+   [Use 'Add/Modify Scene Script' to enter screenplay dialogue.]
+================================================================================
+
+================================================================================
+SCENE #3    PORT ACTION SEQUENCE                 [Pages: 1.0 | Est: ~1 min]
+SLUGLINE: EXT. CHENNAI PORT AREA - DAY
+LOCATION: Chennai Port Area         | STATUS: COMPLETED  | SHOOT: 2022-11-18
+--------------------------------------------------------------------------------
+   [No screenplay dialogue or action description recorded for this scene yet]
+   [Use 'Add/Modify Scene Script' to enter screenplay dialogue.]
+================================================================================
+
+                                *** THE END ***
+================================================================================

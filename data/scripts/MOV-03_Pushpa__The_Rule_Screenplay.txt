@@ -1,0 +1,43 @@
+================================================================================
+                              PUSHPA: THE RULE
+================================================================================
+ Screenplay Written by: Sukumar
+ Directed by:           Sukumar
+ Genre:                 Action Drama | Release Year: 2026
+ Script Draft:          Shooting Draft v1.0
+ Total Scenes:          3 (Scenes with script: 0/3)
+ Screenplay Length:     3.0 Pages (Est. Runtime: ~3 minutes)
+--------------------------------------------------------------------------------
+ LOGLINE / SYNOPSIS:
+   A action drama cinematic feature directed by Sukumar.
+================================================================================
+
+================================================================================
+SCENE #1    CHOLA COURT SCENE                    [Pages: 1.0 | Est: ~1 min]
+SLUGLINE: EXT. HISTORICAL SET, CHENNAI - DAY
+LOCATION: Historical Set, Chennai   | STATUS: COMPLETED  | SHOOT: 2022-08-12
+--------------------------------------------------------------------------------
+   [No screenplay dialogue or action description recorded for this scene yet]
+   [Use 'Add/Modify Scene Script' to enter screenplay dialogue.]
+================================================================================
+
+================================================================================
+SCENE #2    NANDINI AND ADITHA KARIKALAN         [Pages: 1.0 | Est: ~1 min]
+SLUGLINE: EXT. PRODUCTION SET, CHENNAI - DAY
+LOCATION: Production Set, Chennai   | STATUS: COMPLETED  | SHOOT: 2022-09-06
+--------------------------------------------------------------------------------
+   [No screenplay dialogue or action description recorded for this scene yet]
+   [Use 'Add/Modify Scene Script' to enter screenplay dialogue.]
+================================================================================
+
+================================================================================
+SCENE #3    FINAL BATTLE SEQUENCE                [Pages: 1.0 | Est: ~1 min]
+SLUGLINE: EXT. PRODUCTION SET, CHENNAI - DAY
+LOCATION: Production Set, Chennai   | STATUS: COMPLETED  | SHOOT: 2022-10-03
+--------------------------------------------------------------------------------
+   [No screenplay dialogue or action description recorded for this scene yet]
+   [Use 'Add/Modify Scene Script' to enter screenplay dialogue.]
+================================================================================
+
+                                *** THE END ***
+================================================================================

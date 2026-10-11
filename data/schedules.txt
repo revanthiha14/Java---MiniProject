@@ -1,0 +1,61 @@
+# MovieID|MilestoneID|Stage|Title|TargetDate|Status|ResponsibleLead|IsOptional|Notes
+MOV-04|MS-01|SCRIPT_NARRATION|Script & Storyline Narration to Cast|TBD|PLANNED|Christopher Nolan & Screenwriter|false|Table read and story orientation with lead cast
+MOV-04|MS-02|POSTER_PHOTOSHOOT|Look Test & Poster Photoshoot|TBD|PLANNED|Lead Cast & Publicity Team|false|Character styling tests and high-res poster stills
+MOV-04|MS-03|PRINCIPAL_PHOTOGRAPHY|Scene Filming (Principal Photography)|TBD|PLANNED|Christopher Nolan & Cinematographer|false|Execution of planned script scenes on set and location
+MOV-04|MS-04|PICTURE_EDITING|Picture & Video Editing (Assembly to Final Cut)|TBD|PLANNED|Chief Editor|false|Assembly cut, rough cut, and picture lock
+MOV-04|MS-05|AUDIO_AND_DUBBING|Audio Dubbing (Voice-Over / ADR) & Sound Design|TBD|PLANNED|Sound Supervisor & Lead Cast|false|Actor voice-overs, ADR dubbing, Foley, and background score
+MOV-04|MS-06|VFX_AND_CGI|VFX, CGI Animation & Color Grading (DI)|TBD|PLANNED|VFX Supervisor & Colorist|false|CGI compositing, 3D visual effects, and digital intermediate color grading
+MOV-04|MS-07|POSTER_RELEASE|Official First Look & Poster Release|TBD|PLANNED|Studio Marketing & Publicity|false|Unveil official title logo and first look poster across media
+MOV-04|MS-08|TEASER_RELEASE|Official Teaser Release|TBD|PLANNED|Digital Media Team|false|Atmospheric 60-second teaser establishing movie universe
+MOV-04|MS-09|TRAILER_RELEASE|Official Theatrical Trailer Release|TBD|PLANNED|Studio Distribution Head|false|Theatrical trailer launch in theaters and streaming platforms
+MOV-04|MS-10|PRESS_MEET|Press Meet & Media Conference (Optional)|TBD|PLANNED|PR Officer & Cast|true|Journalist Q&A, cast press conference, and interviews
+MOV-04|MS-11|PROMOTIONAL_CAMPAIGN|Promotional Tours, City Campaigns & Marketing|TBD|PLANNED|Cast & PR Lead|false|Multi-city promotional tours, college visits, and media appearances
+MOV-04|MS-12|THEATRICAL_RELEASE|Worldwide Movie Premiere & Theatrical Release|TBD|PLANNED|Studio & Global Distributors|false|Grand theatrical premiere and global multi-screen release
+MOV-05|MS-01|SCRIPT_NARRATION|Script & Storyline Narration to Cast|TBD|PLANNED|Nolan & Screenwriter|false|Table read and story orientation with lead cast
+MOV-05|MS-02|POSTER_PHOTOSHOOT|Look Test & Poster Photoshoot|TBD|PLANNED|Lead Cast & Publicity Team|false|Character styling tests and high-res poster stills
+MOV-05|MS-03|PRINCIPAL_PHOTOGRAPHY|Scene Filming (Principal Photography)|TBD|PLANNED|Nolan & Cinematographer|false|Execution of planned script scenes on set and location
+MOV-05|MS-04|PICTURE_EDITING|Picture & Video Editing (Assembly to Final Cut)|TBD|PLANNED|Chief Editor|false|Assembly cut, rough cut, and picture lock
+MOV-05|MS-05|AUDIO_AND_DUBBING|Audio Dubbing (Voice-Over / ADR) & Sound Design|TBD|PLANNED|Sound Supervisor & Lead Cast|false|Actor voice-overs, ADR dubbing, Foley, and background score
+MOV-05|MS-06|VFX_AND_CGI|VFX, CGI Animation & Color Grading (DI)|TBD|PLANNED|VFX Supervisor & Colorist|false|CGI compositing, 3D visual effects, and digital intermediate color grading
+MOV-05|MS-07|POSTER_RELEASE|Official First Look & Poster Release|TBD|PLANNED|Studio Marketing & Publicity|false|Unveil official title logo and first look poster across media
+MOV-05|MS-08|TEASER_RELEASE|Official Teaser Release|TBD|PLANNED|Digital Media Team|false|Atmospheric 60-second teaser establishing movie universe
+MOV-05|MS-09|TRAILER_RELEASE|Official Theatrical Trailer Release|TBD|PLANNED|Studio Distribution Head|false|Theatrical trailer launch in theaters and streaming platforms
+MOV-05|MS-10|PRESS_MEET|Press Meet & Media Conference (Optional)|TBD|PLANNED|PR Officer & Cast|true|Journalist Q&A, cast press conference, and interviews
+MOV-05|MS-11|PROMOTIONAL_CAMPAIGN|Promotional Tours, City Campaigns & Marketing|TBD|PLANNED|Cast & PR Lead|false|Multi-city promotional tours, college visits, and media appearances
+MOV-05|MS-12|THEATRICAL_RELEASE|Worldwide Movie Premiere & Theatrical Release|TBD|PLANNED|Studio & Global Distributors|false|Grand theatrical premiere and global multi-screen release
+MOV-03|MS-01|SCRIPT_NARRATION|Script & Storyline Narration to Cast|TBD|PLANNED|Sukumar & Screenwriter|false|Table read and story orientation with lead cast
+MOV-03|MS-02|POSTER_PHOTOSHOOT|Look Test & Poster Photoshoot|TBD|PLANNED|Lead Cast & Publicity Team|false|Character styling tests and high-res poster stills
+MOV-03|MS-03|PRINCIPAL_PHOTOGRAPHY|Scene Filming (Principal Photography)|TBD|PLANNED|Sukumar & Cinematographer|false|Execution of planned script scenes on set and location
+MOV-03|MS-04|PICTURE_EDITING|Picture & Video Editing (Assembly to Final Cut)|TBD|PLANNED|Chief Editor|false|Assembly cut, rough cut, and picture lock
+MOV-03|MS-05|AUDIO_AND_DUBBING|Audio Dubbing (Voice-Over / ADR) & Sound Design|TBD|PLANNED|Sound Supervisor & Lead Cast|false|Actor voice-overs, ADR dubbing, Foley, and background score
+MOV-03|MS-06|VFX_AND_CGI|VFX, CGI Animation & Color Grading (DI)|TBD|PLANNED|VFX Supervisor & Colorist|false|CGI compositing, 3D visual effects, and digital intermediate color grading
+MOV-03|MS-07|POSTER_RELEASE|Official First Look & Poster Release|TBD|PLANNED|Studio Marketing & Publicity|false|Unveil official title logo and first look poster across media
+MOV-03|MS-08|TEASER_RELEASE|Official Teaser Release|TBD|PLANNED|Digital Media Team|false|Atmospheric 60-second teaser establishing movie universe
+MOV-03|MS-09|TRAILER_RELEASE|Official Theatrical Trailer Release|TBD|PLANNED|Studio Distribution Head|false|Theatrical trailer launch in theaters and streaming platforms
+MOV-03|MS-10|PRESS_MEET|Press Meet & Media Conference (Optional)|TBD|PLANNED|PR Officer & Cast|true|Journalist Q&A, cast press conference, and interviews
+MOV-03|MS-11|PROMOTIONAL_CAMPAIGN|Promotional Tours, City Campaigns & Marketing|TBD|PLANNED|Cast & PR Lead|false|Multi-city promotional tours, college visits, and media appearances
+MOV-03|MS-12|THEATRICAL_RELEASE|Worldwide Movie Premiere & Theatrical Release|TBD|PLANNED|Studio & Global Distributors|false|Grand theatrical premiere and global multi-screen release
+MOV-01|MS-01|SCRIPT_NARRATION|Script & Storyline Narration to Cast|TBD|PLANNED|Marcus Sterling & Screenwriter|false|Table read and story orientation with lead cast
+MOV-01|MS-02|POSTER_PHOTOSHOOT|Look Test & Poster Photoshoot|TBD|PLANNED|Lead Cast & Publicity Team|false|Character styling tests and high-res poster stills
+MOV-01|MS-03|PRINCIPAL_PHOTOGRAPHY|Scene Filming (Principal Photography)|TBD|PLANNED|Marcus Sterling & Cinematographer|false|Execution of planned script scenes on set and location
+MOV-01|MS-04|PICTURE_EDITING|Picture & Video Editing (Assembly to Final Cut)|TBD|PLANNED|Chief Editor|false|Assembly cut, rough cut, and picture lock
+MOV-01|MS-05|AUDIO_AND_DUBBING|Audio Dubbing (Voice-Over / ADR) & Sound Design|TBD|PLANNED|Sound Supervisor & Lead Cast|false|Actor voice-overs, ADR dubbing, Foley, and background score
+MOV-01|MS-06|VFX_AND_CGI|VFX, CGI Animation & Color Grading (DI)|TBD|PLANNED|VFX Supervisor & Colorist|false|CGI compositing, 3D visual effects, and digital intermediate color grading
+MOV-01|MS-07|POSTER_RELEASE|Official First Look & Poster Release|TBD|PLANNED|Studio Marketing & Publicity|false|Unveil official title logo and first look poster across media
+MOV-01|MS-08|TEASER_RELEASE|Official Teaser Release|TBD|PLANNED|Digital Media Team|false|Atmospheric 60-second teaser establishing movie universe
+MOV-01|MS-09|TRAILER_RELEASE|Official Theatrical Trailer Release|TBD|PLANNED|Studio Distribution Head|false|Theatrical trailer launch in theaters and streaming platforms
+MOV-01|MS-10|PRESS_MEET|Press Meet & Media Conference (Optional)|TBD|PLANNED|PR Officer & Cast|true|Journalist Q&A, cast press conference, and interviews
+MOV-01|MS-11|PROMOTIONAL_CAMPAIGN|Promotional Tours, City Campaigns & Marketing|TBD|PLANNED|Cast & PR Lead|false|Multi-city promotional tours, college visits, and media appearances
+MOV-01|MS-12|THEATRICAL_RELEASE|Worldwide Movie Premiere & Theatrical Release|TBD|PLANNED|Studio & Global Distributors|false|Grand theatrical premiere and global multi-screen release
+MOV-02|MS-01|SCRIPT_NARRATION|Script & Storyline Narration to Cast|TBD|PLANNED|Evelyn Blackwood & Screenwriter|false|Table read and story orientation with lead cast
+MOV-02|MS-02|POSTER_PHOTOSHOOT|Look Test & Poster Photoshoot|TBD|PLANNED|Lead Cast & Publicity Team|false|Character styling tests and high-res poster stills
+MOV-02|MS-03|PRINCIPAL_PHOTOGRAPHY|Scene Filming (Principal Photography)|TBD|PLANNED|Evelyn Blackwood & Cinematographer|false|Execution of planned script scenes on set and location
+MOV-02|MS-04|PICTURE_EDITING|Picture & Video Editing (Assembly to Final Cut)|TBD|PLANNED|Chief Editor|false|Assembly cut, rough cut, and picture lock
+MOV-02|MS-05|AUDIO_AND_DUBBING|Audio Dubbing (Voice-Over / ADR) & Sound Design|TBD|PLANNED|Sound Supervisor & Lead Cast|false|Actor voice-overs, ADR dubbing, Foley, and background score
+MOV-02|MS-06|VFX_AND_CGI|VFX, CGI Animation & Color Grading (DI)|TBD|PLANNED|VFX Supervisor & Colorist|false|CGI compositing, 3D visual effects, and digital intermediate color grading
+MOV-02|MS-07|POSTER_RELEASE|Official First Look & Poster Release|TBD|PLANNED|Studio Marketing & Publicity|false|Unveil official title logo and first look poster across media
+MOV-02|MS-08|TEASER_RELEASE|Official Teaser Release|TBD|PLANNED|Digital Media Team|false|Atmospheric 60-second teaser establishing movie universe
+MOV-02|MS-09|TRAILER_RELEASE|Official Theatrical Trailer Release|TBD|PLANNED|Studio Distribution Head|false|Theatrical trailer launch in theaters and streaming platforms
+MOV-02|MS-10|PRESS_MEET|Press Meet & Media Conference (Optional)|TBD|PLANNED|PR Officer & Cast|true|Journalist Q&A, cast press conference, and interviews
+MOV-02|MS-11|PROMOTIONAL_CAMPAIGN|Promotional Tours, City Campaigns & Marketing|TBD|PLANNED|Cast & PR Lead|false|Multi-city promotional tours, college visits, and media appearances
+MOV-02|MS-12|THEATRICAL_RELEASE|Worldwide Movie Premiere & Theatrical Release|TBD|PLANNED|Studio & Global Distributors|false|Grand theatrical premiere and global multi-screen release
