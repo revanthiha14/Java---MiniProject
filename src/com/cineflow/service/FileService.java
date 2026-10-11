@@ -1,12 +1,17 @@
 package com.cineflow.service;
 
 import com.cineflow.model.Actor;
+import com.cineflow.model.ApprovalStatus;
+import com.cineflow.model.AssetType;
 import com.cineflow.model.CallSheet;
 import com.cineflow.model.CastCallEntry;
 import com.cineflow.model.CrewMember;
 import com.cineflow.model.DistributionRelease;
 import com.cineflow.model.DubbingTrack;
 import com.cineflow.model.Expense;
+import com.cineflow.model.InventoryItem;
+import com.cineflow.model.ItemAssignment;
+import com.cineflow.model.ItemCategory;
 import com.cineflow.model.Movie;
 import com.cineflow.model.MovieStatus;
 import com.cineflow.model.Person;
@@ -15,6 +20,7 @@ import com.cineflow.model.PostProductionType;
 import com.cineflow.model.ProductionHouse;
 import com.cineflow.model.ProductionMilestone;
 import com.cineflow.model.ProductionStage;
+import com.cineflow.model.PromotionalAsset;
 import com.cineflow.model.Review;
 import com.cineflow.model.Scene;
 
@@ -53,6 +59,11 @@ public class FileService {
      * Saves all production houses, movies, scenes, cast/crew, expenses, reviews, schedules, dubbing, post-production, screenplays, call sheets, and distribution to text files.
      */
     public void saveAllData(List<ProductionHouse> studios) throws IOException {
+        saveAllData(studios, null, null);
+    }
+
+    public void saveAllData(List<ProductionHouse> studios, InventoryManager inventoryManager,
+                            PromotionManager promotionManager) throws IOException {
         if (studios == null) {
             throw new IOException("Cannot save null studio collection.");
         }
@@ -68,6 +79,12 @@ public class FileService {
         saveScreenplays(studios);
         saveCallSheets(studios);
         saveDistribution(studios);
+        if (inventoryManager != null) {
+            saveInventory(inventoryManager);
+        }
+        if (promotionManager != null) {
+            savePromotionalAssets(promotionManager);
+        }
     }
 
     private void saveStudios(List<ProductionHouse> studios) throws IOException {
@@ -298,11 +315,65 @@ public class FileService {
         }
     }
 
+    public void saveInventory(InventoryManager inventoryManager) throws IOException {
+        if (inventoryManager == null) return;
+        File file = new File(dataDir, "inventory.txt");
+        try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
+            writer.println("# ItemID|Name|Category|TotalQty|AvailableQty|DamagedQty|LostQty|Condition|Notes");
+            for (InventoryItem itm : inventoryManager.getAllItems()) {
+                String notesSafe = (itm.getNotes() != null) ? itm.getNotes().replace("\n", " ").replace("|", "/") : "";
+                writer.println(itm.getId() + "|" + itm.getName().replace("|", "/") + "|"
+                        + itm.getCategory().name() + "|" + itm.getTotalQuantity() + "|"
+                        + itm.getAvailableQuantity() + "|" + itm.getDamagedQuantity() + "|"
+                        + itm.getLostQuantity() + "|" + itm.getCondition().replace("|", "/") + "|"
+                        + notesSafe);
+            }
+        }
+
+        File asgFile = new File(dataDir, "item_assignments.txt");
+        try (PrintWriter writer = new PrintWriter(new FileWriter(asgFile))) {
+            writer.println("# AssignmentID|ItemID|MovieID|SceneNumber|Quantity|Status|AssignedDate|ReturnDate|Notes");
+            for (ItemAssignment asg : inventoryManager.getAllAssignments()) {
+                String notesSafe = (asg.getNotes() != null) ? asg.getNotes().replace("\n", " ").replace("|", "/") : "";
+                writer.println(asg.getAssignmentId() + "|" + asg.getItemId() + "|"
+                        + asg.getMovieId() + "|" + asg.getSceneNumber() + "|"
+                        + asg.getQuantity() + "|" + asg.getStatus() + "|"
+                        + asg.getAssignedDate() + "|" + asg.getReturnDate() + "|"
+                        + notesSafe);
+            }
+        }
+    }
+
+    public void savePromotionalAssets(PromotionManager promotionManager) throws IOException {
+        if (promotionManager == null) return;
+        File file = new File(dataDir, "promotional_assets.txt");
+        try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
+            writer.println("# AssetID|MovieID|AssetType|Title|FilePathOrUrl|Language|Platform|Status|Revision|ApprovalDetails|LastUpdated");
+            for (PromotionalAsset a : promotionManager.getAllAssets()) {
+                String detailsSafe = (a.getApprovalDetails() != null) ? a.getApprovalDetails().replace("\n", " ").replace("|", "/") : "";
+                writer.println(a.getAssetId() + "|" + a.getMovieId() + "|"
+                        + a.getAssetType().name() + "|" + a.getTitle().replace("|", "/") + "|"
+                        + a.getFilePathOrUrl().replace("|", "/") + "|"
+                        + a.getLanguage().replace("|", "/") + "|"
+                        + a.getPlatform().replace("|", "/") + "|"
+                        + a.getApprovalStatus().name() + "|"
+                        + a.getRevisionNumber() + "|"
+                        + detailsSafe + "|"
+                        + a.getLastUpdatedDate());
+            }
+        }
+    }
+
     /**
      * Loads all production houses, movies, scenes, cast/crew, expenses, and reviews from text files.
      * Skips malformed records gracefully with explanatory warnings without crashing.
      */
     public List<ProductionHouse> loadAllData() throws IOException {
+        return loadAllData(null, null);
+    }
+
+    public List<ProductionHouse> loadAllData(InventoryManager inventoryManager,
+                                            PromotionManager promotionManager) throws IOException {
         Map<String, ProductionHouse> studioMap = new HashMap<>();
         Map<String, Movie> movieMap = new HashMap<>();
 
@@ -803,7 +874,139 @@ public class FileService {
             }
         }
 
+        // 12. Load Inventory Items & Assignments
+        if (inventoryManager != null) {
+            loadInventory(inventoryManager);
+        }
+
+        // 13. Load Promotional & Marketing Assets
+        if (promotionManager != null) {
+            loadPromotionalAssets(promotionManager);
+        }
+
         return new ArrayList<>(studioMap.values());
+    }
+
+    public void loadInventory(InventoryManager inventoryManager) throws IOException {
+        if (inventoryManager == null) return;
+        File file = new File(dataDir, "inventory.txt");
+        if (file.exists()) {
+            inventoryManager.clear();
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                int lineNum = 0;
+                while ((line = reader.readLine()) != null) {
+                    lineNum++;
+                    line = line.trim();
+                    if (line.isEmpty() || line.startsWith("#")) continue;
+                    String[] parts = line.split("\\|", -1);
+                    if (parts.length >= 8) {
+                        try {
+                            String id = parts[0].trim();
+                            String name = parts[1].trim();
+                            ItemCategory cat = ItemCategory.fromString(parts[2].trim());
+                            int total = Integer.parseInt(parts[3].trim());
+                            int avail = Integer.parseInt(parts[4].trim());
+                            int dmg = Integer.parseInt(parts[5].trim());
+                            int lost = Integer.parseInt(parts[6].trim());
+                            String cond = parts[7].trim();
+                            String notes = (parts.length >= 9) ? parts[8].trim() : "";
+
+                            InventoryItem itm = new InventoryItem(id, name, cat, total, avail, dmg, lost, cond, notes);
+                            inventoryManager.addItem(itm);
+                        } catch (Exception e) {
+                            System.err.println("[WARNING] inventory.txt line " + lineNum + " skipped: " + e.getMessage());
+                        }
+                    } else {
+                        System.err.println("[WARNING] inventory.txt line " + lineNum + " malformed: " + line);
+                    }
+                }
+            }
+        }
+
+        File asgFile = new File(dataDir, "item_assignments.txt");
+        if (asgFile.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(asgFile))) {
+                String line;
+                int lineNum = 0;
+                while ((line = reader.readLine()) != null) {
+                    lineNum++;
+                    line = line.trim();
+                    if (line.isEmpty() || line.startsWith("#")) continue;
+                    String[] parts = line.split("\\|", -1);
+                    if (parts.length >= 8) {
+                        try {
+                            String asgId = parts[0].trim();
+                            String itmId = parts[1].trim();
+                            String movId = parts[2].trim();
+                            int scNum = Integer.parseInt(parts[3].trim());
+                            int qty = Integer.parseInt(parts[4].trim());
+                            String status = parts[5].trim();
+                            String assignedDate = parts[6].trim();
+                            String returnDate = parts[7].trim();
+                            String notes = (parts.length >= 9) ? parts[8].trim() : "";
+
+                            ItemAssignment asg = new ItemAssignment(asgId, itmId, movId, scNum, qty, status, assignedDate, returnDate, notes);
+                            inventoryManager.addLoadedAssignment(asg);
+                        } catch (Exception e) {
+                            System.err.println("[WARNING] item_assignments.txt line " + lineNum + " skipped: " + e.getMessage());
+                        }
+                    } else {
+                        System.err.println("[WARNING] item_assignments.txt line " + lineNum + " malformed: " + line);
+                    }
+                }
+            }
+        }
+    }
+
+    public void loadPromotionalAssets(PromotionManager promotionManager) throws IOException {
+        if (promotionManager == null) return;
+        File file = new File(dataDir, "promotional_assets.txt");
+        if (file.exists()) {
+            promotionManager.clear();
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                int lineNum = 0;
+                while ((line = reader.readLine()) != null) {
+                    lineNum++;
+                    line = line.trim();
+                    if (line.isEmpty() || line.startsWith("#")) continue;
+                    String[] parts = line.split("\\|", -1);
+                    if (parts.length >= 8) {
+                        try {
+                            String assetId = parts[0].trim();
+                            String movieId = parts[1].trim();
+                            AssetType type = AssetType.fromString(parts[2].trim());
+                            String title = parts[3].trim();
+                            String filePath = parts[4].trim();
+                            String lang = parts[5].trim();
+                            String plat = parts[6].trim();
+                            ApprovalStatus status = ApprovalStatus.fromString(parts[7].trim());
+                            int rev = (parts.length >= 9 && !parts[8].trim().isEmpty()) ? Integer.parseInt(parts[8].trim()) : 1;
+                            String details = (parts.length >= 10) ? parts[9].trim() : "";
+                            String updated = (parts.length >= 11) ? parts[10].trim() : "2026-10-12";
+
+                            PromotionalAsset asset = new PromotionalAsset(assetId, movieId, type, title, filePath, lang, plat, status, rev, details, updated);
+                            promotionManager.addAsset(asset);
+                        } catch (Exception e) {
+                            System.err.println("[WARNING] promotional_assets.txt line " + lineNum + " skipped: " + e.getMessage());
+                        }
+                    } else {
+                        System.err.println("[WARNING] promotional_assets.txt line " + lineNum + " malformed: " + line);
+                    }
+                }
+            }
+        }
+    }
+
+    public boolean hasExistingInventoryData() {
+        File f = new File(dataDir, "inventory.txt");
+        return f.exists() && f.length() > 0;
+    }
+
+    public boolean hasExistingPromotionalData() {
+        File f = new File(dataDir, "promotional_assets.txt");
+        return f.exists() && f.length() > 0;
     }
 
     public boolean hasExistingData() {
@@ -986,6 +1189,22 @@ public class FileService {
         }
         String safeTitle = movie.getTitle().replaceAll("[^a-zA-Z0-9.-]", "_");
         return new File(distDir, movie.getId() + "_" + safeTitle + "_Distribution_Manifest.txt");
+    }
+
+    public File exportProductionReportToFile(Movie movie, String reportContent) throws IOException {
+        if (movie == null) {
+            throw new IOException("Cannot export report for null movie.");
+        }
+        File repDir = new File(dataDir, "reports");
+        if (!repDir.exists()) {
+            repDir.mkdirs();
+        }
+        String safeTitle = movie.getTitle().replaceAll("[^a-zA-Z0-9.-]", "_");
+        File targetFile = new File(repDir, movie.getId() + "_" + safeTitle + "_Production_Report.txt");
+        try (PrintWriter pw = new PrintWriter(new FileWriter(targetFile))) {
+            pw.print(reportContent);
+        }
+        return targetFile;
     }
 }
 

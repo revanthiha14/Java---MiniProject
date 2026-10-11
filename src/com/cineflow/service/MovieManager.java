@@ -16,6 +16,12 @@ import com.cineflow.model.PostProductionTask;
 import com.cineflow.model.PostProductionType;
 import com.cineflow.model.ProductionHouse;
 import com.cineflow.model.ProductionMilestone;
+import com.cineflow.model.ApprovalStatus;
+import com.cineflow.model.AssetType;
+import com.cineflow.model.InventoryItem;
+import com.cineflow.model.ItemAssignment;
+import com.cineflow.model.ItemCategory;
+import com.cineflow.model.PromotionalAsset;
 import com.cineflow.model.Review;
 import com.cineflow.model.Scene;
 
@@ -36,6 +42,9 @@ public class MovieManager {
     private final FileService fileService;
     private final CastManager castManager;
     private final ReviewManager reviewManager;
+    private final InventoryManager inventoryManager;
+    private final PromotionManager promotionManager;
+    private final ReportService reportService;
     private String activeStudioId;
     private String activeMovieId;
 
@@ -44,6 +53,9 @@ public class MovieManager {
         this.fileService = new FileService();
         this.castManager = new CastManager();
         this.reviewManager = new ReviewManager();
+        this.inventoryManager = new InventoryManager();
+        this.promotionManager = new PromotionManager();
+        this.reportService = new ReportService(this, this.inventoryManager, this.promotionManager);
         initializeData();
     }
 
@@ -54,6 +66,14 @@ public class MovieManager {
                 ensureScreenplayFilesExist();
                 ensureCallSheetFilesExist();
                 ensureDistributionFilesExist();
+                if (!fileService.hasExistingInventoryData()) {
+                    seedDefaultInventory();
+                    fileService.saveInventory(inventoryManager);
+                }
+                if (!fileService.hasExistingPromotionalData()) {
+                    seedDefaultPromotionalAssets();
+                    fileService.savePromotionalAssets(promotionManager);
+                }
             } else {
                 seedInitialData();
                 saveData();
@@ -494,12 +514,24 @@ public class MovieManager {
         }
     }
 
+    public InventoryManager getInventoryManager() {
+        return inventoryManager;
+    }
+
+    public PromotionManager getPromotionManager() {
+        return promotionManager;
+    }
+
+    public ReportService getReportService() {
+        return reportService;
+    }
+
     public void saveData() throws IOException {
-        fileService.saveAllData(getAllStudios());
+        fileService.saveAllData(getAllStudios(), inventoryManager, promotionManager);
     }
 
     public void loadData() throws IOException {
-        List<ProductionHouse> loaded = fileService.loadAllData();
+        List<ProductionHouse> loaded = fileService.loadAllData(inventoryManager, promotionManager);
         if (loaded == null || loaded.isEmpty()) {
             System.out.println("[INFO] No studio records loaded from files. Preserving current in-memory data.");
             return;
@@ -781,8 +813,113 @@ public class MovieManager {
 
             this.activeStudioId = studio1.getId().toUpperCase();
             this.activeMovieId = m1.getId();
+
+            seedDefaultInventory();
+            seedDefaultPromotionalAssets();
         } catch (Exception e) {
             System.err.println("[ERROR] Failed to seed default data: " + e.getMessage());
+        }
+    }
+
+    public void seedDefaultInventory() {
+        try {
+            inventoryManager.clear();
+            // Props
+            InventoryItem p1 = new InventoryItem("PROP-01", "Harmonic Spectrometer", ItemCategory.PROP, 3, "MINT", "Hero hand prop used by Dr. Lyra Thorne in Cygnus Rift research");
+            InventoryItem p2 = new InventoryItem("PROP-02", "Airlock Optical Data Bus Cable", ItemCategory.PROP, 5, "GOOD", "Braided high-tension fiber prop used in spacewalk scene");
+            InventoryItem p3 = new InventoryItem("PROP-03", "Antique Waterfront Revolver (Replica)", ItemCategory.PROP, 2, "GOOD", "Inert metal replica prop for Detective Vance in Dock Warehouse");
+            InventoryItem p4 = new InventoryItem("PROP-04", "Red Sanders Timber Log Props", ItemCategory.PROP, 10, "FAIR", "Lightweight painted foam prop logs for forest convoy standoff");
+
+            // Costumes
+            InventoryItem c1 = new InventoryItem("CST-01", "Hero Pressurized Astronaut Suit", ItemCategory.COSTUME, 2, "GOOD", "Lead spacesuit with internal LED visor illumination for Liam Vance");
+            InventoryItem c2 = new InventoryItem("CST-02", "Heavy Noir Trenchcoat & Fedora", ItemCategory.COSTUME, 3, "GOOD", "Custom water-resistant wool costume for Detective Vance");
+            InventoryItem c3 = new InventoryItem("CST-03", "Custom Red Sanders Forester Attire", ItemCategory.COSTUME, 4, "GOOD", "Weathered cotton shirt and lungi costume for Pushpa Raj");
+
+            // Equipment
+            InventoryItem e1 = new InventoryItem("EQP-01", "ARRI Alexa Mini LF Camera Package", ItemCategory.EQUIPMENT, 2, "MINT", "High-speed large-format digital cinema camera system with cage");
+            InventoryItem e2 = new InventoryItem("EQP-02", "Technocrane 30-Foot Telescopic Crane", ItemCategory.EQUIPMENT, 1, "MINT", "Motorized gyro-stabilized telescopic camera crane for Soundstage A");
+            InventoryItem e3 = new InventoryItem("EQP-03", "Sound Devices Scorpio 32-Track Recorder", ItemCategory.EQUIPMENT, 2, "EXCELLENT", "Multi-channel field audio recorder with wireless receiver rack");
+
+            inventoryManager.addItem(p1);
+            inventoryManager.addItem(p2);
+            inventoryManager.addItem(p3);
+            inventoryManager.addItem(p4);
+            inventoryManager.addItem(c1);
+            inventoryManager.addItem(c2);
+            inventoryManager.addItem(c3);
+            inventoryManager.addItem(e1);
+            inventoryManager.addItem(e2);
+            inventoryManager.addItem(e3);
+
+            // Checkout sample items to demo movies & scenes
+            Movie m1 = findMovieAnywhere("MOV-01");
+            if (m1 != null) {
+                inventoryManager.checkoutItem("PROP-01", m1, 1, 1, "2026-11-10", "Hero prop for orbital lab sequence");
+                inventoryManager.checkoutItem("PROP-02", m1, 2, 2, "2026-11-15", "Tether harness cable for spacewalk scene");
+                inventoryManager.checkoutItem("CST-01", m1, 1, 1, "2026-11-10", "Hero spacesuit for Liam Vance");
+                inventoryManager.checkoutItem("EQP-01", m1, 1, 1, "2026-11-10", "A-Camera primary package");
+            }
+            Movie m2 = findMovieAnywhere("MOV-02");
+            if (m2 != null) {
+                inventoryManager.checkoutItem("PROP-03", m2, 1, 1, "2027-01-10", "Hero prop weapon for rainy pier encounter");
+                inventoryManager.checkoutItem("CST-02", m2, 1, 1, "2027-01-10", "Waterproof noir wardrobe");
+            }
+            Movie m3 = findMovieAnywhere("MOV-03");
+            if (m3 != null) {
+                ItemAssignment asg = inventoryManager.checkoutItem("PROP-04", m3, 1, 6, "2026-03-05", "Checkpost standoff logs");
+                inventoryManager.returnItem(asg.getAssignmentId(), 6, 0, 0, "2026-03-10", "Action scene wrapped cleanly");
+            }
+        } catch (Exception e) {
+            System.err.println("[WARNING] Could not seed default inventory: " + e.getMessage());
+        }
+    }
+
+    public void seedDefaultPromotionalAssets() {
+        try {
+            promotionManager.clear();
+            // MOV-01 Promotional Assets
+            PromotionalAsset a1 = new PromotionalAsset("AST-01", "MOV-01", AssetType.POSTER,
+                    "Official Theatrical One-Sheet", "assets/posters/interstellar_hero_poster.jpg",
+                    "English", "Theaters & IMAX Billboards", ApprovalStatus.APPROVED, 2,
+                    "APPROVED by Studio Marketing Head (IMAX title treatment approved)", "2026-10-01");
+            PromotionalAsset a2 = new PromotionalAsset("AST-02", "MOV-01", AssetType.TEASER,
+                    "Cygnus Rift 4K Atmospheric Teaser", "https://cineflow.cdn/trailers/interstellar_teaser_4k.mp4",
+                    "English", "YouTube 4K & Social Media", ApprovalStatus.APPROVED, 1,
+                    "APPROVED by Director Marcus Sterling", "2026-10-05");
+            PromotionalAsset a3 = new PromotionalAsset("AST-03", "MOV-01", AssetType.TRAILER,
+                    "Official Theatrical Trailer #1", "https://cineflow.cdn/trailers/interstellar_trailer_cut1.mp4",
+                    "English", "Theaters & Digital Streaming", ApprovalStatus.PENDING, 1,
+                    "Awaiting sound mix lock and executive producer sign-off", "2026-10-10");
+            PromotionalAsset a4 = new PromotionalAsset("AST-04", "MOV-01", AssetType.SOCIAL_MEDIA,
+                    "Motion Poster: Lyra's Discovery", "assets/social/mov01_lyra_motion_square.mp4",
+                    "Multilingual", "Instagram, X & TikTok", ApprovalStatus.PENDING, 1,
+                    "Colorist review scheduled for Friday", "2026-10-11");
+
+            // MOV-03 Promotional Assets
+            PromotionalAsset a5 = new PromotionalAsset("AST-05", "MOV-03", AssetType.POSTER,
+                    "Pushpa Raj Thaggedele First Look", "assets/posters/pushpa2_first_look.jpg",
+                    "Telugu / Hindi", "Pan-India Billboards & Print", ApprovalStatus.APPROVED, 3,
+                    "APPROVED by Mythri Producers & Director Sukumar", "2026-02-15");
+            PromotionalAsset a6 = new PromotionalAsset("AST-06", "MOV-03", AssetType.TRAILER,
+                    "Mass Theatrical Trailer (5 Languages)", "https://cineflow.cdn/trailers/pushpa2_trailer.mp4",
+                    "Pan-India Multilingual", "YouTube & Cinema Theaters", ApprovalStatus.APPROVED, 1,
+                    "APPROVED for worldwide multiplex release", "2026-03-01");
+
+            // MOV-04 Promotional Assets
+            PromotionalAsset a7 = new PromotionalAsset("AST-07", "MOV-04", AssetType.BANNER,
+                    "Gotham Heights IMAX Billboard Banner", "assets/banners/dark_horizon_imax_banner.png",
+                    "English", "Times Square & Highway Billboards", ApprovalStatus.REJECTED, 1,
+                    "REJECTED by Creative Director (Reason: Shadow contrast too low on IMAX format, increase lighting on skyline)", "2026-09-20");
+
+            promotionManager.addAsset(a1);
+            promotionManager.addAsset(a2);
+            promotionManager.addAsset(a3);
+            promotionManager.addAsset(a4);
+            promotionManager.addAsset(a5);
+            promotionManager.addAsset(a6);
+            promotionManager.addAsset(a7);
+        } catch (Exception e) {
+            System.err.println("[WARNING] Could not seed default promotional assets: " + e.getMessage());
         }
     }
 

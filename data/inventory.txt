@@ -1,0 +1,14 @@
+# ItemID|Name|Category|TotalQty|AvailableQty|DamagedQty|LostQty|Condition|Notes
+PROP-01|Harmonic Spectrometer|PROP|3|2|0|0|MINT|Hero hand prop used by Dr. Lyra Thorne in Cygnus Rift research
+PROP-02|Airlock Optical Data Bus Cable|PROP|5|3|0|0|GOOD|Braided high-tension fiber prop used in spacewalk scene
+PROP-03|Antique Waterfront Revolver (Replica)|PROP|2|1|0|0|GOOD|Inert metal replica prop for Detective Vance in Dock Warehouse
+PROP-04|Red Sanders Timber Log Props|PROP|10|10|0|0|FAIR|Lightweight painted foam prop logs for forest convoy standoff
+CST-01|Hero Pressurized Astronaut Suit|COSTUME|2|1|0|0|GOOD|Lead spacesuit with internal LED visor illumination for Liam Vance
+CST-02|Heavy Noir Trenchcoat & Fedora|COSTUME|3|2|0|0|GOOD|Custom water-resistant wool costume for Detective Vance
+CST-03|Custom Red Sanders Forester Attire|COSTUME|4|4|0|0|GOOD|Weathered cotton shirt and lungi costume for Pushpa Raj
+EQP-01|ARRI Alexa Mini LF Camera Package|EQUIPMENT|2|1|0|0|MINT|High-speed large-format digital cinema camera system with cage
+EQP-02|Technocrane 30-Foot Telescopic Crane|EQUIPMENT|1|1|0|0|MINT|Motorized gyro-stabilized telescopic camera crane for Soundstage A
+EQP-03|Sound Devices Scorpio 32-Track Recorder|EQUIPMENT|2|2|0|0|EXCELLENT|Multi-channel field audio recorder with wireless receiver rack
+PROP-PERSIST-99|Golden Crown|PROP|3|2|0|0|New|Royal Wardrobe
+PROP-PERSIST-11228|Golden Crown|PROP|3|2|0|0|New|Royal Wardrobe
+PROP-PERSIST-431|Golden Crown|PROP|3|2|0|0|New|Royal Wardrobe

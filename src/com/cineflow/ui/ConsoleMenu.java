@@ -22,10 +22,20 @@ import com.cineflow.model.ProductionMilestone;
 import com.cineflow.model.ProductionStage;
 import com.cineflow.model.Review;
 import com.cineflow.model.Scene;
+import com.cineflow.model.ApprovalStatus;
+import com.cineflow.model.AssetType;
+import com.cineflow.model.InventoryItem;
+import com.cineflow.model.ItemAssignment;
+import com.cineflow.model.ItemCategory;
+import com.cineflow.model.PromotionalAsset;
 import com.cineflow.service.CastManager;
+import com.cineflow.service.InventoryManager;
 import com.cineflow.service.MovieManager;
+import com.cineflow.service.PromotionManager;
+import com.cineflow.service.ReportService;
 import com.cineflow.service.ReviewManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +51,9 @@ public class ConsoleMenu {
     private final MovieManager manager;
     private final CastManager castManager;
     private final ReviewManager reviewManager;
+    private final InventoryManager inventoryManager;
+    private final PromotionManager promotionManager;
+    private final ReportService reportService;
     private final Scanner scanner;
 
     public ConsoleMenu(MovieManager manager) {
@@ -51,6 +64,9 @@ public class ConsoleMenu {
         this.manager = manager;
         this.castManager = (castManager != null) ? castManager : new CastManager();
         this.reviewManager = (reviewManager != null) ? reviewManager : new ReviewManager();
+        this.inventoryManager = (manager != null) ? manager.getInventoryManager() : new InventoryManager();
+        this.promotionManager = (manager != null) ? manager.getPromotionManager() : new PromotionManager();
+        this.reportService = (manager != null) ? manager.getReportService() : new ReportService(manager, this.inventoryManager, this.promotionManager);
         this.scanner = new Scanner(System.in);
     }
 
@@ -74,11 +90,14 @@ public class ConsoleMenu {
             System.out.println(" 14. Add Movie Review");
             System.out.println(" 15. View Movie Reviews");
             System.out.println(" 16. Manage Production Houses (View, Switch, Add)");
-            System.out.println(" 17. Save Data to Text Files");
-            System.out.println(" 18. Load Data from Text Files");
+            System.out.println(" 17. Props, Costumes & Equipment (Inventory, Checkout, Return)");
+            System.out.println(" 18. Poster & Promotional Assets (Approval Workflow & Revisions)");
+            System.out.println(" 19. Production Reports & Executive Dashboard (KPIs & Export)");
+            System.out.println(" 20. Save Data to Text Files");
+            System.out.println(" 21. Load Data from Text Files");
             System.out.println(" 0. Exit");
             System.out.println("==================================================");
-            System.out.print("Enter choice (0-18): ");
+            System.out.print("Enter choice (0-21): ");
 
             int choice = readInt();
             System.out.println();
@@ -100,8 +119,11 @@ public class ConsoleMenu {
                 case 14 -> addMovieReview();
                 case 15 -> viewMovieReviews();
                 case 16 -> manageProductionHouses();
-                case 17 -> saveData();
-                case 18 -> loadData();
+                case 17 -> manageInventory();
+                case 18 -> managePromotionalAssets();
+                case 19 -> viewProductionReports();
+                case 20 -> saveData();
+                case 21 -> loadData();
                 case 0 -> {
                     System.out.println("Saving current state before exiting...");
                     try {
@@ -113,7 +135,7 @@ public class ConsoleMenu {
                     System.out.println("Thank you for using CineFlow! Goodbye.");
                     running = false;
                 }
-                default -> System.out.println("Invalid option. Please choose between 0 and 18.");
+                default -> System.out.println("Invalid option. Please choose between 0 and 21.");
             }
 
             if (running) {
@@ -1953,7 +1975,557 @@ public class ConsoleMenu {
     }
 
     // =========================================================================
-    // 12 & 13. FILE HANDLING (SAVE / LOAD)
+    // 17. PROPS, COSTUMES & EQUIPMENT INVENTORY MANAGEMENT
+    // =========================================================================
+    private void manageInventory() {
+        Movie activeMovie = manager.getActiveMovie();
+        String movieTitle = (activeMovie != null) ? activeMovie.getTitle() + " [" + activeMovie.getId() + "]" : "None Selected";
+
+        System.out.println("\n--- PROPS, COSTUMES & EQUIPMENT INVENTORY ---");
+        System.out.printf(" Total Units: %d | Available: %d | In-Use: %d | Damaged: %d | Lost: %d%n",
+                inventoryManager.getTotalInventoryUnitsCount(),
+                inventoryManager.getAvailableUnitsCount(),
+                inventoryManager.getAssignedUnitsCount(),
+                inventoryManager.getDamagedUnitsCount(),
+                inventoryManager.getLostUnitsCount());
+        System.out.println(" Active Movie : " + movieTitle);
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println(" 1. View Complete Inventory Catalog (Stock & Availability)");
+        System.out.println(" 2. Search & Filter Inventory (Keyword, Category, Condition)");
+        System.out.println(" 3. Add New Inventory Item (Prop, Costume, Equipment)");
+        System.out.println(" 4. Update Inventory Item (Stock Count, Condition, Notes)");
+        System.out.println(" 5. Checkout / Assign Item to Movie & Scene");
+        System.out.println(" 6. Return Checked-Out Item (Record Good, Damaged, Lost Units)");
+        System.out.println(" 7. View Current Movie's Item Assignments");
+        System.out.println(" 8. View All Active Checkouts Across Studios");
+        System.out.println(" 0. Back to Main Menu");
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.print("Enter choice (0-8): ");
+
+        int choice = readInt();
+        switch (choice) {
+            case 1 -> displayInventoryTable(inventoryManager.getAllItems());
+            case 2 -> {
+                System.out.print("Enter search keyword (name, ID, or notes): ");
+                String query = readLine();
+                System.out.println("Filter by Category:");
+                System.out.println(" 1. All Categories");
+                System.out.println(" 2. Props Only");
+                System.out.println(" 3. Costumes Only");
+                System.out.println(" 4. Equipment Only");
+                System.out.print("Choose (1-4): ");
+                int cChoice = readInt();
+                ItemCategory cat = switch (cChoice) {
+                    case 2 -> ItemCategory.PROP;
+                    case 3 -> ItemCategory.COSTUME;
+                    case 4 -> ItemCategory.EQUIPMENT;
+                    default -> null;
+                };
+                System.out.print("Filter by Condition (e.g. MINT, GOOD, FAIR, DAMAGED, or press Enter for any): ");
+                String cond = readLine();
+
+                List<InventoryItem> results = inventoryManager.searchItems(query, cat, cond);
+                if (results.isEmpty()) {
+                    System.out.println("\nNo inventory items matched your search criteria.");
+                } else {
+                    System.out.printf("%nFound %d matching item(s):%n", results.size());
+                    displayInventoryTable(results);
+                }
+            }
+            case 3 -> {
+                System.out.println("\n--- ADD NEW INVENTORY ITEM ---");
+                System.out.print("Enter Item ID (e.g. PROP-05, CST-04, EQP-04): ");
+                String id = readLine();
+                System.out.print("Enter Item Name: ");
+                String name = readLine();
+                System.out.println("Select Category:");
+                System.out.println(" 1. PROP");
+                System.out.println(" 2. COSTUME");
+                System.out.println(" 3. EQUIPMENT");
+                System.out.print("Choose (1-3): ");
+                int catChoice = readInt();
+                ItemCategory category = switch (catChoice) {
+                    case 2 -> ItemCategory.COSTUME;
+                    case 3 -> ItemCategory.EQUIPMENT;
+                    default -> ItemCategory.PROP;
+                };
+                System.out.print("Enter Total Quantity Owned: ");
+                int qty = readInt();
+                System.out.print("Enter Condition (e.g. MINT, GOOD, FAIR, DAMAGED) [Default: GOOD]: ");
+                String condition = readLine();
+                if (condition.isEmpty()) condition = "GOOD";
+                System.out.print("Enter Storage / Usage Notes: ");
+                String notes = readLine();
+
+                try {
+                    InventoryItem item = new InventoryItem(id, name, category, qty, condition, notes);
+                    inventoryManager.addItem(item);
+                    System.out.printf("%n[SUCCESS] %s [%s] '%s' added with %d available units!%n",
+                            category.name(), id, name, qty);
+                } catch (ValidationException e) {
+                    System.out.println("\n[VALIDATION ERROR] " + e.getMessage());
+                }
+            }
+            case 4 -> {
+                System.out.print("Enter Item ID to update: ");
+                String id = readLine();
+                try {
+                    InventoryItem item = inventoryManager.getItemOrThrow(id);
+                    System.out.printf("Selected: [%s] %s (%s) | Total: %d | Avail: %d | Condition: %s%n",
+                            item.getId(), item.getName(), item.getCategory().name(),
+                            item.getTotalQuantity(), item.getAvailableQuantity(), item.getCondition());
+
+                    System.out.print("Enter New Total Quantity [Press Enter to keep " + item.getTotalQuantity() + "]: ");
+                    String qtyStr = readLine();
+                    if (!qtyStr.isEmpty()) {
+                        try {
+                            item.setTotalQuantity(Integer.parseInt(qtyStr));
+                        } catch (Exception e) {
+                            System.out.println("[ERROR] " + e.getMessage());
+                        }
+                    }
+
+                    System.out.print("Enter New Condition [Press Enter to keep '" + item.getCondition() + "']: ");
+                    String newCond = readLine();
+                    if (!newCond.isEmpty()) item.setCondition(newCond);
+
+                    System.out.print("Enter New Notes [Press Enter to keep current]: ");
+                    String newNotes = readLine();
+                    if (!newNotes.isEmpty()) item.setNotes(newNotes);
+
+                    System.out.println("\n[SUCCESS] Inventory item [" + item.getId() + "] updated successfully!");
+                } catch (ResourceNotFoundException e) {
+                    System.out.println("\n[RESOURCE NOT FOUND] " + e.getMessage());
+                }
+            }
+            case 5 -> {
+                System.out.println("\n--- CHECKOUT / ASSIGN ITEM TO MOVIE & SCENE ---");
+                Movie movie = manager.getActiveMovie();
+                if (movie == null) {
+                    System.out.println("No active movie selected. Please select a movie first.");
+                    return;
+                }
+                List<InventoryItem> availableItems = inventoryManager.getAllItems();
+                if (availableItems.isEmpty()) {
+                    System.out.println("Inventory is empty. Please add items first.");
+                    return;
+                }
+                displayInventoryTable(availableItems);
+
+                System.out.print("\nEnter Item ID to checkout: ");
+                String id = readLine();
+                System.out.printf("Assign to Active Movie '%s' [%s]? (Press Enter for yes, or type alternate Movie ID): ",
+                        movie.getTitle(), movie.getId());
+                String movInput = readLine();
+                Movie targetMovie = movie;
+                if (!movInput.isEmpty()) {
+                    targetMovie = manager.findMovieAnywhere(movInput);
+                    if (targetMovie == null) {
+                        System.out.println("[ERROR] Movie with ID '" + movInput + "' not found.");
+                        return;
+                    }
+                }
+
+                System.out.println("Available scenes in '" + targetMovie.getTitle() + "':");
+                for (Scene sc : targetMovie.getScenes()) {
+                    System.out.printf(" Scene #%d: %s (%s)%n", sc.getSceneNumber(), sc.getTitle(), sc.getLocation());
+                }
+                System.out.print("Enter Scene Number to attach (or 0 for Movie-Wide assignment): ");
+                int scNum = readInt();
+
+                System.out.print("Enter Quantity to checkout: ");
+                int qty = readInt();
+
+                System.out.print("Enter Checkout / Shoot Date (YYYY-MM-DD): ");
+                String date = readLine();
+                if (date.isEmpty()) date = "2026-10-12";
+
+                System.out.print("Enter Purpose / Scene Notes: ");
+                String notes = readLine();
+
+                try {
+                    ItemAssignment asg = inventoryManager.checkoutItem(id, targetMovie, scNum, qty, date, notes);
+                    System.out.printf("%n[SUCCESS] Assignment [%s] created! Checked out %d unit(s) of [%s] to '%s' (%s).%n",
+                            asg.getAssignmentId(), qty, id, targetMovie.getTitle(), asg.getSceneReference());
+                } catch (ResourceNotFoundException e) {
+                    System.out.println("\n[RESOURCE NOT FOUND] " + e.getMessage());
+                } catch (ValidationException e) {
+                    System.out.println("\n[VALIDATION ERROR] " + e.getMessage());
+                }
+            }
+            case 6 -> {
+                System.out.println("\n--- RETURN CHECKED-OUT INVENTORY ITEM ---");
+                List<ItemAssignment> activeAsgs = inventoryManager.getActiveAssignments();
+                if (activeAsgs.isEmpty()) {
+                    System.out.println("No items are currently checked out.");
+                    return;
+                }
+                displayAssignmentsTable(activeAsgs);
+
+                System.out.print("\nEnter Assignment ID to return (e.g. ASG-001): ");
+                String asgId = readLine();
+                ItemAssignment asg = inventoryManager.findAssignmentById(asgId);
+                if (asg == null || !asg.isCheckedOut()) {
+                    System.out.println("[ERROR] Active assignment not found for ID '" + asgId + "'.");
+                    return;
+                }
+                System.out.printf("Selected Assignment [%s]: %d unit(s) of [%s] checked out to %s.%n",
+                        asg.getAssignmentId(), asg.getQuantity(), asg.getItemId(), asg.getMovieId());
+
+                System.out.printf("Enter Quantity Returned in GOOD condition [0-%d]: ", asg.getQuantity());
+                int good = readInt();
+                System.out.printf("Enter Quantity Returned DAMAGED [0-%d]: ", asg.getQuantity() - good);
+                int dmg = readInt();
+                System.out.printf("Enter Quantity LOST / UNACCOUNTED [0-%d]: ", asg.getQuantity() - good - dmg);
+                int lost = readInt();
+
+                System.out.print("Enter Return Date (YYYY-MM-DD): ");
+                String retDate = readLine();
+                if (retDate.isEmpty()) retDate = "2026-10-12";
+
+                System.out.print("Enter Return / Inspection Notes: ");
+                String retNotes = readLine();
+
+                try {
+                    inventoryManager.returnItem(asgId, good, dmg, lost, retDate, retNotes);
+                    System.out.printf("%n[SUCCESS] Assignment [%s] reconciled! (Good: %d, Damaged: %d, Lost: %d)%n",
+                            asgId, good, dmg, lost);
+                } catch (Exception e) {
+                    System.out.println("\n[ERROR] " + e.getMessage());
+                }
+            }
+            case 7 -> {
+                Movie movie = manager.getActiveMovie();
+                if (movie == null) {
+                    System.out.println("No active movie selected.");
+                    return;
+                }
+                List<ItemAssignment> movieAsgs = inventoryManager.getAssignmentsForMovie(movie.getId());
+                if (movieAsgs.isEmpty()) {
+                    System.out.println("No inventory assignments recorded for '" + movie.getTitle() + "'.");
+                } else {
+                    System.out.printf("%n--- INVENTORY ASSIGNMENTS FOR: %s (%d) ---%n",
+                            movie.getTitle().toUpperCase(), movieAsgs.size());
+                    displayAssignmentsTable(movieAsgs);
+                }
+            }
+            case 8 -> {
+                List<ItemAssignment> active = inventoryManager.getActiveAssignments();
+                if (active.isEmpty()) {
+                    System.out.println("No active checkouts across any productions.");
+                } else {
+                    System.out.printf("%n--- ALL ACTIVE CHECKOUTS ACROSS STUDIOS (%d) ---%n", active.size());
+                    displayAssignmentsTable(active);
+                }
+            }
+            case 0 -> {}
+            default -> System.out.println("Invalid option. Please choose between 0 and 8.");
+        }
+    }
+
+    private void displayInventoryTable(List<InventoryItem> items) {
+        if (items.isEmpty()) {
+            System.out.println("No inventory items found.");
+            return;
+        }
+        System.out.println("\n=========================================================================================================");
+        System.out.printf(" %-8s | %-28s | %-12s | %-6s | %-6s | %-6s | %-5s | %-9s | %s%n",
+                "ITEM ID", "ITEM NAME", "CATEGORY", "TOTAL", "AVAIL", "IN-USE", "DMG", "CONDITION", "STATUS BADGE");
+        System.out.println("---------+------------------------------+--------------+--------+--------+--------+-------+-----------+-----------------");
+        for (InventoryItem itm : items) {
+            String nameStr = itm.getName();
+            if (nameStr.length() > 28) nameStr = nameStr.substring(0, 25) + "...";
+            System.out.printf(" %-8s | %-28s | %-12s | %-6d | %-6d | %-6d | %-5d | %-9s | %s%n",
+                    itm.getId(), nameStr, itm.getCategory().name(),
+                    itm.getTotalQuantity(), itm.getAvailableQuantity(), itm.getAssignedQuantity(),
+                    itm.getDamagedQuantity(), itm.getCondition(), itm.getAvailabilityBadge());
+        }
+        System.out.println("=========================================================================================================");
+    }
+
+    private void displayAssignmentsTable(List<ItemAssignment> assignments) {
+        if (assignments.isEmpty()) {
+            System.out.println("No item assignments found.");
+            return;
+        }
+        System.out.println("\n=========================================================================================================");
+        System.out.printf(" %-8s | %-8s | %-8s | %-12s | %-4s | %-12s | %-10s | %s%n",
+                "ASG ID", "ITEM ID", "MOVIE ID", "SCENE", "QTY", "STATUS", "OUT DATE", "RETURN DATE");
+        System.out.println("---------+----------+----------+--------------+------+--------------+------------+--------------------");
+        for (ItemAssignment a : assignments) {
+            System.out.printf(" %-8s | %-8s | %-8s | %-12s | %-4d | %-12s | %-10s | %s%n",
+                    a.getAssignmentId(), a.getItemId(), a.getMovieId(),
+                    a.getSceneReference(), a.getQuantity(), a.getStatus(),
+                    a.getAssignedDate(), a.getReturnDate());
+        }
+        System.out.println("=========================================================================================================");
+    }
+
+    // =========================================================================
+    // 18. POSTER & PROMOTIONAL ASSETS MANAGEMENT
+    // =========================================================================
+    private void managePromotionalAssets() {
+        Movie movie = manager.getActiveMovie();
+        if (movie == null) {
+            System.out.println("No active movie selected. Please select a movie first.");
+            return;
+        }
+
+        List<PromotionalAsset> movieAssets = promotionManager.getAssetsForMovie(movie.getId());
+        int approved = 0, pending = 0, rejected = 0;
+        for (PromotionalAsset a : movieAssets) {
+            if (a.isApproved()) approved++;
+            else if (a.isPending()) pending++;
+            else if (a.isRejected()) rejected++;
+        }
+
+        System.out.println("\n--- POSTER & PROMOTIONAL ASSETS: " + movie.getTitle().toUpperCase() + " ---");
+        System.out.printf(" Total Assets: %d | Approved: %d | Pending Review: %d | Revisions Required: %d%n",
+                movieAssets.size(), approved, pending, rejected);
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println(" 1. View Promotional Assets for Active Movie");
+        System.out.println(" 2. Add New Promotional Asset (Poster, Teaser, Trailer, Banner, Social)");
+        System.out.println(" 3. Search & Filter Promotional Assets");
+        System.out.println(" 4. Approve Promotional Asset (Sign-Off for Public Release)");
+        System.out.println(" 5. Reject Promotional Asset (Request Creative Revisions)");
+        System.out.println(" 6. Submit New Asset Revision (Upload New File / URL & Increment Rev)");
+        System.out.println(" 7. View All Promotional Assets Across All Movies");
+        System.out.println(" 0. Back to Main Menu");
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.print("Enter choice (0-7): ");
+
+        int choice = readInt();
+        switch (choice) {
+            case 1 -> displayPromotionalAssetsTable(movieAssets);
+            case 2 -> {
+                System.out.println("\n--- ADD NEW PROMOTIONAL ASSET ---");
+                int nextIdx = promotionManager.getAllAssets().size() + 1;
+                String defaultId = "AST-" + String.format("%02d", nextIdx);
+                System.out.print("Enter Asset ID [Press Enter for " + defaultId + "]: ");
+                String idInput = readLine();
+                String assetId = idInput.isEmpty() ? defaultId : idInput;
+
+                System.out.println("Select Asset Type:");
+                System.out.println(" 1. POSTER (First Look / Theatrical Poster)");
+                System.out.println(" 2. TEASER (Official Teaser Video)");
+                System.out.println(" 3. TRAILER (Theatrical Trailer)");
+                System.out.println(" 4. BANNER (Web / Billboard Banner)");
+                System.out.println(" 5. SOCIAL_MEDIA (Motion Poster / Reel)");
+                System.out.print("Choose (1-5): ");
+                int tChoice = readInt();
+                AssetType type = switch (tChoice) {
+                    case 2 -> AssetType.TEASER;
+                    case 3 -> AssetType.TRAILER;
+                    case 4 -> AssetType.BANNER;
+                    case 5 -> AssetType.SOCIAL_MEDIA;
+                    default -> AssetType.POSTER;
+                };
+
+                System.out.print("Enter Asset Title: ");
+                String title = readLine();
+                System.out.print("Enter File Path or Cloud URL (e.g. assets/posters/hero.jpg): ");
+                String path = readLine();
+                System.out.print("Enter Language (e.g. English, Telugu, Hindi, Multilingual): ");
+                String lang = readLine();
+                System.out.print("Enter Platform (e.g. Theaters & IMAX, YouTube 4K, Instagram): ");
+                String platform = readLine();
+
+                try {
+                    PromotionalAsset asset = new PromotionalAsset(assetId, movie.getId(), type, title, path, lang, platform);
+                    promotionManager.addAsset(asset);
+                    System.out.printf("%n[SUCCESS] Asset [%s] '%s' added with status: %s!%n",
+                            assetId, title, asset.getStatusBadge().trim());
+                } catch (ValidationException e) {
+                    System.out.println("\n[VALIDATION ERROR] " + e.getMessage());
+                }
+            }
+            case 3 -> {
+                System.out.print("Enter search keyword (title, ID, or platform): ");
+                String q = readLine();
+                System.out.println("Filter by Type (0: All, 1: Poster, 2: Teaser, 3: Trailer, 4: Banner, 5: Social): ");
+                int tOpt = readInt();
+                AssetType type = switch (tOpt) {
+                    case 1 -> AssetType.POSTER;
+                    case 2 -> AssetType.TEASER;
+                    case 3 -> AssetType.TRAILER;
+                    case 4 -> AssetType.BANNER;
+                    case 5 -> AssetType.SOCIAL_MEDIA;
+                    default -> null;
+                };
+                System.out.println("Filter by Status (0: All, 1: Pending, 2: Approved, 3: Rejected): ");
+                int sOpt = readInt();
+                ApprovalStatus status = switch (sOpt) {
+                    case 1 -> ApprovalStatus.PENDING;
+                    case 2 -> ApprovalStatus.APPROVED;
+                    case 3 -> ApprovalStatus.REJECTED;
+                    default -> null;
+                };
+
+                List<PromotionalAsset> matches = promotionManager.searchAssets(q, movie.getId(), type, status);
+                if (matches.isEmpty()) {
+                    System.out.println("\nNo promotional assets matched your criteria.");
+                } else {
+                    System.out.printf("%nFound %d matching asset(s):%n", matches.size());
+                    displayPromotionalAssetsTable(matches);
+                }
+            }
+            case 4 -> {
+                System.out.println("\n--- APPROVE PROMOTIONAL ASSET ---");
+                displayPromotionalAssetsTable(movieAssets);
+                System.out.print("\nEnter Asset ID to approve: ");
+                String id = readLine();
+                PromotionalAsset target = promotionManager.findAssetById(id);
+                if (target == null) {
+                    System.out.println("[ERROR] Asset '" + id + "' not found.");
+                    return;
+                }
+                System.out.printf("Selected: [%s] '%s' (%s) | Status: %s%n",
+                        target.getAssetId(), target.getTitle(), target.getAssetType().name(), target.getStatusBadge().trim());
+                System.out.print("Enter Approver Name (e.g. Marketing Lead / Producer): ");
+                String approver = readLine();
+                System.out.print("Enter Approval Notes / Sign-Off Remarks: ");
+                String notes = readLine();
+
+                target.approve(approver, notes);
+                System.out.printf("%n[APPROVED] Asset [%s] '%s' is now APPROVED for public release!%n",
+                        target.getAssetId(), target.getTitle());
+            }
+            case 5 -> {
+                System.out.println("\n--- REJECT PROMOTIONAL ASSET (REQUEST REVISIONS) ---");
+                displayPromotionalAssetsTable(movieAssets);
+                System.out.print("\nEnter Asset ID to reject: ");
+                String id = readLine();
+                PromotionalAsset target = promotionManager.findAssetById(id);
+                if (target == null) {
+                    System.out.println("[ERROR] Asset '" + id + "' not found.");
+                    return;
+                }
+                System.out.printf("Selected: [%s] '%s' (%s)%n", target.getAssetId(), target.getTitle(), target.getAssetType().name());
+                System.out.print("Enter Reviewer Name (e.g. Creative Director): ");
+                String reviewer = readLine();
+                System.out.print("Enter Rejection Reason & Revision Requirements: ");
+                String reason = readLine();
+
+                target.reject(reviewer, reason);
+                System.out.printf("%n[REJECTED] Asset [%s] '%s' status transitioned to REJECTED. Revision requested.%n",
+                        target.getAssetId(), target.getTitle());
+            }
+            case 6 -> {
+                System.out.println("\n--- SUBMIT NEW ASSET REVISION ---");
+                displayPromotionalAssetsTable(movieAssets);
+                System.out.print("\nEnter Asset ID to submit new revision: ");
+                String id = readLine();
+                PromotionalAsset target = promotionManager.findAssetById(id);
+                if (target == null) {
+                    System.out.println("[ERROR] Asset '" + id + "' not found.");
+                    return;
+                }
+                System.out.printf("Current Version: v%d | Path: %s%n", target.getRevisionNumber(), target.getFilePathOrUrl());
+                System.out.print("Enter New File Path or Cloud URL [Press Enter to keep current]: ");
+                String newPath = readLine();
+                System.out.print("Enter Revision Description / Changelog: ");
+                String notes = readLine();
+
+                try {
+                    target.submitRevision(newPath, notes);
+                    System.out.printf("%n[REVISION UPLOADED] Asset [%s] bumped to revision v%d. Status reset to PENDING for re-review!%n",
+                            target.getAssetId(), target.getRevisionNumber());
+                } catch (ValidationException e) {
+                    System.out.println("\n[VALIDATION ERROR] " + e.getMessage());
+                }
+            }
+            case 7 -> {
+                List<PromotionalAsset> all = promotionManager.getAllAssets();
+                if (all.isEmpty()) {
+                    System.out.println("No promotional assets registered across any movies.");
+                } else {
+                    System.out.printf("%n--- ALL PROMOTIONAL ASSETS ACROSS ALL MOVIES (%d) ---%n", all.size());
+                    displayPromotionalAssetsTable(all);
+                }
+            }
+            case 0 -> {}
+            default -> System.out.println("Invalid option. Please choose between 0 and 7.");
+        }
+    }
+
+    private void displayPromotionalAssetsTable(List<PromotionalAsset> assets) {
+        if (assets.isEmpty()) {
+            System.out.println("No promotional assets found.");
+            return;
+        }
+        System.out.println("\n=========================================================================================================");
+        System.out.printf(" %-8s | %-12s | %-24s | %-10s | %-16s | %-5s | %-12s%n",
+                "ASSET ID", "TYPE", "TITLE", "LANGUAGE", "PLATFORM", "REV", "STATUS");
+        System.out.println("---------+--------------+--------------------------+------------+------------------+-------+--------------");
+        for (PromotionalAsset a : assets) {
+            String titleStr = a.getTitle();
+            if (titleStr.length() > 24) titleStr = titleStr.substring(0, 21) + "...";
+            String platStr = a.getPlatform();
+            if (platStr.length() > 16) platStr = platStr.substring(0, 13) + "...";
+            System.out.printf(" %-8s | %-12s | %-24s | %-10s | %-16s | v%-4d | %s%n",
+                    a.getAssetId(), a.getAssetType().name(), titleStr,
+                    a.getLanguage(), platStr, a.getRevisionNumber(), a.getStatusBadge().trim());
+            if (a.getApprovalDetails() != null && !a.getApprovalDetails().isEmpty()) {
+                System.out.printf("          Details: %s%n", a.getApprovalDetails());
+            }
+        }
+        System.out.println("=========================================================================================================");
+    }
+
+    // =========================================================================
+    // 19. PRODUCTION REPORTS & EXECUTIVE DASHBOARD
+    // =========================================================================
+    private void viewProductionReports() {
+        Movie movie = manager.getActiveMovie();
+        System.out.println("\n--- PRODUCTION REPORTS & EXECUTIVE DASHBOARD ---");
+        System.out.printf(" Active Movie  : %s%n", (movie != null ? movie.getTitle() + " [" + movie.getId() + "]" : "None"));
+        System.out.printf(" Active Studio : %s%n", (manager.getActiveStudio() != null ? manager.getActiveStudio().getName() : "None"));
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println(" 1. View Live Executive Production Dashboard (KPIs & High-Level Health)");
+        System.out.println(" 2. View Comprehensive Analytical Production Audit Report (Full Multi-Section)");
+        System.out.println(" 3. View Studio Portfolio Financial & Movie Report");
+        System.out.println(" 4. Export Movie Production Report to Text File (data/reports/)");
+        System.out.println(" 0. Back to Main Menu");
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.print("Enter choice (0-4): ");
+
+        int choice = readInt();
+        switch (choice) {
+            case 1 -> {
+                System.out.println();
+                System.out.println(reportService.generateExecutiveDashboard(movie));
+            }
+            case 2 -> {
+                System.out.println();
+                System.out.println(reportService.generateComprehensiveAnalyticalReport(movie));
+            }
+            case 3 -> {
+                System.out.println();
+                System.out.println(reportService.generateStudioConsolidatedReport(manager.getActiveStudio()));
+            }
+            case 4 -> {
+                if (movie == null) {
+                    System.out.println("No active movie selected to export.");
+                    return;
+                }
+                try {
+                    File exported = reportService.exportProductionReportToFile(movie);
+                    System.out.println("\n==================================================");
+                    System.out.println(" PRODUCTION REPORT EXPORTED SUCCESSFULLY!         ");
+                    System.out.println("==================================================");
+                    System.out.println("File Location: " + exported.getAbsolutePath());
+                    System.out.println("You can open this text document to review executive KPIs and detailed ledgers.");
+                } catch (Exception e) {
+                    System.out.println("\n[EXPORT ERROR] Failed to export production report: " + e.getMessage());
+                }
+            }
+            case 0 -> {}
+            default -> System.out.println("Invalid option. Please choose between 0 and 4.");
+        }
+    }
+
+    // =========================================================================
+    // 20 & 21. FILE HANDLING (SAVE / LOAD)
     // =========================================================================
     private void saveData() {
         System.out.println("Saving all production data to TXT files in data/ directory...");
