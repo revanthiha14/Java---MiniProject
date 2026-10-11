@@ -1,5 +1,5 @@
 # MovieID|StudioID|Title|Genre|Director|ReleaseYear|Budget|Status
-MOV-04|PH-103|The Dark Horizon|Neo-Noir|Christopher Nolan|2027|3000000.0|RELEASED
+MOV-04|PH-103|The Dark Horizon|Neo-Noir|Christopher Nolan|2027|3000000.0|POST_PRODUCTION
 MOV-03|PH-102|Pushpa: The Rule|Action Drama|Sukumar|2026|2500000.0|RELEASED
-MOV-01|PH-101|Interstellar Journey|Sci-Fi|Marcus Sterling|2026|1500000.0|RELEASED
+MOV-01|PH-101|Interstellar Journey|Sci-Fi|Marcus Sterling|2026|1500000.0|PRODUCTION
 MOV-02|PH-101|Shadows of the Past|Thriller|Evelyn Blackwood|2027|800000.0|PLANNING

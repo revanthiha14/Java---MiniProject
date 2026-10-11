@@ -1,9 +1,13 @@
 # MovieID|SceneNumber|Title|Location|Status|ShootingDate
-MOV-04|1|Rooftop Chase|Gotham Heights|PLANNED|2027-04-01
-MOV-03|1|Forest Border Ambush|Maredumilli Forest|COMPLETED|2026-03-25
-MOV-03|2|Port Cargo Standoff|Visakhapatnam Port|IN_PROGRESS|2026-03-12
-MOV-01|1|Deep Orbit Discovery|Soundstage A (CGI)|COMPLETED|2026-11-10
-MOV-01|2|Spacewalk Sensor Repair|Exterior Orbital Rig|IN_PROGRESS|2026-11-15
-MOV-01|3|Atmospheric Entry Bridge|Flight Deck Set|PLANNED|2026-11-20
-MOV-02|1|Rainy Pier Encounter|Dock Warehouse #4|COMPLETED|2027-01-10
-MOV-02|2|Interrogation Room|Studio Stage B|PLANNED|2027-01-15
+MOV-01|1|Tea Shop Introduction|Chennai, Tamil Nadu|COMPLETED|2022-10-15
+MOV-01|2|Das Family Confrontation|Production Set, Chennai|COMPLETED|2022-11-02
+MOV-01|3|Port Action Sequence|Chennai Port Area|COMPLETED|2022-11-18
+MOV-02|1|Tiger Muthuvel Introduction|Chennai, Tamil Nadu|COMPLETED|2022-02-10
+MOV-02|2|Prison Sequence|Production Set, Chennai|COMPLETED|2022-03-05
+MOV-02|3|Climactic Confrontation|Production Set, Chennai|COMPLETED|2022-06-20
+MOV-03|1|Chola Court Scene|Historical Set, Chennai|COMPLETED|2022-08-12
+MOV-03|2|Nandini and Aditha Karikalan|Production Set, Chennai|COMPLETED|2022-09-06
+MOV-03|3|Final Battle Sequence|Production Set, Chennai|COMPLETED|2022-10-03
+MOV-04|1|Agent Vikram Investigation|Chennai, Tamil Nadu|COMPLETED|2021-07-18
+MOV-04|2|Amar's Investigation|Production Set, Chennai|COMPLETED|2021-08-09
+MOV-04|3|Final Warehouse Confrontation|Production Set, Chennai|COMPLETED|2021-09-02
