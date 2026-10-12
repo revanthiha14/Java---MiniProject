@@ -20,10 +20,10 @@
 ================================================================================
  SCENE #  | TITLE / SLUGLINE                       | PAGES  | D/N    | STATUS    
 ---------+----------------------------------------+--------+--------+-----------
- Scene #1 | Agent Vikram Investigation             | 2.5    | NIGHT  | COMPLETED 
-         | Slugline: EXT. CHENNAI HARBOR - NIGHT                         
+ Scene #1 | Agent Vikram Investigation             | 1.0    | DAY    | COMPLETED 
+         | Slugline: EXT. CHENNAI, TAMIL NADU - DAY                      
 --------------------------------------------------------------------------------
- Total Scheduled Pages Today: 2.5 Pages (Est. Camera Roll: ~3 min runtime)
+ Total Scheduled Pages Today: 1.0 Pages (Est. Camera Roll: ~1 min runtime)
 ================================================================================
                             CAST & TALENT CALL TIMES                            
 ================================================================================
@@ -42,7 +42,7 @@
                     DAILY SHOOTING REPORT (DSR WRAP STATUS)                     
 ================================================================================
  CURRENT STATUS : WRAPPED
- PAGES COMPLETED: 2.5 of 2.5 Scheduled Pages
+ PAGES COMPLETED: 2.5 of 1.0 Scheduled Pages
  WRAP / PRODUCTION NOTES:
    First camera setup achieved on schedule. Day 1 principal photography wrapped cleanly.
 ================================================================================

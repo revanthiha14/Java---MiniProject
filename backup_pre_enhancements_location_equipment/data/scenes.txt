@@ -1,0 +1,14 @@
+# MovieID|SceneNumber|Title|Location|Status|ShootingDate|Slugline|ScriptPages|ScriptContent
+MOV-04|1|Agent Vikram Investigation|Chennai, Tamil Nadu|COMPLETED|2021-07-18|EXT. CHENNAI, TAMIL NADU - DAY|1.0|
+MOV-04|2|Amar's Investigation|Production Set, Chennai|COMPLETED|2021-08-09|EXT. PRODUCTION SET, CHENNAI - DAY|1.0|
+MOV-04|3|Final Warehouse Confrontation|Production Set, Chennai|COMPLETED|2021-09-02|EXT. PRODUCTION SET, CHENNAI - DAY|1.0|
+MOV-05|1|Lead intro|NYC Time Square|PLANNED|2026-11-10|EXT. NYC TIME SQUARE - DAY|1.0|
+MOV-03|1|Chola Court Scene|Historical Set, Chennai|COMPLETED|2022-08-12|EXT. HISTORICAL SET, CHENNAI - DAY|1.0|
+MOV-03|2|Nandini and Aditha Karikalan|Production Set, Chennai|COMPLETED|2022-09-06|EXT. PRODUCTION SET, CHENNAI - DAY|1.0|
+MOV-03|3|Final Battle Sequence|Production Set, Chennai|COMPLETED|2022-10-03|EXT. PRODUCTION SET, CHENNAI - DAY|1.0|
+MOV-01|1|Tea Shop Introduction|Chennai, Tamil Nadu|COMPLETED|2022-10-15|EXT. CHENNAI, TAMIL NADU - DAY|1.0|
+MOV-01|2|Das Family Confrontation|Production Set, Chennai|COMPLETED|2022-11-02|EXT. PRODUCTION SET, CHENNAI - DAY|1.0|
+MOV-01|3|Port Action Sequence|Chennai Port Area|COMPLETED|2022-11-18|EXT. CHENNAI PORT AREA - DAY|1.0|
+MOV-02|1|Tiger Muthuvel Introduction|Chennai, Tamil Nadu|COMPLETED|2022-02-10|EXT. CHENNAI, TAMIL NADU - DAY|1.0|
+MOV-02|2|Prison Sequence|Production Set, Chennai|COMPLETED|2022-03-05|EXT. PRODUCTION SET, CHENNAI - DAY|1.0|
+MOV-02|3|Climactic Confrontation|Production Set, Chennai|COMPLETED|2022-06-20|EXT. PRODUCTION SET, CHENNAI - DAY|1.0|

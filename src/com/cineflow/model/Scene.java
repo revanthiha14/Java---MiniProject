@@ -15,6 +15,7 @@ public class Scene {
     private String slugline; // e.g. "INT. SOUNDSTAGE A - DAY" or "EXT. DOCK WAREHOUSE - NIGHT"
     private double scriptPages; // Screenplay page length (1 page ≈ 1 minute screen time)
     private String scriptContent; // Screenplay action description and dialogue lines
+    private String locationId; // Optional registered ProductionLocation reference (e.g. LOC-01)
 
     public Scene(int sceneNumber, String title, String location, String status) throws ValidationException {
         this(sceneNumber, title, location, status, "TBD");
@@ -26,6 +27,11 @@ public class Scene {
 
     public Scene(int sceneNumber, String title, String location, String status, String shootingDate,
                  String slugline, double scriptPages, String scriptContent) throws ValidationException {
+        this(sceneNumber, title, location, status, shootingDate, slugline, scriptPages, scriptContent, null);
+    }
+
+    public Scene(int sceneNumber, String title, String location, String status, String shootingDate,
+                 String slugline, double scriptPages, String scriptContent, String locationId) throws ValidationException {
         if (sceneNumber <= 0) {
             throw new ValidationException("Scene Number", "Scene number must be a positive integer.");
         }
@@ -43,6 +49,7 @@ public class Scene {
         this.slugline = (slugline != null && !slugline.trim().isEmpty()) ? slugline.trim().toUpperCase() : generateDefaultSlugline();
         this.scriptPages = (scriptPages > 0) ? scriptPages : 1.0;
         this.scriptContent = (scriptContent != null && !scriptContent.trim().isEmpty()) ? scriptContent.trim() : "";
+        this.locationId = (locationId != null && !locationId.trim().isEmpty()) ? locationId.trim().toUpperCase() : null;
     }
 
     private String generateDefaultSlugline() {
@@ -80,6 +87,18 @@ public class Scene {
             throw new ValidationException("Scene Location", "Scene location cannot be empty.");
         }
         this.location = location.trim();
+    }
+
+    public String getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(String locationId) {
+        this.locationId = (locationId != null && !locationId.trim().isEmpty()) ? locationId.trim().toUpperCase() : null;
+    }
+
+    public boolean hasRegisteredLocation() {
+        return locationId != null && !locationId.isEmpty();
     }
 
     public String getStatus() {
@@ -172,7 +191,8 @@ public class Scene {
     public String toString() {
         String dateStr = (shootingDate == null || shootingDate.equalsIgnoreCase("TBD")) ? "TBD" : shootingDate;
         String scriptBadge = hasScript() ? String.format("[Script: %.1f pgs]", scriptPages) : "[No Script]";
-        return String.format("Scene #%d: %-22s | Loc: %-18s | Status: %-11s | Date: %-10s | %s",
-                sceneNumber, title, location, status, dateStr, scriptBadge);
+        String locDisplay = hasRegisteredLocation() ? location + " [" + locationId + "]" : location;
+        return String.format("Scene #%d: %-22s | Loc: %-22s | Status: %-11s | Date: %-10s | %s",
+                sceneNumber, title, locDisplay, status, dateStr, scriptBadge);
     }
 }

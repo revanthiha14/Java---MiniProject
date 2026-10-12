@@ -7,5 +7,6 @@ public enum MovieStatus {
     PLANNING,
     PRODUCTION,
     POST_PRODUCTION,
-    RELEASED
+    RELEASED,
+    DROPPED
 }

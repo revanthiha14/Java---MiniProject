@@ -95,9 +95,10 @@ public class ConsoleMenu {
             System.out.println(" 19. Production Reports & Executive Dashboard (KPIs & Export)");
             System.out.println(" 20. Save Data to Text Files");
             System.out.println(" 21. Load Data from Text Files");
+            System.out.println(" 22. Drop Movie / Cancel Production");
             System.out.println(" 0. Exit");
             System.out.println("==================================================");
-            System.out.print("Enter choice (0-21): ");
+            System.out.print("Enter choice (0-22): ");
 
             int choice = readInt();
             System.out.println();
@@ -124,6 +125,7 @@ public class ConsoleMenu {
                 case 19 -> viewProductionReports();
                 case 20 -> saveData();
                 case 21 -> loadData();
+                case 22 -> dropMovie();
                 case 0 -> {
                     System.out.println("Saving current state before exiting...");
                     try {
@@ -135,7 +137,7 @@ public class ConsoleMenu {
                     System.out.println("Thank you for using CineFlow! Goodbye.");
                     running = false;
                 }
-                default -> System.out.println("Invalid option. Please choose between 0 and 21.");
+                default -> System.out.println("Invalid option. Please choose between 0 and 22.");
             }
 
             if (running) {
@@ -322,6 +324,13 @@ public class ConsoleMenu {
         System.out.println("--- UPDATE MOVIE STATUS ---");
         System.out.println("Movie: " + movie.getTitle() + " [" + movie.getId() + "]");
         System.out.println("Current Lifecycle Status: " + movie.getStatus());
+
+        if (movie.getStatus() == MovieStatus.DROPPED) {
+            System.out.println("\n[INVALID OPERATION] Movie '" + movie.getTitle()
+                    + "' is DROPPED / CANCELLED and cannot be moved back into active production.");
+            return;
+        }
+
         System.out.println("\nSelect New Status:");
         System.out.println(" 1. PLANNING");
         System.out.println(" 2. PRODUCTION");
@@ -369,8 +378,15 @@ public class ConsoleMenu {
         System.out.println(" Status         : " + movie.getStatus());
         System.out.printf (" Budget         : $%,.2f%n", movie.getBudget());
         System.out.printf (" Total Expenses : $%,.2f%n", movie.getTotalExpenses());
-        System.out.printf (" Remaining      : $%,.2f (%.1f%% spent)%n",
-                movie.getRemainingBudget(), movie.getBudgetUtilizationPercentage());
+        if (movie.getStatus() == MovieStatus.DROPPED) {
+            System.out.printf (" Financial Loss : $%,.2f (Production Cancelled - Incurred Expenses)%n",
+                    movie.getFinancialLoss());
+            System.out.printf (" Salvaged Budget: $%,.2f (Unspent Allocated Budget)%n",
+                    movie.getRemainingBudget());
+        } else {
+            System.out.printf (" Remaining      : $%,.2f (%.1f%% spent)%n",
+                    movie.getRemainingBudget(), movie.getBudgetUtilizationPercentage());
+        }
         System.out.println(" Total Scenes   : " + movie.getScenes().size());
         System.out.printf (" Cast & Crew    : %d members (%d actors, %d crew)%n",
                 castManager.getAllPersonnel(movie).size(),
@@ -444,6 +460,11 @@ public class ConsoleMenu {
                 }
             }
             case 2 -> {
+                if (movie.getStatus() == MovieStatus.DROPPED) {
+                    System.out.println("\n[INVALID OPERATION] Movie '" + movie.getTitle()
+                            + "' is DROPPED / CANCELLED. Cannot add scenes to cancelled production.");
+                    return;
+                }
                 System.out.print("Enter Scene Number: ");
                 int sceneNum = readInt();
                 System.out.print("Enter Scene Title: ");
@@ -627,6 +648,11 @@ public class ConsoleMenu {
                         + manager.getActiveMovieScreenplayFile().getPath());
             }
             case 8 -> {
+                if (movie.getStatus() == MovieStatus.DROPPED) {
+                    System.out.println("\n[INVALID OPERATION] Movie '" + movie.getTitle()
+                            + "' is DROPPED / CANCELLED. Cannot update scene status on cancelled production.");
+                    return;
+                }
                 List<Scene> scenes = movie.getScenes();
                 if (scenes.isEmpty()) {
                     System.out.println("No scenes to update.");
@@ -648,6 +674,11 @@ public class ConsoleMenu {
                 }
             }
             case 9 -> {
+                if (movie.getStatus() == MovieStatus.DROPPED) {
+                    System.out.println("\n[INVALID OPERATION] Movie '" + movie.getTitle()
+                            + "' is DROPPED / CANCELLED. Cannot schedule scenes on cancelled production.");
+                    return;
+                }
                 List<Scene> scenes = movie.getScenes();
                 if (scenes.isEmpty()) {
                     System.out.println("No scenes to schedule.");
@@ -911,6 +942,11 @@ public class ConsoleMenu {
                 }
             }
             case 2 -> {
+                if (movie.getStatus() == MovieStatus.DROPPED) {
+                    System.out.println("\n[INVALID OPERATION] Movie '" + movie.getTitle()
+                            + "' is DROPPED / CANCELLED. Cannot create daily call sheets for cancelled production.");
+                    return;
+                }
                 System.out.println("\n--- CREATE NEW DAILY CALL SHEET ---");
                 System.out.print("Enter Call Sheet ID (e.g. CS-03, press Enter to auto-generate): ");
                 String sheetId = readLine();
@@ -1807,7 +1843,12 @@ public class ConsoleMenu {
             case 1 -> {
                 System.out.printf("%nAllocated Budget : $%,12.2f%n", movie.getBudget());
                 System.out.printf("Total Spent      : $%,12.2f%n", movie.getTotalExpenses());
-                System.out.printf("Remaining Budget : $%,12.2f%n%n", movie.getRemainingBudget());
+                if (movie.getStatus() == MovieStatus.DROPPED) {
+                    System.out.printf("Financial Loss   : $%,12.2f (Production Cancelled)%n", movie.getFinancialLoss());
+                    System.out.printf("Salvaged Budget  : $%,12.2f%n%n", movie.getRemainingBudget());
+                } else {
+                    System.out.printf("Remaining Budget : $%,12.2f%n%n", movie.getRemainingBudget());
+                }
 
                 List<Expense> expenses = movie.getExpenses();
                 if (expenses.isEmpty()) {
@@ -1820,6 +1861,11 @@ public class ConsoleMenu {
                 }
             }
             case 2 -> {
+                if (movie.getStatus() == MovieStatus.DROPPED) {
+                    System.out.println("\n[INVALID OPERATION] Movie '" + movie.getTitle()
+                            + "' is DROPPED / CANCELLED. Cannot incur new expenses on cancelled production.");
+                    return;
+                }
                 System.out.print("Enter Expense ID (e.g. EXP-04): ");
                 String id = readLine();
                 System.out.print("Enter Category (e.g. VFX, Equipment, Costumes, Logistics): ");
@@ -2545,6 +2591,66 @@ public class ConsoleMenu {
             System.out.println("Data loaded successfully from text files!");
         } catch (IOException e) {
             System.err.println("[FILE ERROR] Error loading data: " + e.getMessage());
+        }
+    }
+
+    // =========================================================================
+    // 22. DROP MOVIE / CANCEL PRODUCTION
+    // =========================================================================
+    private void dropMovie() {
+        System.out.println("--- DROP MOVIE / CANCEL PRODUCTION ---");
+        System.out.print("Enter Movie ID to drop (e.g. MOV-01): ");
+        String movieId = readLine();
+        if (movieId.isEmpty()) {
+            System.out.println("\n[ERROR] Movie ID cannot be empty.");
+            return;
+        }
+
+        try {
+            Movie movie = manager.findMovieOrThrow(movieId);
+
+            if (movie.getStatus() == MovieStatus.DROPPED) {
+                System.out.println("\n[VALIDATION ERROR] Movie '" + movie.getTitle()
+                        + "' [" + movie.getId() + "] is already DROPPED / CANCELLED.");
+                System.out.printf("Incurred financial loss was already recorded as $%,.2f.%n", movie.getFinancialLoss());
+                return;
+            }
+
+            double actualExpenses = movie.getTotalExpenses();
+            double plannedBudget = movie.getBudget();
+            double salvagedBudget = movie.getRemainingBudget();
+
+            System.out.println("\nMovie Found:");
+            System.out.println("  Movie ID         : " + movie.getId());
+            System.out.println("  Title            : " + movie.getTitle());
+            System.out.println("  Director         : " + movie.getDirector());
+            System.out.println("  Current Status   : " + movie.getStatus());
+            System.out.printf ("  Planned Budget   : $%,.2f%n", plannedBudget);
+            System.out.printf ("  Actual Expenses  : $%,.2f (Financial loss upon cancellation)%n", actualExpenses);
+            System.out.printf ("  Salvaged Funds   : $%,.2f (Unspent budget)%n", salvagedBudget);
+            System.out.println("\nWARNING: Dropping this movie will cancel its production permanently.");
+            System.out.print("Are you sure you want to drop this movie? (yes/no): ");
+            String confirmation = readLine();
+
+            if (!confirmation.equalsIgnoreCase("yes") && !confirmation.equalsIgnoreCase("y")) {
+                System.out.println("\nOperation cancelled. Movie was not dropped.");
+                return;
+            }
+
+            double recordedLoss = manager.dropMovie(movieId);
+            System.out.println("\n==================================================");
+            System.out.println(" MOVIE PRODUCTION SUCCESSFULLY CANCELLED         ");
+            System.out.println("==================================================");
+            System.out.println(" Movie '" + movie.getTitle() + "' status has been set to DROPPED.");
+            System.out.printf (" Financial Loss Incurred: $%,.2f (Based on actual expenses)%n", recordedLoss);
+            System.out.printf (" Unspent Budget Salvaged: $%,.2f%n", movie.getRemainingBudget());
+            System.out.println(" Movie records and historical expense entries have been preserved.");
+            System.out.println("==================================================");
+
+        } catch (ResourceNotFoundException e) {
+            System.out.println("\n[RESOURCE NOT FOUND] " + e.getMessage());
+        } catch (ValidationException e) {
+            System.out.println("\n[VALIDATION ERROR] " + e.getMessage());
         }
     }
 

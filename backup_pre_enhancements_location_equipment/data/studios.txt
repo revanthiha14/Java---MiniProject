@@ -1,0 +1,9 @@
+# ID|Name|Headquarters
+PH-103|Lyca Productions|Chennai, Tamil Nadu, India
+PH-102|Sun Pictures|Chennai, Tamil Nadu, India
+PH-101|Seven Screen Studio|Chennai, Tamil Nadu, India
+PH-108|AGS Entertainment|Chennai, Tamil Nadu, India
+PH-107|XB Film Creators|Chennai, Tamil Nadu, India
+PH-106|Ayngaran International|Chennai, Tamil Nadu, India
+PH-105|V Creations|Chennai, Tamil Nadu, India
+PH-104|Raaj Kamal Films International|Chennai, Tamil Nadu, India

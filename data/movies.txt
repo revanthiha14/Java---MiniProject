@@ -1,6 +1,6 @@
-# MovieID|StudioID|Title|Genre|Director|ReleaseYear|Budget|Status|ScreenplayWriter|ScriptDraft|Synopsis
-MOV-04|PH-103|The Dark Horizon|Neo-Noir|Christopher Nolan|2027|3000000.0|POST_PRODUCTION|Christopher Nolan|Shooting Draft v1.0|A neo-noir cinematic feature directed by Christopher Nolan.
-MOV-05|PH-103|The End|Sci-Fi|Nolan|2029|4000000.0|PRODUCTION|Nolan|Shooting Draft v1.0|A sci-fi cinematic feature directed by Nolan.
-MOV-03|PH-102|Pushpa: The Rule|Action Drama|Sukumar|2026|2500000.0|RELEASED|Sukumar|Shooting Draft v1.0|A action drama cinematic feature directed by Sukumar.
-MOV-01|PH-101|Interstellar Journey|Sci-Fi|Marcus Sterling|2026|1500000.0|PRODUCTION|Marcus Sterling|Shooting Draft v1.0|A sci-fi cinematic feature directed by Marcus Sterling.
-MOV-02|PH-101|Shadows of the Past|Thriller|Evelyn Blackwood|2027|800000.0|PLANNING|Evelyn Blackwood|Shooting Draft v1.0|A thriller cinematic feature directed by Evelyn Blackwood.
+# MovieID|StudioID|Title|Genre|Director|ReleaseYear|Budget|Status|ScreenplayWriter|ScriptDraft|Synopsis|CancellationLoss
+MOV-04|PH-103|The Dark Horizon|Neo-Noir|Christopher Nolan|2027|3000000.0|POST_PRODUCTION|Christopher Nolan|Shooting Draft v1.0|A neo-noir cinematic feature directed by Christopher Nolan.|
+MOV-05|PH-103|The End|Sci-Fi|Nolan|2029|4000000.0|DROPPED|Nolan|Shooting Draft v1.0|A sci-fi cinematic feature directed by Nolan.|0.0
+MOV-03|PH-102|Pushpa: The Rule|Action Drama|Sukumar|2026|2500000.0|RELEASED|Sukumar|Shooting Draft v1.0|A action drama cinematic feature directed by Sukumar.|
+MOV-01|PH-101|Interstellar Journey|Sci-Fi|Marcus Sterling|2026|1500000.0|PRODUCTION|Marcus Sterling|Shooting Draft v1.0|A sci-fi cinematic feature directed by Marcus Sterling.|
+MOV-02|PH-101|Shadows of the Past|Thriller|Evelyn Blackwood|2027|800000.0|PLANNING|Evelyn Blackwood|Shooting Draft v1.0|A thriller cinematic feature directed by Evelyn Blackwood.|

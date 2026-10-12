@@ -1,0 +1,25 @@
+================================================================================
+                              THE END
+================================================================================
+ Screenplay Written by: Nolan
+ Directed by:           Nolan
+ Genre:                 Sci-Fi | Release Year: 2029
+ Script Draft:          Shooting Draft v1.0
+ Total Scenes:          1 (Scenes with script: 0/1)
+ Screenplay Length:     1.0 Pages (Est. Runtime: ~1 minutes)
+--------------------------------------------------------------------------------
+ LOGLINE / SYNOPSIS:
+   A sci-fi cinematic feature directed by Nolan.
+================================================================================
+
+================================================================================
+SCENE #1    LEAD INTRO                           [Pages: 1.0 | Est: ~1 min]
+SLUGLINE: EXT. NYC TIME SQUARE - DAY
+LOCATION: NYC Time Square           | STATUS: PLANNED    | SHOOT: 2026-11-10
+--------------------------------------------------------------------------------
+   [No screenplay dialogue or action description recorded for this scene yet]
+   [Use 'Add/Modify Scene Script' to enter screenplay dialogue.]
+================================================================================
+
+                                *** THE END ***
+================================================================================

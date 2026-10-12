@@ -1,0 +1,41 @@
+# MovieID|TaskID|Type|TaskName|LeadSpecialist|Status|ProgressPercentage|TechnicalSpecs|Notes
+MOV-04|POST-01|EDITING|Assembly Cut & Scene Stitching|Lead Assembly Editor|IN_PROGRESS|45|Avid Media Composer / 4K ProRes Proxy|Initial sequence assembly from camera dailies
+MOV-04|POST-02|EDITING|Director's Cut to Picture Lock|Christopher Nolan & Chief Editor|PLANNED|15|Edit Decision List (EDL) v2.1|Fine-tuning scene pacing and locking final frame cuts
+MOV-04|POST-03|SOUND_MIXING|Foley, Ambience & ADR Sound Design|Foley Artist & Supervising Sound Designer|IN_PROGRESS|35|Pro Tools HDX / 96kHz 24-bit Multi-Track|Footsteps, prop movement, background ambience and dialogue cleanup
+MOV-04|POST-04|SOUND_MIXING|Dolby Atmos 7.1.4 Theatrical Final Mix|Chief Re-Recording Mixer|PLANNED|0|Dolby RMU / 128 Dynamic Spatial Objects|Master dynamic mix balancing dialogue clarity, Foley, and orchestral score
+MOV-04|POST-05|VFX|3D CGI Asset Modeling & Dynamics|VFX Studio Supervisor|IN_PROGRESS|60|Maya / Houdini Pyro Simulation|Hero vehicle & creature geometry models with physics simulations
+MOV-04|POST-06|VFX|Digital Compositing & Chroma Keying|Lead Nuke Compositor|PLANNED|25|ACES 2065-1 Wide Gamut Color Space|Multi-layer background rotoscoping, clean plates, and wire removal
+MOV-04|POST-07|RENDERING|Render Farm Batch Processing (CGI Frames)|Render Pipeline Technical Director|PLANNED|10|128-Node GPU Cluster / Redshift & Arnold|High-resolution frame queue processing and ray-tracing passes
+MOV-04|POST-08|RENDERING|DCI Master Package (DCP) & QC Sign-off|Mastering Lab Engineer|PLANNED|0|DCI-Compliant JPEG 2000 / 250 Mbps / 4K|Final theatrical digital container creation, SHA-1 checksums, and audio sync check
+MOV-05|POST-01|EDITING|Assembly Cut & Scene Stitching|Lead Assembly Editor|IN_PROGRESS|45|Avid Media Composer / 4K ProRes Proxy|Initial sequence assembly from camera dailies
+MOV-05|POST-02|EDITING|Director's Cut to Picture Lock|Nolan & Chief Editor|PLANNED|15|Edit Decision List (EDL) v2.1|Fine-tuning scene pacing and locking final frame cuts
+MOV-05|POST-03|SOUND_MIXING|Foley, Ambience & ADR Sound Design|Foley Artist & Supervising Sound Designer|IN_PROGRESS|35|Pro Tools HDX / 96kHz 24-bit Multi-Track|Footsteps, prop movement, background ambience and dialogue cleanup
+MOV-05|POST-04|SOUND_MIXING|Dolby Atmos 7.1.4 Theatrical Final Mix|Chief Re-Recording Mixer|PLANNED|0|Dolby RMU / 128 Dynamic Spatial Objects|Master dynamic mix balancing dialogue clarity, Foley, and orchestral score
+MOV-05|POST-05|VFX|3D CGI Asset Modeling & Dynamics|VFX Studio Supervisor|IN_PROGRESS|60|Maya / Houdini Pyro Simulation|Hero vehicle & creature geometry models with physics simulations
+MOV-05|POST-06|VFX|Digital Compositing & Chroma Keying|Lead Nuke Compositor|PLANNED|25|ACES 2065-1 Wide Gamut Color Space|Multi-layer background rotoscoping, clean plates, and wire removal
+MOV-05|POST-07|RENDERING|Render Farm Batch Processing (CGI Frames)|Render Pipeline Technical Director|PLANNED|10|128-Node GPU Cluster / Redshift & Arnold|High-resolution frame queue processing and ray-tracing passes
+MOV-05|POST-08|RENDERING|DCI Master Package (DCP) & QC Sign-off|Mastering Lab Engineer|PLANNED|0|DCI-Compliant JPEG 2000 / 250 Mbps / 4K|Final theatrical digital container creation, SHA-1 checksums, and audio sync check
+MOV-03|POST-01|EDITING|Assembly Cut & Scene Stitching|Lead Assembly Editor|IN_PROGRESS|45|Avid Media Composer / 4K ProRes Proxy|Initial sequence assembly from camera dailies
+MOV-03|POST-02|EDITING|Director's Cut to Picture Lock|Sukumar & Chief Editor|PLANNED|15|Edit Decision List (EDL) v2.1|Fine-tuning scene pacing and locking final frame cuts
+MOV-03|POST-03|SOUND_MIXING|Foley, Ambience & ADR Sound Design|Foley Artist & Supervising Sound Designer|IN_PROGRESS|35|Pro Tools HDX / 96kHz 24-bit Multi-Track|Footsteps, prop movement, background ambience and dialogue cleanup
+MOV-03|POST-04|SOUND_MIXING|Dolby Atmos 7.1.4 Theatrical Final Mix|Chief Re-Recording Mixer|PLANNED|0|Dolby RMU / 128 Dynamic Spatial Objects|Master dynamic mix balancing dialogue clarity, Foley, and orchestral score
+MOV-03|POST-05|VFX|3D CGI Asset Modeling & Dynamics|VFX Studio Supervisor|IN_PROGRESS|60|Maya / Houdini Pyro Simulation|Hero vehicle & creature geometry models with physics simulations
+MOV-03|POST-06|VFX|Digital Compositing & Chroma Keying|Lead Nuke Compositor|PLANNED|25|ACES 2065-1 Wide Gamut Color Space|Multi-layer background rotoscoping, clean plates, and wire removal
+MOV-03|POST-07|RENDERING|Render Farm Batch Processing (CGI Frames)|Render Pipeline Technical Director|PLANNED|10|128-Node GPU Cluster / Redshift & Arnold|High-resolution frame queue processing and ray-tracing passes
+MOV-03|POST-08|RENDERING|DCI Master Package (DCP) & QC Sign-off|Mastering Lab Engineer|PLANNED|0|DCI-Compliant JPEG 2000 / 250 Mbps / 4K|Final theatrical digital container creation, SHA-1 checksums, and audio sync check
+MOV-01|POST-01|EDITING|Assembly Cut & Scene Stitching|Lead Assembly Editor|IN_PROGRESS|45|Avid Media Composer / 4K ProRes Proxy|Initial sequence assembly from camera dailies
+MOV-01|POST-02|EDITING|Director's Cut to Picture Lock|Marcus Sterling & Chief Editor|PLANNED|15|Edit Decision List (EDL) v2.1|Fine-tuning scene pacing and locking final frame cuts
+MOV-01|POST-03|SOUND_MIXING|Foley, Ambience & ADR Sound Design|Foley Artist & Supervising Sound Designer|IN_PROGRESS|35|Pro Tools HDX / 96kHz 24-bit Multi-Track|Footsteps, prop movement, background ambience and dialogue cleanup
+MOV-01|POST-04|SOUND_MIXING|Dolby Atmos 7.1.4 Theatrical Final Mix|Chief Re-Recording Mixer|PLANNED|0|Dolby RMU / 128 Dynamic Spatial Objects|Master dynamic mix balancing dialogue clarity, Foley, and orchestral score
+MOV-01|POST-05|VFX|3D CGI Asset Modeling & Dynamics|VFX Studio Supervisor|IN_PROGRESS|60|Maya / Houdini Pyro Simulation|Hero vehicle & creature geometry models with physics simulations
+MOV-01|POST-06|VFX|Digital Compositing & Chroma Keying|Lead Nuke Compositor|PLANNED|25|ACES 2065-1 Wide Gamut Color Space|Multi-layer background rotoscoping, clean plates, and wire removal
+MOV-01|POST-07|RENDERING|Render Farm Batch Processing (CGI Frames)|Render Pipeline Technical Director|PLANNED|10|128-Node GPU Cluster / Redshift & Arnold|High-resolution frame queue processing and ray-tracing passes
+MOV-01|POST-08|RENDERING|DCI Master Package (DCP) & QC Sign-off|Mastering Lab Engineer|PLANNED|0|DCI-Compliant JPEG 2000 / 250 Mbps / 4K|Final theatrical digital container creation, SHA-1 checksums, and audio sync check
+MOV-02|POST-01|EDITING|Assembly Cut & Scene Stitching|Lead Assembly Editor|IN_PROGRESS|45|Avid Media Composer / 4K ProRes Proxy|Initial sequence assembly from camera dailies
+MOV-02|POST-02|EDITING|Director's Cut to Picture Lock|Evelyn Blackwood & Chief Editor|PLANNED|15|Edit Decision List (EDL) v2.1|Fine-tuning scene pacing and locking final frame cuts
+MOV-02|POST-03|SOUND_MIXING|Foley, Ambience & ADR Sound Design|Foley Artist & Supervising Sound Designer|IN_PROGRESS|35|Pro Tools HDX / 96kHz 24-bit Multi-Track|Footsteps, prop movement, background ambience and dialogue cleanup
+MOV-02|POST-04|SOUND_MIXING|Dolby Atmos 7.1.4 Theatrical Final Mix|Chief Re-Recording Mixer|PLANNED|0|Dolby RMU / 128 Dynamic Spatial Objects|Master dynamic mix balancing dialogue clarity, Foley, and orchestral score
+MOV-02|POST-05|VFX|3D CGI Asset Modeling & Dynamics|VFX Studio Supervisor|IN_PROGRESS|60|Maya / Houdini Pyro Simulation|Hero vehicle & creature geometry models with physics simulations
+MOV-02|POST-06|VFX|Digital Compositing & Chroma Keying|Lead Nuke Compositor|PLANNED|25|ACES 2065-1 Wide Gamut Color Space|Multi-layer background rotoscoping, clean plates, and wire removal
+MOV-02|POST-07|RENDERING|Render Farm Batch Processing (CGI Frames)|Render Pipeline Technical Director|PLANNED|10|128-Node GPU Cluster / Redshift & Arnold|High-resolution frame queue processing and ray-tracing passes
+MOV-02|POST-08|RENDERING|DCI Master Package (DCP) & QC Sign-off|Mastering Lab Engineer|PLANNED|0|DCI-Compliant JPEG 2000 / 250 Mbps / 4K|Final theatrical digital container creation, SHA-1 checksums, and audio sync check

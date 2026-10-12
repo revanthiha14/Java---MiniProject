@@ -21,6 +21,7 @@ public class Movie {
     private int releaseYear;
     private double budget;
     private MovieStatus status;
+    private Double cancellationLoss;
     private String screenplayWriter; // Screenwriter (e.g. Christopher Nolan, Jonathan Nolan)
     private String scriptDraftVersion; // e.g. "Draft 1.0 (Shooting Script)"
     private String synopsis; // Screenplay logline / story synopsis
@@ -156,7 +157,53 @@ public class Movie {
     }
 
     public void setStatus(MovieStatus status) {
+        if (this.status == MovieStatus.DROPPED && status != null && status != MovieStatus.DROPPED) {
+            System.err.println("[WARNING] Cannot move a DROPPED movie back into active production.");
+            return;
+        }
         this.status = (status != null) ? status : MovieStatus.PLANNING;
+    }
+
+    public Double getCancellationLoss() {
+        return cancellationLoss;
+    }
+
+    public void setCancellationLoss(Double cancellationLoss) {
+        this.cancellationLoss = cancellationLoss;
+    }
+
+    public double getFinancialLoss() {
+        if (cancellationLoss != null) {
+            return cancellationLoss;
+        }
+        if (status == MovieStatus.DROPPED) {
+            return getTotalExpenses();
+        }
+        return 0.0;
+    }
+
+    /**
+     * Drops this movie project and cancels production.
+     * Calculates the financial loss using actual expenses already incurred for this movie.
+     * Prevents duplicate loss recording if already dropped.
+     * Updates theatrical distribution releases to CANCELLED.
+     *
+     * @return the calculated financial loss amount
+     * @throws ValidationException if the movie is already DROPPED
+     */
+    public double drop() throws ValidationException {
+        if (this.status == MovieStatus.DROPPED) {
+            throw new ValidationException("Movie Status",
+                    "Movie '" + title + "' (ID: " + id + ") is already DROPPED / CANCELLED.");
+        }
+        this.status = MovieStatus.DROPPED;
+        this.cancellationLoss = getTotalExpenses();
+        for (DistributionRelease dr : distributionReleases) {
+            if (!"CLOSED_RUN".equalsIgnoreCase(dr.getTheatricalStatus())) {
+                dr.setTheatricalStatus("CANCELLED");
+            }
+        }
+        return this.cancellationLoss;
     }
 
     public List<Scene> getScenes() {
@@ -180,6 +227,10 @@ public class Movie {
      * and potential location/schedule conflicts.
      */
     public void addScene(Scene scene) throws ValidationException, ScheduleConflictException {
+        if (this.status == MovieStatus.DROPPED) {
+            throw new ValidationException("Movie Status",
+                    "Cannot add scenes to a DROPPED / CANCELLED movie ('" + title + "').");
+        }
         if (scene == null) {
             throw new ValidationException("Scene", "Cannot add null scene.");
         }
@@ -212,6 +263,10 @@ public class Movie {
      */
     public void scheduleScene(int sceneNumber, String shootingDate)
             throws ResourceNotFoundException, ValidationException, ScheduleConflictException {
+        if (this.status == MovieStatus.DROPPED) {
+            throw new ValidationException("Movie Status",
+                    "Cannot schedule scenes for a DROPPED / CANCELLED movie ('" + title + "').");
+        }
         Scene target = findSceneByNumber(sceneNumber);
         if (target == null) {
             throw new ResourceNotFoundException("Scene", String.valueOf(sceneNumber));
@@ -331,6 +386,10 @@ public class Movie {
      * - BudgetExceededException if the expense exceeds the movie's total allocated budget.
      */
     public void addExpense(Expense expense) throws ValidationException, BudgetExceededException {
+        if (this.status == MovieStatus.DROPPED) {
+            throw new ValidationException("Movie Status",
+                    "Cannot add expenses to a DROPPED / CANCELLED movie ('" + title + "').");
+        }
         if (expense == null) {
             throw new ValidationException("Expense", "Cannot add null expense.");
         }
@@ -514,9 +573,13 @@ public class Movie {
         sb.append(String.format("       MASTER PRODUCTION & RELEASE ROADMAP: %s\n", title.toUpperCase()));
         sb.append("================================================================================\n");
         sb.append(String.format(" Director: %-25s | Status: %-15s | Year: %d\n", director, status, releaseYear));
-        sb.append(String.format(" Pipeline Progress: %d / %d Milestones Completed (%.0f%%)\n",
-                getCompletedMilestonesCount(), masterSchedule.size(),
-                masterSchedule.isEmpty() ? 0.0 : (getCompletedMilestonesCount() * 100.0 / masterSchedule.size())));
+        if (status == MovieStatus.DROPPED) {
+            sb.append(String.format(" PRODUCTION CANCELLED / DROPPED | Incurred Financial Loss: $%,.2f\n", getFinancialLoss()));
+        } else {
+            sb.append(String.format(" Pipeline Progress: %d / %d Milestones Completed (%.0f%%)\n",
+                    getCompletedMilestonesCount(), masterSchedule.size(),
+                    masterSchedule.isEmpty() ? 0.0 : (getCompletedMilestonesCount() * 100.0 / masterSchedule.size())));
+        }
         sb.append("--------------------------------------------------------------------------------\n\n");
 
         String currentPhase = "";
@@ -955,6 +1018,10 @@ public class Movie {
         String ratingInfo = reviews.isEmpty()
                 ? "No Ratings"
                 : String.format("%.1f/5.0 Stars (%d review%s)", getAverageRating(), reviews.size(), reviews.size() == 1 ? "" : "s");
+        if (status == MovieStatus.DROPPED) {
+            return String.format("[%s] %s (%d) | %s | Status: %s | Budget: $%,.2f | Loss: $%,.2f | Rating: %s | Script: %.1f pgs",
+                    id, title, releaseYear, genre, status, budget, getFinancialLoss(), ratingInfo, getTotalScriptPages());
+        }
         return String.format("[%s] %s (%d) | %s | Status: %s | Budget: $%,.2f | Rating: %s | Script: %.1f pgs",
                 id, title, releaseYear, genre, status, budget, ratingInfo, getTotalScriptPages());
     }

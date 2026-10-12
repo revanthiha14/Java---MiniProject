@@ -1,11 +1,11 @@
 # MovieID|ReleaseID|Region|Distributor|TheatricalDate|TheatricalStatus|ScreenCount|OTTPlatform|DigitalDate|Notes
 MOV-04|REL-01|Domestic / Primary Region|Warner Bros. Pictures|2027-11-20|ADVANCE_BOOKING_OPEN|3800|Netflix|2028-01-15|45-day theatrical exclusivity; Dolby Atmos, IMAX & standard DCI screens.
 MOV-04|REL-02|Overseas / International|Global Film Alliance|2027-11-20|ADVANCE_BOOKING_OPEN|1266|Netflix|2028-01-15|Simultaneous multi-language subtitled release across 45+ international territories.
-MOV-05|REL-01|Domestic / Primary Region|Paramount & Warner Bros.|2029-11-20|SCHEDULED|4200|Netflix|2030-01-15|45-day theatrical exclusivity; Dolby Atmos, IMAX & standard DCI screens.
-MOV-05|REL-02|Overseas / International|Global Film Alliance|2029-11-20|SCHEDULED|1400|Netflix|2030-01-15|Simultaneous multi-language subtitled release across 45+ international territories.
+MOV-05|REL-01|Domestic / Primary Region|Paramount & Warner Bros.|2029-11-20|CANCELLED|4200|Netflix|2030-01-15|45-day theatrical exclusivity; Dolby Atmos, IMAX & standard DCI screens.
+MOV-05|REL-02|Overseas / International|Global Film Alliance|2029-11-20|CANCELLED|1400|Netflix|2030-01-15|Simultaneous multi-language subtitled release across 45+ international territories.
 MOV-03|REL-01|Domestic / Primary Region|PVR Inox Pictures|2026-11-20|CLOSED_RUN|2500|Netflix|2027-01-15|45-day theatrical exclusivity; Dolby Atmos, IMAX & standard DCI screens.
 MOV-03|REL-02|Overseas / International|Global Film Alliance|2026-11-20|CLOSED_RUN|1000|Netflix|2027-01-15|Simultaneous multi-language subtitled release across 45+ international territories.
-MOV-01|REL-01|Domestic / Primary Region|Paramount & Warner Bros.|2026-11-20|SCHEDULED|4200|Netflix|2027-01-15|45-day theatrical exclusivity; Dolby Atmos, IMAX & standard DCI screens.
-MOV-01|REL-02|Overseas / International|Global Film Alliance|2026-11-20|SCHEDULED|1400|Netflix|2027-01-15|Simultaneous multi-language subtitled release across 45+ international territories.
+MOV-01|REL-01|Domestic / Primary Region|Paramount & Warner Bros.|2026-11-20|CANCELLED|4200|Netflix|2027-01-15|45-day theatrical exclusivity; Dolby Atmos, IMAX & standard DCI screens.
+MOV-01|REL-02|Overseas / International|Global Film Alliance|2026-11-20|CANCELLED|1400|Netflix|2027-01-15|Simultaneous multi-language subtitled release across 45+ international territories.
 MOV-02|REL-01|Domestic / Primary Region|PVR Inox Pictures|2027-11-20|SCHEDULED|2500|Netflix|2028-01-15|45-day theatrical exclusivity; Dolby Atmos, IMAX & standard DCI screens.
 MOV-02|REL-02|Overseas / International|Global Film Alliance|2027-11-20|SCHEDULED|1000|Netflix|2028-01-15|Simultaneous multi-language subtitled release across 45+ international territories.

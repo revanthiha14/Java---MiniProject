@@ -1,0 +1,26 @@
+================================================================================
+         VOICE DUBBING & LOCALIZATION MANIFEST: THE DARK HORIZON
+================================================================================
+ Total Tracks Registered : 6 | Approved: 1/6 | Total Retakes Logged: 1
+--------------------------------------------------------------------------------
+
+   [IN PROGRESS]    DUB-01 | Lang: English (Original) | Char: Lead Protagonist  
+                  Artist: Original Lead Actor    | Studio: Main Scoring Stage
+                  Retakes: 1 | Reason: Retake scene 2 dialogue pacing
+
+   [PLANNED]        DUB-02 | Lang: Hindi        | Char: Lead Protagonist  
+                  Artist: Regional Voice Artist A | Studio: YRF Studios, Mumbai
+
+   [PLANNED]        DUB-03 | Lang: Telugu       | Char: Lead Protagonist  
+                  Artist: Regional Voice Artist B | Studio: Prasad Labs, Hyderabad
+
+   [RECORDED]       DUB-04 | Lang: English (Original) | Char: Lead Antagonist   
+                  Artist: Dubbing Voice Specialist | Studio: Audio Post Stage 1
+
+   [PLANNED]        DUB-05 | Lang: Hindi        | Char: Lead Antagonist   
+                  Artist: Regional Voice Artist C | Studio: Supa Studio, Mumbai
+
+   [APPROVED]       DUB-06 | Lang: English (Original) | Char: Supporting Cast   
+                  Artist: Ensemble Voice Cast    | Studio: Voice Booth B
+
+================================================================================

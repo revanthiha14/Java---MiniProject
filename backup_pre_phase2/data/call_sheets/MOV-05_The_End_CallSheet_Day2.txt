@@ -1,0 +1,48 @@
+================================================================================
+                           CINEFLOW PRODUCTION CALL SHEET                       
+================================================================================
+ MOVIE: THE END                          | DIRECTOR: Nolan
+ CALL SHEET ID: CS-02                     | DATE: 2026-11-15
+ SHOOTING DAY : DAY 2 OF 30                 | STATUS: IN_PROGRESS
+ GENERAL CREW CALL: 07:00 AM             | ESTIMATED WRAP: 12 Hours
+--------------------------------------------------------------------------------
+ SHOOTING LOCATION / SET:
+   Exterior Set / Stage 2 Backlot
+
+ WEATHER & SUN CONDITIONS:
+   Partly Cloudy 24°C / Sunrise: 06:14 AM / Sunset: 05:50 PM / Wind: 6 mph
+
+ SAFETY, MEDICAL & EMERGENCY PROTOCOLS:
+   Nearest Hospital: Nearest Emergency Medical Center (Emergency: 911 / 108 / 999)
+   On-Set Safety Lead: Safety Officer & Certified Set Medic on Channel 1
+================================================================================
+                         SCHEDULED SCENES BREAKDOWN                             
+================================================================================
+ SCENE #  | TITLE / SLUGLINE                       | PAGES  | D/N    | STATUS    
+---------+----------------------------------------+--------+--------+-----------
+   [No scenes currently attached to this daily call sheet]
+--------------------------------------------------------------------------------
+ Total Scheduled Pages Today: 0.0 Pages (Est. Camera Roll: ~0 min runtime)
+================================================================================
+                            CAST & TALENT CALL TIMES                            
+================================================================================
+ CAST ID  | ACTOR NAME         | CHARACTER ROLE   | PICKUP   | H/MU     | ON SET  
+---------+--------------------+------------------+----------+----------+---------
+ ACT-01  | Lead Talent        | Main Protagonist | 05:45 AM | 06:30 AM | 08:00 AM
+         | Instructions: Exterior lighting match, action costume
+================================================================================
+                          DEPARTMENT & CREW DIRECTIVES                          
+================================================================================
+   CAMERA: Steadicam operator standing by for tracking shots.
+   SOUND: High-wind windshields on boom microphones.
+   CATERING: Hot breakfast 06:15 AM / Hot lunch 13:00 PM.
+================================================================================
+                    DAILY SHOOTING REPORT (DSR WRAP STATUS)                     
+================================================================================
+ CURRENT STATUS : IN_PROGRESS
+ PAGES COMPLETED: 0.0 of 0.0 Scheduled Pages
+ WRAP / PRODUCTION NOTES:
+   No wrap notes recorded yet.
+================================================================================
+       *** REPORT ALL SAFETY HAZARDS TO 1ST AD & MEDIC IMMEDIATELY ***          
+================================================================================

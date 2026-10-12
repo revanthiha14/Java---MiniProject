@@ -1,7 +1,7 @@
 ================================================================================
          THEATRICAL & DIGITAL (OTT) DISTRIBUTION: INTERSTELLAR JOURNEY
 ================================================================================
- Primary Theatrical Date : 2026-11-20 | Status: SCHEDULED
+ Primary Theatrical Date : 2026-11-20 | Status: CANCELLED
  Primary Distributor     : Paramount & Warner Bros. | Region: Domestic / Primary Region
  Total Global Screens    : 5,600 Screens across 2 Territory Deals
  Digital / OTT Partner   : Netflix (Streaming Date: 2027-01-15)
@@ -9,8 +9,8 @@
 
  DEAL ID  | REGION / TERRITORY   | DISTRIBUTOR          | THEATRICAL | STATUS       | SCREENS  | OTT PLATFORM     | DIGITAL   
 ---------+----------------------+----------------------+------------+--------------+----------+------------------+-----------
- REL-01  | Domestic / Primar... | Paramount & Warne... | 2026-11-20 | SCHEDULED    | 4200     | Netflix          | 2027-01-15
+ REL-01  | Domestic / Primar... | Paramount & Warne... | 2026-11-20 | CANCELLED    | 4200     | Netflix          | 2027-01-15
          | Notes: 45-day theatrical exclusivity; Dolby Atmos, IMAX & standard DCI screens.
- REL-02  | Overseas / Intern... | Global Film Alliance | 2026-11-20 | SCHEDULED    | 1400     | Netflix          | 2027-01-15
+ REL-02  | Overseas / Intern... | Global Film Alliance | 2026-11-20 | CANCELLED    | 1400     | Netflix          | 2027-01-15
          | Notes: Simultaneous multi-language subtitled release across 45+ international territories.
 ================================================================================

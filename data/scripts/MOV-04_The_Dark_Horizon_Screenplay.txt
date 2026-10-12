@@ -5,22 +5,20 @@
  Directed by:           Christopher Nolan
  Genre:                 Neo-Noir | Release Year: 2027
  Script Draft:          Shooting Draft v1.0
- Total Scenes:          3 (Scenes with script: 1/3)
- Screenplay Length:     4.5 Pages (Est. Runtime: ~5 minutes)
+ Total Scenes:          3 (Scenes with script: 0/3)
+ Screenplay Length:     3.0 Pages (Est. Runtime: ~3 minutes)
 --------------------------------------------------------------------------------
  LOGLINE / SYNOPSIS:
    A neo-noir cinematic feature directed by Christopher Nolan.
 ================================================================================
 
 ================================================================================
-SCENE #1    AGENT VIKRAM INVESTIGATION           [Pages: 2.5 | Est: ~3 min]
-SLUGLINE: EXT. CHENNAI HARBOR - NIGHT
+SCENE #1    AGENT VIKRAM INVESTIGATION           [Pages: 1.0 | Est: ~1 min]
+SLUGLINE: EXT. CHENNAI, TAMIL NADU - DAY
 LOCATION: Chennai, Tamil Nadu       | STATUS: COMPLETED  | SHOOT: 2021-07-18
 --------------------------------------------------------------------------------
-VIKRAM stands under the sodium halogen lamps, rain soaking his trench coat.
-
-VIKRAM
-Tell Santhanam his clock is ticking.
+   [No screenplay dialogue or action description recorded for this scene yet]
+   [Use 'Add/Modify Scene Script' to enter screenplay dialogue.]
 ================================================================================
 
 ================================================================================

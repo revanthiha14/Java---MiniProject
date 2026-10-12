@@ -1,0 +1,240 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 7486.980999999998 453.4" width="7486.980999999998" height="453.4" style="--bg:#1F1F1F;--fg:#CCCCCC;--line:#CCCCCC;--accent:#0078D4;--muted:#CCCCCCCC;--surface:#181818;--border:#CCCCCC;background:var(--bg)">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+  text { font-family: 'Inter', system-ui, sans-serif; }
+  svg {
+    /* Derived from --bg and --fg (overridable via --line, --accent, etc.) */
+    --_text:          var(--fg);
+    --_text-sec:      var(--muted, color-mix(in srgb, var(--fg) 60%, var(--bg)));
+    --_text-muted:    var(--muted, color-mix(in srgb, var(--fg) 40%, var(--bg)));
+    --_text-faint:    color-mix(in srgb, var(--fg) 25%, var(--bg));
+    --_line:          var(--line, color-mix(in srgb, var(--fg) 50%, var(--bg)));
+    --_arrow:         var(--accent, color-mix(in srgb, var(--fg) 85%, var(--bg)));
+    --_node-fill:     var(--surface, color-mix(in srgb, var(--fg) 3%, var(--bg)));
+    --_node-stroke:   var(--border, color-mix(in srgb, var(--fg) 20%, var(--bg)));
+    --_group-fill:    var(--bg);
+    --_group-hdr:     color-mix(in srgb, var(--fg) 5%, var(--bg));
+    --_inner-stroke:  color-mix(in srgb, var(--fg) 12%, var(--bg));
+    --_key-badge:     color-mix(in srgb, var(--fg) 10%, var(--bg));
+  }
+</style>
+<defs>
+  <marker id="arrowhead" markerWidth="8" markerHeight="5" refX="7" refY="2.5" orient="auto">
+    <polygon points="0 0, 8 2.5, 0 5" fill="var(--_arrow)" stroke="var(--_arrow)" stroke-width="0.75" stroke-linejoin="round" />
+  </marker>
+  <marker id="arrowhead-start" markerWidth="8" markerHeight="5" refX="1" refY="2.5" orient="auto-start-reverse">
+    <polygon points="8 0, 0 2.5, 8 5" fill="var(--_arrow)" stroke="var(--_arrow)" stroke-width="0.75" stroke-linejoin="round" />
+  </marker>
+</defs>
+<g class="subgraph" data-id="SubModelEntities" data-label="Domain Entities &amp; Core Models (17 Classes)">
+  <rect x="1633.8144999999986" y="243.60000000000002" width="3020.4559999999997" height="96.9" rx="0" ry="0" fill="var(--_group-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="1633.8144999999986" y="243.60000000000002" width="3020.4559999999997" height="28" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="1645.8144999999986" y="257.6" font-size="12" font-weight="600" fill="var(--_text-sec)" dy="4.199999999999999">Domain Entities &amp; Core Models (17 Classes)</text>
+</g>
+<g class="subgraph" data-id="SubModelEnums" data-label="Lifecycle &amp; Operational Enums (6 Enums)">
+  <rect x="4682.270499999999" y="316.5" width="1122.463" height="96.9" rx="0" ry="0" fill="var(--_group-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="4682.270499999999" y="316.5" width="1122.463" height="28" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="4694.270499999999" y="330.5" font-size="12" font-weight="600" fill="var(--_text-sec)" dy="4.199999999999999">Lifecycle &amp; Operational Enums (6 Enums)</text>
+</g>
+<polyline class="edge" data-from="SRC" data-to="PKG_MAIN" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="4193.772249999999,93.80000000000001 4193.772249999999,111.80000000000001 174.34799999999996,111.80000000000001 174.34799999999996,129.8" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PKG_MAIN" data-to="C_MAIN" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="174.34799999999996,183.60000000000002 174.34799999999996,219.60000000000005" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="SRC" data-to="PKG_EXC" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="4193.772249999999,93.80000000000001 4193.772249999999,111.80000000000001 1010.7134999999993,111.80000000000001 1010.7134999999993,129.80000000000004" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PKG_EXC" data-to="E_CFE" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="1010.7134999999993,183.60000000000005 1010.7134999999993,201.60000000000005 459.55849999999936,201.60000000000005 459.55849999999936,219.60000000000005" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PKG_EXC" data-to="E_BEE" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="1010.7134999999993,183.60000000000005 1010.7134999999993,201.60000000000005 743.657499999999,201.60000000000005 743.657499999999,219.60000000000005" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PKG_EXC" data-to="E_RNE" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="1010.7134999999993,183.60000000000005 1010.7134999999993,201.60000000000005 1010.7134999999996,201.60000000000005 1010.7134999999996,219.60000000000005" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PKG_EXC" data-to="E_SCE" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="1010.7134999999993,183.60000000000005 1010.7134999999993,201.60000000000005 1276.2875,201.60000000000005 1276.2875,219.60000000000005" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PKG_EXC" data-to="E_VE" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="1010.7134999999993,183.60000000000005 1010.7134999999993,201.60000000000005 1512.221499999999,201.60000000000005 1512.221499999999,219.60000000000005" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="SRC" data-to="PKG_MODEL" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="4193.772249999999,93.80000000000001 4193.772249999999,111.80000000000001 4157.048999999999,111.80000000000001 4157.048999999999,129.8" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PKG_MODEL" data-to="SubModelEntities" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="4110.784333333332,183.60000000000002 4110.784333333332,231.60000000000002 3144.042499999999,231.60000000000002 3144.0424999999987,243.60000000000002" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PKG_MODEL" data-to="SubModelEnums" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="4203.313666666665,183.60000000000002 4203.313666666665,231.60000000000002 5243.501999999999,231.60000000000002 5243.501999999999,316.5" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="SRC" data-to="PKG_SVC" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="4193.772249999999,93.80000000000001 4193.772249999999,111.80000000000001 6266.711499999998,111.80000000000001 6266.711499999998,129.8" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PKG_SVC" data-to="S_MM" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="6266.711499999998,183.60000000000002 6266.711499999998,201.60000000000002 5385.144999999999,201.60000000000002 5385.144999999999,219.60000000000005" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PKG_SVC" data-to="S_CM" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="6266.711499999998,183.60000000000002 6266.711499999998,201.60000000000002 5664.427499999999,201.60000000000002 5664.427499999999,219.60000000000005" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PKG_SVC" data-to="S_RM" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="6266.711499999998,183.60000000000002 6266.711499999998,201.60000000000002 5953.713499999999,201.60000000000002 5953.713499999999,219.60000000000005" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PKG_SVC" data-to="S_IM" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="6266.711499999998,183.60000000000002 6266.711499999998,201.60000000000002 6266.7114999999985,201.60000000000002 6266.7114999999985,219.60000000000005" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PKG_SVC" data-to="S_PM" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="6266.711499999998,183.60000000000002 6266.711499999998,201.60000000000002 6587.489999999998,201.60000000000002 6587.489999999998,219.60000000000005" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PKG_SVC" data-to="S_RS" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="6266.711499999998,183.60000000000002 6266.711499999998,201.60000000000002 6915.307999999998,201.60000000000002 6915.307999999998,219.60000000000005" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PKG_SVC" data-to="S_FS" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="6266.711499999998,183.60000000000002 6266.711499999998,201.60000000000002 7202.370999999997,201.60000000000002 7202.370999999997,219.60000000000002" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="SRC" data-to="PKG_UI" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="4193.772249999999,93.80000000000001 4193.772249999999,111.80000000000001 7320.042999999998,111.80000000000001 7320.042999999998,129.8" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="PKG_UI" data-to="UI_CM" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="7320.042999999998,183.60000000000002 7320.042999999998,296.05" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<g class="node" data-id="SRC" data-label="&lt;b&gt;src/&lt;/b&gt;
+Java Source Root" data-shape="rectangle">
+  <rect x="4119.445249999999" y="40" width="148.654" height="53.800000000000004" rx="0" ry="0" fill="#1e293b" stroke="#3b82f6" stroke-width="2px" />
+  <text x="4193.772249999999" y="66.9" text-anchor="middle" font-size="13" font-weight="500" fill="#fff"><tspan x="4193.772249999999" dy="-3.9000000000000012"><tspan font-weight="bold">src/</tspan></tspan><tspan x="4193.772249999999" dy="16.900000000000002">Java Source Root</tspan></text>
+</g>
+<g class="node" data-id="PKG_MAIN" data-label="&lt;b&gt;com.cineflow&lt;/b&gt;
+(Package Root Path: src/com/cineflow/)" data-shape="rectangle">
+  <rect x="40" y="129.8" width="268.6959999999999" height="53.800000000000004" rx="0" ry="0" fill="#0f172a" stroke="#64748b" stroke-width="2px" />
+  <text x="174.34799999999996" y="156.70000000000002" text-anchor="middle" font-size="13" font-weight="500" fill="#e2e8f0"><tspan x="174.34799999999996" dy="-3.9000000000000012"><tspan font-weight="bold">com.cineflow</tspan></tspan><tspan x="174.34799999999996" dy="16.900000000000002">(Package Root Path: src/com/cineflow/)</tspan></text>
+</g>
+<g class="node" data-id="C_MAIN" data-label="Main.java
+&lt;i&gt;Bootstrap Application Entry Point&lt;/i&gt;" data-shape="rectangle">
+  <rect x="57.41349999999966" y="219.60000000000005" width="233.86899999999994" height="53.800000000000004" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="174.34799999999962" y="246.50000000000006" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe"><tspan x="174.34799999999962" dy="-3.9000000000000012">Main.java</tspan><tspan x="174.34799999999962" dy="16.900000000000002"><tspan font-style="italic">Bootstrap Application Entry Point</tspan></tspan></text>
+</g>
+<g class="node" data-id="PKG_EXC" data-label="&lt;b&gt;com.cineflow.exception&lt;/b&gt;
+(Package Path: src/com/cineflow/exception/)" data-shape="rectangle">
+  <rect x="860.0634999999993" y="129.80000000000004" width="301.2999999999999" height="53.800000000000004" rx="0" ry="0" fill="#0f172a" stroke="#64748b" stroke-width="2px" />
+  <text x="1010.7134999999993" y="156.70000000000005" text-anchor="middle" font-size="13" font-weight="500" fill="#e2e8f0"><tspan x="1010.7134999999993" dy="-3.9000000000000012"><tspan font-weight="bold">com.cineflow.exception</tspan></tspan><tspan x="1010.7134999999993" dy="16.900000000000002">(Package Path: src/com/cineflow/exception/)</tspan></text>
+</g>
+<g class="node" data-id="E_CFE" data-label="&quot;CineFlowException.java [Base Checked" data-shape="rectangle">
+  <rect x="319.28249999999935" y="219.60000000000005" width="280.552" height="36.900000000000006" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="459.55849999999936" y="238.05000000000007" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">&quot;CineFlowException.java [Base Checked</text>
+</g>
+<g class="node" data-id="E_BEE" data-label="BudgetExceededException.java" data-shape="rectangle">
+  <rect x="627.834499999999" y="219.60000000000005" width="231.64599999999996" height="36.900000000000006" rx="0" ry="0" fill="#3b1e2b" stroke="#f43f5e" stroke-width="1px" />
+  <text x="743.657499999999" y="238.05000000000007" text-anchor="middle" font-size="13" font-weight="500" fill="#fecdd3" dy="4.55">BudgetExceededException.java</text>
+</g>
+<g class="node" data-id="E_RNE" data-label="ResourceNotFoundException.java" data-shape="rectangle">
+  <rect x="887.4804999999997" y="219.60000000000005" width="246.46599999999995" height="36.900000000000006" rx="0" ry="0" fill="#3b1e2b" stroke="#f43f5e" stroke-width="1px" />
+  <text x="1010.7134999999996" y="238.05000000000007" text-anchor="middle" font-size="13" font-weight="500" fill="#fecdd3" dy="4.55">ResourceNotFoundException.java</text>
+</g>
+<g class="node" data-id="E_SCE" data-label="ScheduleConflictException.java" data-shape="rectangle">
+  <rect x="1161.9465" y="219.60000000000005" width="228.68199999999996" height="36.900000000000006" rx="0" ry="0" fill="#3b1e2b" stroke="#f43f5e" stroke-width="1px" />
+  <text x="1276.2875" y="238.05000000000007" text-anchor="middle" font-size="13" font-weight="500" fill="#fecdd3" dy="4.55">ScheduleConflictException.java</text>
+</g>
+<g class="node" data-id="E_VE" data-label="ValidationException.java" data-shape="rectangle">
+  <rect x="1418.628499999999" y="219.60000000000005" width="187.18599999999998" height="36.900000000000006" rx="0" ry="0" fill="#3b1e2b" stroke="#f43f5e" stroke-width="1px" />
+  <text x="1512.221499999999" y="238.05000000000007" text-anchor="middle" font-size="13" font-weight="500" fill="#fecdd3" dy="4.55">ValidationException.java</text>
+</g>
+<g class="node" data-id="PKG_MODEL" data-label="&lt;b&gt;com.cineflow.model&lt;/b&gt;
+(Package Path: src/com/cineflow/model/)" data-shape="rectangle">
+  <rect x="4018.2549999999987" y="129.8" width="277.58799999999997" height="53.800000000000004" rx="0" ry="0" fill="#0f172a" stroke="#64748b" stroke-width="2px" />
+  <text x="4157.048999999999" y="156.70000000000002" text-anchor="middle" font-size="13" font-weight="500" fill="#e2e8f0"><tspan x="4157.048999999999" dy="-3.9000000000000012"><tspan font-weight="bold">com.cineflow.model</tspan></tspan><tspan x="4157.048999999999" dy="16.900000000000002">(Package Path: src/com/cineflow/model/)</tspan></text>
+</g>
+<g class="node" data-id="PKG_SVC" data-label="&lt;b&gt;com.cineflow.service&lt;/b&gt;
+(Package Path: src/com/cineflow/service/)" data-shape="rectangle">
+  <rect x="6121.989499999998" y="129.8" width="289.4439999999999" height="53.800000000000004" rx="0" ry="0" fill="#0f172a" stroke="#64748b" stroke-width="2px" />
+  <text x="6266.711499999998" y="156.70000000000002" text-anchor="middle" font-size="13" font-weight="500" fill="#e2e8f0"><tspan x="6266.711499999998" dy="-3.9000000000000012"><tspan font-weight="bold">com.cineflow.service</tspan></tspan><tspan x="6266.711499999998" dy="16.900000000000002">(Package Path: src/com/cineflow/service/)</tspan></text>
+</g>
+<g class="node" data-id="S_MM" data-label="MovieManager.java (Central Facade)" data-shape="rectangle">
+  <rect x="5254.501999999999" y="219.60000000000005" width="261.28599999999994" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="5385.144999999999" y="238.05000000000007" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">MovieManager.java (Central Facade)</text>
+</g>
+<g class="node" data-id="S_CM" data-label="CastManager.java (Talent/Roster)" data-shape="rectangle">
+  <rect x="5543.787999999999" y="219.60000000000005" width="241.27899999999997" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="5664.427499999999" y="238.05000000000007" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">CastManager.java (Talent/Roster)</text>
+</g>
+<g class="node" data-id="S_RM" data-label="ReviewManager.java (Audience/Ratings)" data-shape="rectangle">
+  <rect x="5813.066999999999" y="219.60000000000005" width="281.29299999999995" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="5953.713499999999" y="238.05000000000007" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">ReviewManager.java (Audience/Ratings)</text>
+</g>
+<g class="node" data-id="S_IM" data-label="InventoryManager.java (Props/Costumes)" data-shape="rectangle">
+  <rect x="6122.359999999999" y="219.60000000000005" width="288.703" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="6266.7114999999985" y="238.05000000000007" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">InventoryManager.java (Props/Costumes)</text>
+</g>
+<g class="node" data-id="S_PM" data-label="PromotionManager.java (Marketing Assets)" data-shape="rectangle">
+  <rect x="6439.062999999998" y="219.60000000000005" width="296.854" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="6587.489999999998" y="238.05000000000007" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">PromotionManager.java (Marketing Assets)</text>
+</g>
+<g class="node" data-id="S_RS" data-label="ReportService.java (Executive Dashboards)" data-shape="rectangle">
+  <rect x="6763.916999999999" y="219.60000000000005" width="302.7819999999999" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="6915.307999999998" y="238.05000000000007" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">ReportService.java (Executive Dashboards)</text>
+</g>
+<g class="node" data-id="S_FS" data-label="FileService.java (Flat-File I/O)" data-shape="rectangle">
+  <rect x="7094.698999999998" y="219.60000000000002" width="215.34399999999994" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="7202.370999999997" y="238.05" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">FileService.java (Flat-File I/O)</text>
+</g>
+<g class="node" data-id="PKG_UI" data-label="&lt;b&gt;com.cineflow.ui&lt;/b&gt;
+(Package Path: src/com/cineflow/ui/)" data-shape="rectangle">
+  <rect x="7193.104999999998" y="129.8" width="253.87599999999995" height="53.800000000000004" rx="0" ry="0" fill="#0f172a" stroke="#64748b" stroke-width="2px" />
+  <text x="7320.042999999998" y="156.70000000000002" text-anchor="middle" font-size="13" font-weight="500" fill="#e2e8f0"><tspan x="7320.042999999998" dy="-3.9000000000000012"><tspan font-weight="bold">com.cineflow.ui</tspan></tspan><tspan x="7320.042999999998" dy="16.900000000000002">(Package Path: src/com/cineflow/ui/)</tspan></text>
+</g>
+<g class="node" data-id="UI_CM" data-label="ConsoleMenu.java
+&lt;i&gt;Interactive 18-Option Terminal UI&lt;/i&gt;" data-shape="rectangle">
+  <rect x="7207.183999999998" y="296.05" width="225.71799999999996" height="53.800000000000004" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="7320.042999999999" y="322.95" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe"><tspan x="7320.042999999999" dy="-3.9000000000000012">ConsoleMenu.java</tspan><tspan x="7320.042999999999" dy="16.900000000000002"><tspan font-style="italic">Interactive 18-Option Terminal UI</tspan></tspan></text>
+</g>
+<g class="node" data-id="M_PER" data-label="Person.java (Abstract)" data-shape="rectangle">
+  <rect x="2029.0574999999985" y="296.05" width="174.58899999999997" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="2116.3519999999985" y="314.5" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">Person.java (Abstract)</text>
+</g>
+<g class="node" data-id="M_ACT" data-label="Actor.java" data-shape="rectangle">
+  <rect x="2853.7884999999983" y="296.05" width="102.712" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="2905.1444999999985" y="314.5" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">Actor.java</text>
+</g>
+<g class="node" data-id="M_CRW" data-label="CrewMember.java" data-shape="rectangle">
+  <rect x="1649.8144999999986" y="296.05" width="149.395" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="1724.5119999999986" y="314.5" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">CrewMember.java</text>
+</g>
+<g class="node" data-id="M_MOV" data-label="Movie.java" data-shape="rectangle">
+  <rect x="3674.8144999999986" y="296.05" width="106.417" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="3728.022999999999" y="314.5" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">Movie.java</text>
+</g>
+<g class="node" data-id="M_PH" data-label="ProductionHouse.java" data-shape="rectangle">
+  <rect x="3809.2314999999985" y="296.05" width="173.84799999999998" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="3896.1554999999985" y="314.5" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">ProductionHouse.java</text>
+</g>
+<g class="node" data-id="M_SCN" data-label="Scene.java" data-shape="rectangle">
+  <rect x="2231.6464999999985" y="296.05" width="108.64" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="2285.9664999999986" y="314.5" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">Scene.java</text>
+</g>
+<g class="node" data-id="M_EXP" data-label="Expense.java" data-shape="rectangle">
+  <rect x="2522.7104999999983" y="296.05" width="123.46" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="2584.4404999999983" y="314.5" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">Expense.java</text>
+</g>
+<g class="node" data-id="M_REV" data-label="Review.java" data-shape="rectangle">
+  <rect x="3345.2184999999986" y="296.05" width="113.086" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="3401.7614999999987" y="314.5" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">Review.java</text>
+</g>
+<g class="node" data-id="M_PMS" data-label="ProductionMilestone.java" data-shape="rectangle">
+  <rect x="4224.783499999999" y="296.05" width="192.37299999999996" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="4320.969999999998" y="314.5" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">ProductionMilestone.java</text>
+</g>
+<g class="node" data-id="M_DUB" data-label="DubbingTrack.java" data-shape="rectangle">
+  <rect x="2984.5004999999983" y="296.05" width="156.06400000000002" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="3062.5324999999984" y="314.5" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">DubbingTrack.java</text>
+</g>
+<g class="node" data-id="M_PPT" data-label="PostProductionTask.java" data-shape="rectangle">
+  <rect x="4445.156499999998" y="296.05" width="193.11399999999998" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="4541.713499999998" y="314.5" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">PostProductionTask.java</text>
+</g>
+<g class="node" data-id="M_CS" data-label="CallSheet.java" data-shape="rectangle">
+  <rect x="2368.2864999999983" y="296.05" width="126.424" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="2431.4984999999983" y="314.5" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">CallSheet.java</text>
+</g>
+<g class="node" data-id="M_CCE" data-label="CastCallEntry.java" data-shape="rectangle">
+  <rect x="2674.1704999999984" y="296.05" width="151.618" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="2749.9794999999986" y="314.5" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">CastCallEntry.java</text>
+</g>
+<g class="node" data-id="M_REL" data-label="DistributionRelease.java" data-shape="rectangle">
+  <rect x="4011.0794999999985" y="296.05" width="185.70399999999998" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="4103.931499999999" y="314.5" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">DistributionRelease.java</text>
+</g>
+<g class="node" data-id="M_INV" data-label="InventoryItem.java" data-shape="rectangle">
+  <rect x="3168.5644999999986" y="296.05" width="148.654" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="3242.891499999999" y="314.5" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">InventoryItem.java</text>
+</g>
+<g class="node" data-id="M_ITA" data-label="ItemAssignment.java" data-shape="rectangle">
+  <rect x="3486.3044999999984" y="296.05" width="160.51" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="3566.5594999999985" y="314.5" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">ItemAssignment.java</text>
+</g>
+<g class="node" data-id="M_PRA" data-label="PromotionalAsset.java" data-shape="rectangle">
+  <rect x="1827.2094999999986" y="296.05" width="173.84799999999998" height="36.900000000000006" rx="0" ry="0" fill="#1e1e38" stroke="#818cf8" stroke-width="1px" />
+  <text x="1914.1334999999985" y="314.5" text-anchor="middle" font-size="13" font-weight="500" fill="#c7d2fe" dy="4.55">PromotionalAsset.java</text>
+</g>
+<g class="node" data-id="EN_MS" data-label="MovieStatus.java" data-shape="rectangle">
+  <rect x="4919.384499999998" y="360.5" width="143.467" height="36.900000000000006" rx="0" ry="0" fill="#1e382b" stroke="#34d495" stroke-width="1px" />
+  <text x="4991.117999999999" y="378.95" text-anchor="middle" font-size="13" font-weight="500" fill="#a7f3d0" dy="4.55">MovieStatus.java</text>
+</g>
+<g class="node" data-id="EN_PS" data-label="ProductionStage.java" data-shape="rectangle">
+  <rect x="5280.843499999999" y="360.5" width="169.402" height="36.900000000000006" rx="0" ry="0" fill="#1e382b" stroke="#34d495" stroke-width="1px" />
+  <text x="5365.544499999999" y="378.95" text-anchor="middle" font-size="13" font-weight="500" fill="#a7f3d0" dy="4.55">ProductionStage.java</text>
+</g>
+<g class="node" data-id="EN_PPT" data-label="PostProductionType.java" data-shape="rectangle">
+  <rect x="4698.270499999999" y="360.5" width="193.11399999999998" height="36.900000000000006" rx="0" ry="0" fill="#1e382b" stroke="#34d495" stroke-width="1px" />
+  <text x="4794.8274999999985" y="378.95" text-anchor="middle" font-size="13" font-weight="500" fill="#a7f3d0" dy="4.55">PostProductionType.java</text>
+</g>
+<g class="node" data-id="EN_IC" data-label="ItemCategory.java" data-shape="rectangle">
+  <rect x="5478.245499999999" y="360.5" width="147.17200000000003" height="36.900000000000006" rx="0" ry="0" fill="#1e382b" stroke="#34d495" stroke-width="1px" />
+  <text x="5551.831499999999" y="378.95" text-anchor="middle" font-size="13" font-weight="500" fill="#a7f3d0" dy="4.55">ItemCategory.java</text>
+</g>
+<g class="node" data-id="EN_AT" data-label="AssetType.java" data-shape="rectangle">
+  <rect x="5653.417499999999" y="360.5" width="135.316" height="36.900000000000006" rx="0" ry="0" fill="#1e382b" stroke="#34d495" stroke-width="1px" />
+  <text x="5721.075499999999" y="378.95" text-anchor="middle" font-size="13" font-weight="500" fill="#a7f3d0" dy="4.55">AssetType.java</text>
+</g>
+<g class="node" data-id="EN_AS" data-label="ApprovalStatus.java" data-shape="rectangle">
+  <rect x="5090.851499999999" y="360.5" width="161.99200000000002" height="36.900000000000006" rx="0" ry="0" fill="#1e382b" stroke="#34d495" stroke-width="1px" />
+  <text x="5171.847499999999" y="378.95" text-anchor="middle" font-size="13" font-weight="500" fill="#a7f3d0" dy="4.55">ApprovalStatus.java</text>
+</g>
+</svg>

@@ -128,6 +128,7 @@ public class MovieManager {
             String theStatus = switch (m.getStatus()) {
                 case RELEASED -> "CLOSED_RUN";
                 case POST_PRODUCTION -> "ADVANCE_BOOKING_OPEN";
+                case DROPPED -> "CANCELLED";
                 default -> "SCHEDULED";
             };
             int screens = switch (m.getGenre().toLowerCase()) {
@@ -367,6 +368,19 @@ public class MovieManager {
             throw new ResourceNotFoundException("Movie", (movieId != null) ? movieId.trim() : "null");
         }
         return m;
+    }
+
+    /**
+     * Drops the movie with the given ID and cancels its production.
+     * Calculates and returns the financial loss based on actual incurred expenses.
+     * Prevents duplicate dropping and avoids duplicate expense creation.
+     */
+    public double dropMovie(String movieId) throws ResourceNotFoundException, ValidationException {
+        if (movieId == null || movieId.trim().isEmpty()) {
+            throw new ResourceNotFoundException("Movie", "Empty ID");
+        }
+        Movie movie = findMovieOrThrow(movieId.trim());
+        return movie.drop();
     }
 
     /**

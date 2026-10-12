@@ -1,0 +1,13 @@
+# MovieID|ExpenseID|Category|Amount|Description
+MOV-04|EXP-01|Action Sequences|2.8E8|Action choreography and stunt production
+MOV-04|EXP-02|Camera & Lighting|1.2E8|Camera, lighting, and production equipment
+MOV-04|EXP-03|Music & Sound|8.5E7|Original score and sound design
+MOV-03|EXP-01|Art Direction|4.0E8|Historical sets and period production design
+MOV-03|EXP-02|Costumes|2.2E8|Period costumes and accessories
+MOV-03|EXP-03|Visual Effects|1.8E8|Visual effects and finishing
+MOV-01|EXP-01|Action Sequences|4.5E8|Action choreography and stunt coordination
+MOV-01|EXP-02|Locations & Sets|1.8E8|Chennai and other location production costs
+MOV-01|EXP-03|Visual Effects|2.2E8|Visual effects and post-production work
+MOV-02|EXP-01|Sets & Production Design|2.5E8|Prison and other production sets
+MOV-02|EXP-02|Action Sequences|3.0E8|Stunt and action scene production
+MOV-02|EXP-03|Music & Sound|9.0E7|Music recording and sound post-production

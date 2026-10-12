@@ -7,6 +7,7 @@ import com.cineflow.model.Expense;
 import com.cineflow.model.InventoryItem;
 import com.cineflow.model.ItemAssignment;
 import com.cineflow.model.Movie;
+import com.cineflow.model.MovieStatus;
 import com.cineflow.model.PostProductionTask;
 import com.cineflow.model.ProductionHouse;
 import com.cineflow.model.ProductionMilestone;
@@ -66,7 +67,12 @@ public class ReportService {
         sb.append("1. FINANCIAL & BUDGET OVERVIEW\n");
         sb.append(String.format("   Allocated Budget : $%,14.2f\n", budget));
         sb.append(String.format("   Total Spent      : $%,14.2f (%.1f%% utilized)\n", spent, spentPct));
-        sb.append(String.format("   Remaining Budget : $%,14.2f%s\n", remaining, (remaining < 0 ? " [BUDGET DEFICIT!]" : "")));
+        if (movie.getStatus() == MovieStatus.DROPPED) {
+            sb.append(String.format("   Financial Loss   : $%,14.2f [PRODUCTION CANCELLED / DROPPED]\n", movie.getFinancialLoss()));
+            sb.append(String.format("   Salvaged Budget  : $%,14.2f (Unspent Budget Preserved)\n", remaining));
+        } else {
+            sb.append(String.format("   Remaining Budget : $%,14.2f%s\n", remaining, (remaining < 0 ? " [BUDGET DEFICIT!]" : "")));
+        }
         sb.append(String.format("   Expense Entries  : %d logged\n\n", movie.getExpenses().size()));
 
         // 2. SCENE & SHOOTING PROGRESS
@@ -156,6 +162,9 @@ public class ReportService {
         List<String> warnings = movie.validateScheduleSequence();
 
         sb.append("6. PRODUCTION ROADMAP & MILESTONE HEALTH\n");
+        if (movie.getStatus() == MovieStatus.DROPPED) {
+            sb.append("   [!] STATUS ALERT : Movie production has been DROPPED / CANCELLED.\n");
+        }
         sb.append(String.format("   Milestones Done  : %d of %d Completed (%.0f%%)\n",
                 completedMilestones, milestones.size(),
                 milestones.isEmpty() ? 0.0 : (completedMilestones * 100.0 / milestones.size())));
@@ -207,8 +216,13 @@ public class ReportService {
                         exp.getId(), exp.getCategory(), exp.getAmount(), exp.getDescription()));
             }
             sb.append("------------+----------------------+----------------+-----------------------------------\n");
-            sb.append(String.format(" TOTAL SPENT: $%,.2f | REMAINING BUDGET: $%,.2f\n",
-                    movie.getTotalExpenses(), movie.getRemainingBudget()));
+            if (movie.getStatus() == MovieStatus.DROPPED) {
+                sb.append(String.format(" TOTAL LOSS (INCURRED): $%,.2f | SALVAGED BUDGET: $%,.2f\n",
+                        movie.getFinancialLoss(), movie.getRemainingBudget()));
+            } else {
+                sb.append(String.format(" TOTAL SPENT: $%,.2f | REMAINING BUDGET: $%,.2f\n",
+                        movie.getTotalExpenses(), movie.getRemainingBudget()));
+            }
         }
         sb.append("\n");
 
@@ -309,13 +323,23 @@ public class ReportService {
 
         double totalBudget = 0.0;
         double totalSpent = 0.0;
+        double totalLoss = 0.0;
+        int droppedCount = 0;
         for (Movie m : studio.getMovies()) {
             totalBudget += m.getBudget();
             totalSpent += m.getTotalExpenses();
+            if (m.getStatus() == MovieStatus.DROPPED) {
+                totalLoss += m.getFinancialLoss();
+                droppedCount++;
+            }
         }
         sb.append("STUDIO FINANCIAL SUMMARY:\n");
         sb.append(String.format(" Total Allocated Budget : $%,.2f\n", totalBudget));
         sb.append(String.format(" Total Capital Spent    : $%,.2f (%.1f%%)\n", totalSpent, (totalBudget > 0 ? (totalSpent / totalBudget) * 100.0 : 0.0)));
+        if (droppedCount > 0) {
+            sb.append(String.format(" Total Dropped Loss     : $%,.2f (%d dropped movie%s)\n",
+                    totalLoss, droppedCount, droppedCount == 1 ? "" : "s"));
+        }
         sb.append(String.format(" Remaining Studio Funds : $%,.2f\n\n", totalBudget - totalSpent));
 
         sb.append(String.format(" %-8s | %-24s | %-12s | %-14s | %14s | %14s\n",

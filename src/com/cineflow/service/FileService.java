@@ -100,17 +100,19 @@ public class FileService {
     private void saveMovies(List<ProductionHouse> studios) throws IOException {
         File file = new File(dataDir, "movies.txt");
         try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
-            writer.println("# MovieID|StudioID|Title|Genre|Director|ReleaseYear|Budget|Status|ScreenplayWriter|ScriptDraft|Synopsis");
+            writer.println("# MovieID|StudioID|Title|Genre|Director|ReleaseYear|Budget|Status|ScreenplayWriter|ScriptDraft|Synopsis|CancellationLoss");
             for (ProductionHouse ph : studios) {
                 for (Movie m : ph.getMovies()) {
                     String syn = (m.getSynopsis() != null) ? m.getSynopsis().replace("\n", "\\n") : "";
+                    String lossStr = (m.getCancellationLoss() != null) ? String.valueOf(m.getCancellationLoss()) : "";
                     writer.println(m.getId() + "|" + ph.getId() + "|" + m.getTitle() + "|"
                             + m.getGenre() + "|" + m.getDirector() + "|"
                             + m.getReleaseYear() + "|" + m.getBudget() + "|"
                             + m.getStatus().name() + "|"
                             + m.getScreenplayWriter() + "|"
                             + m.getScriptDraftVersion() + "|"
-                            + syn);
+                            + syn + "|"
+                            + lossStr);
                 }
             }
         }
@@ -440,6 +442,11 @@ public class FileService {
                             if (parts.length >= 11 && !parts[10].trim().isEmpty()) {
                                 movie.setSynopsis(parts[10].replace("\\n", "\n").trim());
                             }
+                            if (parts.length >= 12 && !parts[11].trim().isEmpty()) {
+                                try {
+                                    movie.setCancellationLoss(Double.parseDouble(parts[11].trim()));
+                                } catch (Exception ignored) {}
+                            }
                             movieMap.put(movieId, movie);
 
                             ProductionHouse ph = studioMap.get(studioId);
@@ -568,6 +575,13 @@ public class FileService {
                         System.err.println("[WARNING] expenses.txt line " + lineNum + " malformed: " + line);
                     }
                 }
+            }
+        }
+
+        // Ensure any DROPPED movie without explicitly recorded loss derives it from loaded expenses
+        for (Movie m : movieMap.values()) {
+            if (m.getStatus() == MovieStatus.DROPPED && m.getCancellationLoss() == null) {
+                m.setCancellationLoss(m.getTotalExpenses());
             }
         }
 
@@ -811,7 +825,7 @@ public class FileService {
                                 }
 
                                 if (existing == null) {
-                                    movie.addCallSheet(cs);
+                                    movie.getCallSheets().add(cs);
                                 }
                             }
                         } catch (Exception e) {

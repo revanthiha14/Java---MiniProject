@@ -1,11 +1,14 @@
 package com.cineflow.service;
 
 import com.cineflow.exception.ResourceNotFoundException;
+import com.cineflow.exception.ScheduleConflictException;
 import com.cineflow.exception.ValidationException;
+import com.cineflow.model.EquipmentReservation;
 import com.cineflow.model.InventoryItem;
 import com.cineflow.model.ItemAssignment;
 import com.cineflow.model.ItemCategory;
 import com.cineflow.model.Movie;
+import com.cineflow.model.MovieStatus;
 import com.cineflow.model.Scene;
 
 import java.util.ArrayList;
@@ -16,15 +19,17 @@ import java.util.Map;
 /**
  * Service managing props, costumes, and equipment inventory.
  * Follows the decoupled service pattern established by CastManager and ReviewManager.
- * Enforces quantity checks, movie/scene reference validation, checkouts, and returns.
+ * Enforces quantity checks, movie/scene reference validation, checkouts, reservations, and returns.
  */
 public class InventoryManager {
     private final Map<String, InventoryItem> items;
     private final List<ItemAssignment> assignments;
+    private final EquipmentReservationManager reservationManager;
 
     public InventoryManager() {
         this.items = new LinkedHashMap<>();
         this.assignments = new ArrayList<>();
+        this.reservationManager = new EquipmentReservationManager(this);
     }
 
     public void addItem(InventoryItem item) throws ValidationException {
@@ -87,6 +92,10 @@ public class InventoryManager {
             throws ResourceNotFoundException, ValidationException {
         if (movie == null) {
             throw new ValidationException("Movie", "Movie reference cannot be null.");
+        }
+        if (movie.getStatus() == MovieStatus.DROPPED) {
+            throw new ValidationException("Movie Status",
+                    "Cannot checkout inventory items for a DROPPED / CANCELLED movie ('" + movie.getTitle() + "').");
         }
         InventoryItem item = getItemOrThrow(itemId);
 
@@ -245,8 +254,84 @@ public class InventoryManager {
         return lost;
     }
 
+    // =========================================================================
+    // EQUIPMENT RESERVATION DELEGATE METHODS
+    // =========================================================================
+
+    public EquipmentReservationManager getReservationManager() {
+        return reservationManager;
+    }
+
+    public EquipmentReservation reserveItem(String reservationId, String itemId, Movie movie, int sceneNumber,
+                                           int quantity, String startDateTime, String endDateTime, String notes)
+            throws ResourceNotFoundException, ValidationException, ScheduleConflictException {
+        return reservationManager.reserveItem(reservationId, itemId, movie, sceneNumber, quantity, startDateTime, endDateTime, notes);
+    }
+
+    public int getAvailableQuantityForPeriod(String itemId, String startDateTime, String endDateTime)
+            throws ResourceNotFoundException, ValidationException {
+        return reservationManager.getAvailableQuantityForPeriod(itemId, startDateTime, endDateTime);
+    }
+
+    public void confirmReservation(String reservationId)
+            throws ResourceNotFoundException, ScheduleConflictException, ValidationException {
+        reservationManager.confirmReservation(reservationId);
+    }
+
+    public void cancelReservation(String reservationId) throws ResourceNotFoundException, ValidationException {
+        reservationManager.cancelReservation(reservationId);
+    }
+
+    public ItemAssignment checkoutReservation(String reservationId, Movie movie)
+            throws ResourceNotFoundException, ValidationException {
+        return reservationManager.checkoutReservation(reservationId, movie);
+    }
+
+    public void returnReservation(String reservationId, int goodQty, int damagedQty, int lostQty,
+                                  String returnDate, String returnNotes)
+            throws ResourceNotFoundException, ValidationException {
+        reservationManager.returnReservation(reservationId, goodQty, damagedQty, lostQty, returnDate, returnNotes);
+    }
+
+    public EquipmentReservation findReservationById(String reservationId) {
+        return reservationManager.findReservationById(reservationId);
+    }
+
+    public List<EquipmentReservation> getReservationsForMovie(String movieId) {
+        return reservationManager.getReservationsForMovie(movieId);
+    }
+
+    public List<EquipmentReservation> getReservationsForScene(String movieId, int sceneNumber) {
+        return reservationManager.getReservationsForScene(movieId, sceneNumber);
+    }
+
+    public List<EquipmentReservation> getReservationsForItem(String itemId) {
+        return reservationManager.getReservationsForItem(itemId);
+    }
+
+    public List<EquipmentReservation> getUpcomingReservations() {
+        return reservationManager.getUpcomingReservations();
+    }
+
+    public List<EquipmentReservation> getOverdueReservations() {
+        return reservationManager.getOverdueReservations();
+    }
+
+    public List<ItemAssignment> getOverdueAssignments() {
+        return reservationManager.getOverdueAssignments();
+    }
+
+    public List<EquipmentReservation> getAllReservations() {
+        return reservationManager.getAllReservations();
+    }
+
+    public void addLoadedReservation(EquipmentReservation res) {
+        reservationManager.addLoadedReservation(res);
+    }
+
     public void clear() {
         items.clear();
         assignments.clear();
+        reservationManager.clear();
     }
 }

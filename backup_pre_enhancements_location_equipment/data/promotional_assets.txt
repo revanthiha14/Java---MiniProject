@@ -1,0 +1,11 @@
+# AssetID|MovieID|AssetType|Title|FilePathOrUrl|Language|Platform|Status|Revision|ApprovalDetails|LastUpdated
+AST-01|MOV-01|POSTER|Official Theatrical One-Sheet|assets/posters/interstellar_hero_poster.jpg|English|Theaters & IMAX Billboards|APPROVED|2|APPROVED by Studio Marketing Head (IMAX title treatment approved)|2026-10-01
+AST-02|MOV-01|TEASER|Cygnus Rift 4K Atmospheric Teaser|https://cineflow.cdn/trailers/interstellar_teaser_4k.mp4|English|YouTube 4K & Social Media|APPROVED|1|APPROVED by Director Marcus Sterling|2026-10-05
+AST-03|MOV-01|TRAILER|Official Theatrical Trailer #1|https://cineflow.cdn/trailers/interstellar_trailer_cut1.mp4|English|Theaters & Digital Streaming|PENDING|1|Awaiting sound mix lock and executive producer sign-off|2026-10-10
+AST-04|MOV-01|SOCIAL_MEDIA|Motion Poster: Lyra's Discovery|assets/social/mov01_lyra_motion_square.mp4|Multilingual|Instagram, X & TikTok|PENDING|1|Colorist review scheduled for Friday|2026-10-11
+AST-05|MOV-03|POSTER|Pushpa Raj Thaggedele First Look|assets/posters/pushpa2_first_look.jpg|Telugu / Hindi|Pan-India Billboards & Print|APPROVED|3|APPROVED by Mythri Producers & Director Sukumar|2026-02-15
+AST-06|MOV-03|TRAILER|Mass Theatrical Trailer (5 Languages)|https://cineflow.cdn/trailers/pushpa2_trailer.mp4|Pan-India Multilingual|YouTube & Cinema Theaters|APPROVED|1|APPROVED for worldwide multiplex release|2026-03-01
+AST-07|MOV-04|BANNER|Gotham Heights IMAX Billboard Banner|assets/banners/dark_horizon_imax_banner.png|English|Times Square & Highway Billboards|REJECTED|1|REJECTED by Creative Director (Reason: Shadow contrast too low on IMAX format, increase lighting on skyline)|2026-09-20
+AST-PERSIST-99|MOV-04|POSTER|First Look Poster|https://cdn.cineflow.com/firstlook.jpg|Telugu|YouTube Community|PENDING|1|Awaiting creative director review|2026-10-12
+AST-PERSIST-11232|MOV-04|POSTER|First Look Poster|https://cdn.cineflow.com/firstlook.jpg|Telugu|YouTube Community|PENDING|1|Awaiting creative director review|2026-10-12
+AST-PERSIST-436|MOV-04|POSTER|First Look Poster|https://cdn.cineflow.com/firstlook.jpg|Telugu|YouTube Community|PENDING|1|Awaiting creative director review|2026-10-12

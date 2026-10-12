@@ -1,0 +1,11 @@
+# AssignmentID|ItemID|MovieID|SceneNumber|Quantity|Status|AssignedDate|ReturnDate|Notes
+ASG-001|PROP-01|MOV-01|1|1|CHECKED_OUT|2026-11-10|TBD|Hero prop for orbital lab sequence
+ASG-002|PROP-02|MOV-01|2|2|CHECKED_OUT|2026-11-15|TBD|Tether harness cable for spacewalk scene
+ASG-003|CST-01|MOV-01|1|1|CHECKED_OUT|2026-11-10|TBD|Hero spacesuit for Liam Vance
+ASG-004|EQP-01|MOV-01|1|1|CHECKED_OUT|2026-11-10|TBD|A-Camera primary package
+ASG-005|PROP-03|MOV-02|1|1|CHECKED_OUT|2027-01-10|TBD|Hero prop weapon for rainy pier encounter
+ASG-006|CST-02|MOV-02|1|1|CHECKED_OUT|2027-01-10|TBD|Waterproof noir wardrobe
+ASG-007|PROP-04|MOV-03|1|6|RETURNED|2026-03-05|2026-03-10|Checkpost standoff logs / Return: Action scene wrapped cleanly
+ASG-008|PROP-PERSIST-99|MOV-04|0|1|CHECKED_OUT|2026-11-01|TBD|Coronation scene
+ASG-009|PROP-PERSIST-11228|MOV-04|0|1|CHECKED_OUT|2026-11-01|TBD|Coronation scene
+ASG-010|PROP-PERSIST-431|MOV-04|0|1|CHECKED_OUT|2026-11-01|TBD|Coronation scene
