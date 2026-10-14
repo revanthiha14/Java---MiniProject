@@ -6,7 +6,7 @@ import com.cineflow.exception.ValidationException;
  * Represents a key milestone in the master film production and release schedule.
  * Demonstrates: Encapsulation, Validation, Formatting, and Pipeline Dependency Management.
  */
-public class ProductionMilestone {
+public class ProductionMilestone implements Identifiable<String> {
     private String id;
     private ProductionStage stage;
     private String title;

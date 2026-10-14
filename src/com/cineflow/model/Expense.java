@@ -6,7 +6,7 @@ import com.cineflow.exception.ValidationException;
  * Represents a financial expense incurred during film production.
  * Demonstrates: Encapsulation, Data Modeling, and Domain Validation.
  */
-public class Expense {
+public class Expense implements Identifiable<String> {
     private String id;
     private String category;
     private double amount;

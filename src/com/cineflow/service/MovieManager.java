@@ -388,11 +388,10 @@ public class MovieManager {
      * Demonstrates simple iteration, String matching, and conditional filtering.
      */
     public List<Movie> searchMovies(String query, String genre, double minRating) {
-        List<Movie> results = new ArrayList<>();
         String q = (query != null) ? query.trim().toLowerCase() : "";
         String g = (genre != null) ? genre.trim().toLowerCase() : "";
 
-        for (Movie m : getAllMovies()) {
+        return GenericRepository.filterList(getAllMovies(), m -> {
             boolean matchesQuery = q.isEmpty()
                     || m.getId().toLowerCase().contains(q)
                     || m.getTitle().toLowerCase().contains(q);
@@ -403,11 +402,8 @@ public class MovieManager {
             boolean matchesRating = (minRating <= 0.0)
                     || (!m.getReviews().isEmpty() && reviewManager.calculateAverageRating(m) >= minRating);
 
-            if (matchesQuery && matchesGenre && matchesRating) {
-                results.add(m);
-            }
-        }
-        return results;
+            return matchesQuery && matchesGenre && matchesRating;
+        });
     }
 
     public CastManager getCastManager() {

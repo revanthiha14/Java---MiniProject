@@ -6,7 +6,7 @@ import com.cineflow.exception.ValidationException;
  * Abstract base class representing a person involved in movie production.
  * Demonstrates: Abstraction, Encapsulation, Validation, and Polymorphism.
  */
-public abstract class Person {
+public abstract class Person implements Identifiable<String> {
     private String id;
     private String name;
     private String email;

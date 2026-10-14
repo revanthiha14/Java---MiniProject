@@ -22,12 +22,12 @@ import java.util.Map;
  * Enforces quantity checks, movie/scene reference validation, checkouts, reservations, and returns.
  */
 public class InventoryManager {
-    private final Map<String, InventoryItem> items;
+    private final Repository<String, InventoryItem> itemRepository;
     private final List<ItemAssignment> assignments;
     private final EquipmentReservationManager reservationManager;
 
     public InventoryManager() {
-        this.items = new LinkedHashMap<>();
+        this.itemRepository = new GenericRepository<>("Inventory Item");
         this.assignments = new ArrayList<>();
         this.reservationManager = new EquipmentReservationManager(this);
     }
@@ -37,15 +37,23 @@ public class InventoryManager {
             throw new ValidationException("Inventory Item", "Cannot add null inventory item.");
         }
         String key = item.getId().trim().toUpperCase();
-        if (items.containsKey(key)) {
-            throw new ValidationException("Item ID", "Item with ID '" + item.getId() + "' already exists in inventory.");
+        for (InventoryItem existing : itemRepository.getAll()) {
+            if (existing.getId().trim().equalsIgnoreCase(key)) {
+                throw new ValidationException("Item ID", "Item with ID '" + item.getId() + "' already exists in inventory.");
+            }
         }
-        items.put(key, item);
+        itemRepository.add(item);
     }
 
     public InventoryItem findItemById(String itemId) {
         if (itemId == null) return null;
-        return items.get(itemId.trim().toUpperCase());
+        String key = itemId.trim().toUpperCase();
+        for (InventoryItem item : itemRepository.getAll()) {
+            if (item.getId().trim().equalsIgnoreCase(key)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     public InventoryItem getItemOrThrow(String itemId) throws ResourceNotFoundException {
@@ -57,15 +65,14 @@ public class InventoryManager {
     }
 
     public List<InventoryItem> getAllItems() {
-        return new ArrayList<>(items.values());
+        return itemRepository.getAll();
     }
 
     public List<InventoryItem> searchItems(String query, ItemCategory category, String condition) {
-        List<InventoryItem> results = new ArrayList<>();
         String q = (query != null) ? query.trim().toLowerCase() : "";
         String cond = (condition != null) ? condition.trim().toLowerCase() : "";
 
-        for (InventoryItem item : items.values()) {
+        return itemRepository.filter(item -> {
             boolean matchesQuery = q.isEmpty()
                     || item.getId().toLowerCase().contains(q)
                     || item.getName().toLowerCase().contains(q)
@@ -76,11 +83,8 @@ public class InventoryManager {
             boolean matchesCondition = cond.isEmpty()
                     || item.getCondition().toLowerCase().contains(cond);
 
-            if (matchesQuery && matchesCategory && matchesCondition) {
-                results.add(item);
-            }
-        }
-        return results;
+            return matchesQuery && matchesCategory && matchesCondition;
+        });
     }
 
     /**
@@ -216,7 +220,7 @@ public class InventoryManager {
 
     public int getTotalInventoryUnitsCount() {
         int total = 0;
-        for (InventoryItem i : items.values()) {
+        for (InventoryItem i : itemRepository.getAll()) {
             total += i.getTotalQuantity();
         }
         return total;
@@ -224,7 +228,7 @@ public class InventoryManager {
 
     public int getAvailableUnitsCount() {
         int avail = 0;
-        for (InventoryItem i : items.values()) {
+        for (InventoryItem i : itemRepository.getAll()) {
             avail += i.getAvailableQuantity();
         }
         return avail;
@@ -232,7 +236,7 @@ public class InventoryManager {
 
     public int getAssignedUnitsCount() {
         int inUse = 0;
-        for (InventoryItem i : items.values()) {
+        for (InventoryItem i : itemRepository.getAll()) {
             inUse += i.getAssignedQuantity();
         }
         return inUse;
@@ -240,7 +244,7 @@ public class InventoryManager {
 
     public int getDamagedUnitsCount() {
         int dmg = 0;
-        for (InventoryItem i : items.values()) {
+        for (InventoryItem i : itemRepository.getAll()) {
             dmg += i.getDamagedQuantity();
         }
         return dmg;
@@ -248,7 +252,7 @@ public class InventoryManager {
 
     public int getLostUnitsCount() {
         int lost = 0;
-        for (InventoryItem i : items.values()) {
+        for (InventoryItem i : itemRepository.getAll()) {
             lost += i.getLostQuantity();
         }
         return lost;
@@ -330,7 +334,7 @@ public class InventoryManager {
     }
 
     public void clear() {
-        items.clear();
+        itemRepository.clear();
         assignments.clear();
         reservationManager.clear();
     }

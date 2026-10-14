@@ -13,7 +13,7 @@ import java.util.List;
  * Demonstrates: Composition, Polymorphic Collections (List of Person),
  * Domain Business Rule Validation, and Exception Handling.
  */
-public class Movie {
+public class Movie implements Identifiable<String> {
     private String id;
     private String title;
     private String genre;

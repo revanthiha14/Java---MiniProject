@@ -6,7 +6,7 @@ import com.cineflow.exception.ValidationException;
  * Represents a physical production inventory item (prop, costume, or filming equipment).
  * Demonstrates: Encapsulation, State Tracking, Invariant Preservation, and ValidationException.
  */
-public class InventoryItem {
+public class InventoryItem implements Identifiable<String> {
     private String id;
     private String name;
     private ItemCategory category;

@@ -11,7 +11,7 @@ import java.util.List;
  * Demonstrates: Aggregation (ProductionHouse contains Movies), Encapsulation,
  * and Exception Handling (ValidationException, ResourceNotFoundException).
  */
-public class ProductionHouse {
+public class ProductionHouse implements Identifiable<String> {
     private String id;
     private String name;
     private String headquarters;
